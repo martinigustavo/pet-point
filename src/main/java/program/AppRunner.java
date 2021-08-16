@@ -13,8 +13,7 @@ public class AppRunner {
     
     public static void appRunner() {
         
-        // aqui vai o método que inicializa a aplicaçao
-        
+        // código que inicializa a aplicaçao
     }
     
 }
