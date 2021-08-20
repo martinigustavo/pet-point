@@ -11,10 +11,6 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
-/**
- *
- * @author Gustavo Martini
- */
 public class HibernateUtil {
 
     private static SessionFactory sf;
