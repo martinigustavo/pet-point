@@ -17,5 +17,6 @@
         
         <!--Mapeamento das classes utilizadas no projeto-->
         <mapping class="entities.Usuario" />
+        <mapping class="entities.Pessoa" />
     </session-factory>
 </hibernate-configuration>
