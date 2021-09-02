@@ -25,7 +25,7 @@ import javax.swing.plaf.FontUIResource;
 public class VisualsConfig {
     
     private static final String FONT_ROBOTO = "/Roboto-Regular.ttf";
-    private static float FONT_SIZE = 16f;
+    private static final float FONT_SIZE = 16f;
 
     /**
      *
