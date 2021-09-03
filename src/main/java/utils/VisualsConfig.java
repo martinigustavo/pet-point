@@ -24,7 +24,7 @@ import javax.swing.plaf.FontUIResource;
  */
 public class VisualsConfig {
     
-    private static final String FONT_ROBOTO = "/Roboto-Regular.ttf";
+    private static final String FONT_PATH = "/Roboto-Regular.ttf";
     private static final float FONT_SIZE = 16f;
 
     /**
@@ -102,7 +102,7 @@ public class VisualsConfig {
         Font font = null;
 
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT, VisualsConfig.class.getResource(FONT_ROBOTO).openStream());
+            font = Font.createFont(Font.TRUETYPE_FONT, VisualsConfig.class.getResource(FONT_PATH).openStream());
 
             GraphicsEnvironment genv = GraphicsEnvironment.getLocalGraphicsEnvironment();
             genv.registerFont(font);
