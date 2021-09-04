@@ -6,15 +6,11 @@
 package program;
 
 import dao.FuncionarioDao;
-import entities.Cliente;
-import entities.Especie;
 import entities.Funcionario;
-import entities.Pet;
-import entities.Raca;
 import java.time.LocalDate;
-import java.time.Month;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import java.util.List;
+import java.util.Optional;
+import org.hibernate.SessionFactory;
 import utils.HibernateUtil;
 import utils.VisualsConfig;
 
@@ -28,10 +24,10 @@ public class AppRunner {
         // Set swing frame visible after this comment
         // código que inicializa a aplicaçao (janela do login/cadastro)
 //        new LoginFrame().setVisible(true);
+        
         // testes de persistencia
-//        Session session = HibernateUtil.getSessionFactory().openSession();
-//        try {
-//            Transaction tx = session.beginTransaction();
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
         Funcionario funcionario = new Funcionario();
         funcionario.setNome("Funcionario Um");
         funcionario.setSexo("Masculino");
@@ -39,8 +35,8 @@ public class AppRunner {
         funcionario.setTelefone("(51) 98765-4321");
         funcionario.setEmail("funcionario1@email.com");
         funcionario.setEndereco("Rua ABC, 175");
-        funcionario.setCidade("Lajeado");
-        funcionario.setEstado("RS");
+        funcionario.setCidade("Cidade");
+        funcionario.setEstado("Estado");
         funcionario.setData_nascimento(LocalDate.of(1983, 12, 20));
         funcionario.setData_cadastro(LocalDate.now());
         funcionario.setStatus("ativo");
@@ -48,53 +44,37 @@ public class AppRunner {
         funcionario.setSenha("abcd1234");
         funcionario.setAtividade("atividade");
 
-        FuncionarioDao fd = new FuncionarioDao();
-        fd.salvar(funcionario);
-
-//            Cliente pedro = new Cliente();
-//            pedro.setNome("Pedro Paulo");
-//            pedro.setSexo("masculino");
-//            pedro.setCpf("123.456.789-19");
-//            pedro.setTelefone("(51) 98765-4321");
-//            pedro.setEmail("pedro@email.com");
-//            pedro.setEndereco("Rua AAAAA");
-//            pedro.setCidade("Lajeado");
-//            pedro.setEstado("RS");
-//            pedro.setData_nascimento(LocalDate.of(1995, Month.MARCH, 3));
-//            pedro.setData_cadastro(LocalDate.now());
-//            pedro.setStatus("ativo");
-//
-//            session.save(pedro);
-//
-//            Especie gato = new Especie();
-//            gato.setNome("Gato");
-//
-//            session.save(gato);
-//
-//            Raca persa = new Raca();
-//            persa.setNome("Persa");
-//            persa.setEspecie(gato);
-//
-//            session.save(persa);
-//
-//            Pet tonho = new Pet();
-//            tonho.setNome("Tonho");
-//            tonho.setSexo("Macho");
-//            tonho.setEsterilizado(true);
-//            tonho.setPorte("Pequeno");
-//            tonho.setData_nascimento(LocalDate.of(2018, 5, 16));
-//            tonho.setData_cadastro(LocalDate.now());
-//            tonho.setCliente(pedro);
-//            tonho.setRaca(persa);
-//
-//            session.save(tonho);
-//
-//            tx.commit();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            session.close();
+        // teste salvar
+        FuncionarioDao fd = new FuncionarioDao(sessionFactory);
+        Optional<Funcionario> funcOpt = fd.salvar(funcionario);
+        if (funcOpt.isPresent()) {
+            System.out.println("Funcionário salvo com sucesso!");
+        } else {
+            System.out.println("Funcionário não foi salvo");
+        }
+        
+        // teste excluir registro
+//        int idTeste = 3;
+//        Optional<Funcionario> funcOpt2 = fd.buscar(idTeste);
+//        if (funcOpt2.isPresent()) {
+//            fd.excluir(funcOpt2.get());
+//            System.out.printf("------ FUNCIONÁRIO DE ID %d EXCLUÍDO!!! ------", idTeste);
+//        } else {
+//            System.out.println("Funcionário não encontrado!");
 //        }
-    }
+        
 
+        // teste buscar todos registros
+        List<Funcionario> funcionariosCadastrados = fd.buscarTodos();
+        funcionariosCadastrados.forEach(func -> {
+            System.out.println("---------------------------------------");
+            System.out.println("Funcionário_id = " + func.getId());
+            System.out.println("Nome: " + func.getNome());
+            System.out.println("CPF: " + func.getCpf());
+            System.out.println("Cidade: " + func.getCidade());
+            System.out.println("Email: " + func.getEmail());
+            System.out.println("---------------------------------------");
+        });
+
+    }
 }
