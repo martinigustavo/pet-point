@@ -18,6 +18,10 @@ public abstract class AbstractGenericDao<T> implements GenericDao<T> {
     private final Class<T> entityClass;
     private final String entityName;
 
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+    
     public AbstractGenericDao(SessionFactory sessionFactory, Class<T> entityClass, String entityName) {
         this.sessionFactory = sessionFactory;
         this.entityClass = entityClass;
@@ -95,7 +99,7 @@ public abstract class AbstractGenericDao<T> implements GenericDao<T> {
 
         return Optional.empty();
     }
-
+    
     @Override
     public List<T> buscarTodos() {
         Session session = sessionFactory.openSession();

@@ -16,10 +16,6 @@
         <property name="hibernate.format_sql">true</property>
         
         <!--Mapeamento das classes utilizadas no projeto-->
-<<<<<<< HEAD
-        <mapping class="entities.Usuario" />
-        <mapping class="entities.Pessoa" />
-=======
         <mapping class="entities.Cliente" />
         <mapping class="entities.Especie" />
         <mapping class="entities.Funcionario" />
@@ -28,6 +24,5 @@
         <mapping class="entities.Pet" />
         <mapping class="entities.Raca" />
         <mapping class="entities.Veterinario" />
->>>>>>> 9b8dae81b2c46864f4f5430fabcf5a94a28cdb59
     </session-factory>
 </hibernate-configuration>

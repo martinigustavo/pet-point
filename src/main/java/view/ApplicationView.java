@@ -11,8 +11,11 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Optional;
+import javax.swing.JOptionPane;
 import org.hibernate.SessionFactory;
+import utils.Criptografar;
 import utils.HibernateUtil;
+import utils.VisualsConfig;
 
 /**
  *
@@ -25,6 +28,7 @@ public class ApplicationView extends javax.swing.JFrame {
      */
     public ApplicationView() {
         initComponents();
+        VisualsConfig.setPropsToWindow(this, "Cadastro de Funcionário", tfdatividade);
     }
 
     /**
@@ -177,8 +181,8 @@ public class ApplicationView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btncadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastrarActionPerformed
-       SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-     
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        
         Funcionario funcionario = new Funcionario();
         funcionario.setNome(tfdnome.getText());
         funcionario.setSexo(tfdsexo.getText());
@@ -192,23 +196,26 @@ public class ApplicationView extends javax.swing.JFrame {
         funcionario.setData_cadastro(LocalDate.now());
         funcionario.setStatus(tfdstatus.getText());
         funcionario.setUsuario(tfdusuario.getText());
-        funcionario.setSenha(tfdsenha.getText());
+        char[] getSenha = tfdsenha.getPassword();
+        String senha = String.valueOf(getSenha);
+        funcionario.setSenha(Criptografar.encriptografar(senha));
         funcionario.setAtividade(tfdatividade.getText());
         
         FuncionarioDao fd = new FuncionarioDao(sessionFactory);
         Optional<Funcionario> funcOpt = fd.salvar(funcionario);
         if (funcOpt.isPresent()) {
-            System.out.println("Funcionário salvo com sucesso!");
+            JOptionPane.showMessageDialog(null, "Funcionário salvo com sucesso!");
         } else {
-            System.out.println("Funcionário não foi salvo");
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar funcionário!");
         }
     }//GEN-LAST:event_btncadastrarActionPerformed
     
     public LocalDate convertToLocalDate(Date dateToConvert) {
-    return dateToConvert.toInstant()
-      .atZone(ZoneId.systemDefault())
-      .toLocalDate();
-}
+        return dateToConvert.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+    }
+
     /**
      * @param args the command line arguments
      */

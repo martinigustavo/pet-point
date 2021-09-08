@@ -14,11 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "VETERINARIO")
-public class Veterinario extends Pessoa {
+public class Veterinario extends Funcionario {
     
     private String crmv;
-    private String usuario;
-    private String senha;
     
     // agendas do veterinario
 }

@@ -5,10 +5,14 @@
  */
 package view;
 
-import dao.FuncionarioDao;
+import dao.LoginDao;
+import entities.Funcionario;
+import java.util.Optional;
+import javax.swing.JOptionPane;
 import org.hibernate.SessionFactory;
 import utils.Criptografar;
 import utils.HibernateUtil;
+import utils.VisualsConfig;
 
 /**
  *
@@ -21,6 +25,7 @@ public class LoginView extends javax.swing.JFrame {
      */
     public LoginView() {
         initComponents();
+        VisualsConfig.setPropsToWindow(this, "Login", rootPane);
     }
 
     /**
@@ -69,7 +74,7 @@ public class LoginView extends javax.swing.JFrame {
         panelLogin.add(lblerror, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 440, 160, 20));
 
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/telalogin.png"))); // NOI18N
-        panelLogin.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        panelLogin.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 700));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -86,7 +91,27 @@ public class LoginView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
+        String usuario = tfdusername.getText();
 
+        char[] getSenha = tfdpassword.getPassword();
+        String senhaCriptografada = Criptografar
+                .encriptografar(String.valueOf(getSenha));
+
+        SessionFactory sf = HibernateUtil.getSessionFactory();
+
+        Optional<Funcionario> funcionario = new LoginDao(sf).buscarPorUsuario(usuario);
+        
+        if (funcionario.isPresent()) {
+           if (funcionario.get().getSenha().equals(senhaCriptografada)) {
+               JOptionPane.showMessageDialog(null, "Funcionário logado com sucesso!");
+               this.dispose();
+               new ApplicationView().setVisible(true);
+           } else {
+               JOptionPane.showMessageDialog(null, "Dados informados estão incorretos.");
+           }
+        } else {
+            JOptionPane.showMessageDialog(null, "Este funcionário não está cadastrado.");
+        }
     }//GEN-LAST:event_btnLoginMouseClicked
 
     /**

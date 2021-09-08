@@ -6,13 +6,7 @@
 package dao;
 
 import entities.Funcionario;
-import java.util.Optional;
-import javax.swing.JOptionPane;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
-import utils.HibernateUtil;
 
 public class FuncionarioDao extends AbstractGenericDao<Funcionario> {
 

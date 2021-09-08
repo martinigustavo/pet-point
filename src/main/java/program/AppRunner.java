@@ -1,29 +1,20 @@
 
 package program;
 
-import dao.FuncionarioDao;
-import entities.Cliente;
-import entities.Funcionario;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import org.hibernate.SessionFactory;
-import utils.HibernateUtil;
 import utils.VisualsConfig;
-import view.ApplicationView;
+import view.LoginView;
 
 public class AppRunner {
 
     public static void appRunner() {
 
-        //VisualsConfig.createLookAndFeel();
-        //VisualsConfig.setAppFont();
+        VisualsConfig.createLookAndFeel();
+//        VisualsConfig.setAppFont();
 
         // Set swing frame visible after this comment
-        // código que inicializa a aplicaçao (janela do login/cadastro)
-        // new LoginFrame().setVisible(true);
-        
-        new ApplicationView().setVisible(true);
+        // código que inicializa a aplicaçao (janela do login/cadastro)      
+        new LoginView().setVisible(true);
+                
         /*
         // testes de persistencia
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -54,14 +45,14 @@ public class AppRunner {
         }
         
         // teste excluir registro
-//        int idTeste = 3;
-//        Optional<Funcionario> funcOpt2 = fd.buscar(idTeste);
-//        if (funcOpt2.isPresent()) {
-//            fd.excluir(funcOpt2.get());
-//            System.out.printf("------ FUNCIONÁRIO DE ID %d EXCLUÍDO!!! ------", idTeste);
-//        } else {
-//            System.out.println("Funcionário não encontrado!");
-//        }
+        int idTeste = 3;
+        Optional<Funcionario> funcOpt2 = fd.buscar(idTeste);
+        if (funcOpt2.isPresent()) {
+            fd.excluir(funcOpt2.get());
+            System.out.printf("------ FUNCIONÁRIO DE ID %d EXCLUÍDO!!! ------", idTeste);
+        } else {
+            System.out.println("Funcionário não encontrado!");
+        }
         
 
         // teste buscar todos registros
@@ -74,7 +65,8 @@ public class AppRunner {
             System.out.println("Cidade: " + func.getCidade());
             System.out.println("Email: " + func.getEmail());
             System.out.println("---------------------------------------");
-        });*/
+        });
+        */
 
     }
 }
