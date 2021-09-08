@@ -1,9 +1,10 @@
-# PetPoint <img src='.github/logo.png' width='50' >
+## PetPoint <img src='.github/logo.png' width='35' >
 
 Software para gestão de uma clínica veterinária/pet shop.
 
-<!-- ## Modelo conceitual
-![Modelo Conceitual](modeloER.png) -->
+<!-- 
+## Modelo conceitual
+![Modelo Conceitual](modeloER.png)
 
 ### Tecnologias utilizadas
 - Java 11
@@ -33,4 +34,4 @@ Software para gestão de uma clínica veterinária/pet shop.
 - [RNF002] - Utilizar banco de dados PostgreSQL.
 - [RNF003] - Feedbacks após realizar operações no sistema. 
 - [RNF004] - Criptografia de senhas.
-- [RNF005] - Controles de acesso.
+- [RNF005] - Controles de acesso. -->
