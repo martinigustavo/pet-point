@@ -39,7 +39,7 @@ public abstract class AbstractGenericDao<T> implements GenericDao<T> {
 
             return Optional.of(entity);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Erro ao salvar registro (" + entityName + "): " + e.getMessage());
         } finally {
             session.close();
         }
@@ -53,12 +53,12 @@ public abstract class AbstractGenericDao<T> implements GenericDao<T> {
         Transaction transaction = session.beginTransaction();
 
         try {
-            session.saveOrUpdate(entity);
+            session.update(entity);
             transaction.commit();
 
             return Optional.of(entity);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Erro ao atualizar registro (" + entityName + "): " + e.getMessage());
         } finally {
             session.close();
         }
@@ -75,7 +75,7 @@ public abstract class AbstractGenericDao<T> implements GenericDao<T> {
             session.delete(entity);
             transaction.commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Erro ao excluir registro (" + entityName + "): " + e.getMessage());
         } finally {
             session.close();
         }
@@ -92,7 +92,7 @@ public abstract class AbstractGenericDao<T> implements GenericDao<T> {
 
             return Optional.of(entity);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Erro ao buscar registro por id (" + entityName + "): " + e.getMessage());
         } finally {
             session.close();
         }
