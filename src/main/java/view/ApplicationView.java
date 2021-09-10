@@ -102,6 +102,7 @@ public class ApplicationView extends javax.swing.JFrame {
         btnhome.setBackground(new java.awt.Color(58, 203, 199));
         btnhome.setForeground(new java.awt.Color(58, 203, 199));
         btnhome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home.png"))); // NOI18N
+        btnhome.setToolTipText("Home");
         btnhome.setBorder(null);
         btnhome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -113,6 +114,7 @@ public class ApplicationView extends javax.swing.JFrame {
         btncadastro.setBackground(new java.awt.Color(58, 203, 199));
         btncadastro.setForeground(new java.awt.Color(58, 203, 199));
         btncadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/iconcadastro.png"))); // NOI18N
+        btncadastro.setToolTipText("Cadastros");
         btncadastro.setBorder(null);
         btncadastro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -222,6 +224,11 @@ public class ApplicationView extends javax.swing.JFrame {
 
         ftfTelefone.setBackground(new java.awt.Color(218, 218, 218));
         ftfTelefone.setBorder(null);
+        try {
+            ftfTelefone.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##) #####-####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         pnlcadastrarfunc.add(ftfTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 410, 320, 30));
 
         cadastroform.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastroform.png"))); // NOI18N
