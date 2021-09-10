@@ -2,6 +2,7 @@
 package program;
 
 import utils.VisualsConfig;
+import view.ApplicationView;
 import view.LoginView;
 
 public class AppRunner {

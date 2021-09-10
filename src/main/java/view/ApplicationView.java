@@ -45,10 +45,11 @@ public class ApplicationView extends javax.swing.JFrame {
     private void initComponents() {
 
         background = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        pnlmenulateral = new javax.swing.JPanel();
         btnhome = new javax.swing.JButton();
         btncadastro = new javax.swing.JButton();
-        backgroundmenu = new javax.swing.JLabel();
+        barralateral = new javax.swing.JLabel();
+        pnlhome = new javax.swing.JPanel();
         pnlcadastrarfunc = new javax.swing.JPanel();
         tfddata = new com.toedter.calendar.JDateChooser();
         btncadastrar = new javax.swing.JButton();
@@ -76,7 +77,7 @@ public class ApplicationView extends javax.swing.JFrame {
 
         background.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnlmenulateral.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnhome.setBackground(new java.awt.Color(58, 203, 199));
         btnhome.setForeground(new java.awt.Color(58, 203, 199));
@@ -87,7 +88,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnhomeActionPerformed(evt);
             }
         });
-        jPanel2.add(btnhome, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 180, 140, 50));
+        pnlmenulateral.add(btnhome, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 180, 140, 50));
 
         btncadastro.setBackground(new java.awt.Color(58, 203, 199));
         btncadastro.setForeground(new java.awt.Color(58, 203, 199));
@@ -98,12 +99,25 @@ public class ApplicationView extends javax.swing.JFrame {
                 btncadastroActionPerformed(evt);
             }
         });
-        jPanel2.add(btncadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 250, 140, 50));
+        pnlmenulateral.add(btncadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 250, 140, 50));
 
-        backgroundmenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/background.png"))); // NOI18N
-        jPanel2.add(backgroundmenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        barralateral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/barralateral.png"))); // NOI18N
+        pnlmenulateral.add(barralateral, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        background.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        background.add(pnlmenulateral, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, 700));
+
+        javax.swing.GroupLayout pnlhomeLayout = new javax.swing.GroupLayout(pnlhome);
+        pnlhome.setLayout(pnlhomeLayout);
+        pnlhomeLayout.setHorizontalGroup(
+            pnlhomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1040, Short.MAX_VALUE)
+        );
+        pnlhomeLayout.setVerticalGroup(
+            pnlhomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 700, Short.MAX_VALUE)
+        );
+
+        background.add(pnlhome, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1040, 700));
 
         pnlcadastrarfunc.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -256,7 +270,9 @@ public class ApplicationView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnhomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhomeActionPerformed
-        // TODO add your handling code here:
+        pnlmenulateral.setVisible(true);
+        pnlcadastrarfunc.setVisible(false);
+        pnlcadastros.setVisible(false);
     }//GEN-LAST:event_btnhomeActionPerformed
 
     private void btncadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastrarActionPerformed
@@ -291,9 +307,13 @@ public class ApplicationView extends javax.swing.JFrame {
 
     private void btnadicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnadicionarActionPerformed
         pnlcadastrarfunc.setVisible(true);
+        pnlhome.setVisible(false);
+        pnlcadastros.setVisible(false);
     }//GEN-LAST:event_btnadicionarActionPerformed
 
     private void btncadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastroActionPerformed
+        pnlhome.setVisible(false);
+        pnlcadastrarfunc.setVisible(false);
         pnlcadastros.setVisible(true);
     }//GEN-LAST:event_btncadastroActionPerformed
     
@@ -341,17 +361,18 @@ public class ApplicationView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
     private javax.swing.JLabel backgroundcadastro;
-    private javax.swing.JLabel backgroundmenu;
+    private javax.swing.JLabel barralateral;
     private javax.swing.JButton btnadicionar;
     private javax.swing.JButton btnbuscar;
     private javax.swing.JButton btncadastrar;
     private javax.swing.JButton btncadastro;
     private javax.swing.JButton btnhome;
     private javax.swing.JLabel cadastroform;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnlcadastrarfunc;
     private javax.swing.JPanel pnlcadastros;
+    private javax.swing.JPanel pnlhome;
+    private javax.swing.JPanel pnlmenulateral;
     private javax.swing.JTable tabelalist;
     private javax.swing.JTextField tfdatividade;
     private javax.swing.JTextField tfdbusca;
