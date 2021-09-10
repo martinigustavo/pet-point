@@ -28,6 +28,10 @@ public class ApplicationView extends javax.swing.JFrame {
      */
     public ApplicationView() {
         initComponents();
+        
+        pnlcadastrarfunc.setVisible(true);
+        pnlcadastros.setVisible(false);
+ 
         VisualsConfig.setPropsToWindow(this, "Cadastro de Funcionário", tfdatividade);
     }
 
@@ -41,130 +45,201 @@ public class ApplicationView extends javax.swing.JFrame {
     private void initComponents() {
 
         background = new javax.swing.JPanel();
-        cadastros = new javax.swing.JPanel();
-        tfdusuario = new javax.swing.JTextField();
-        tfdnome = new javax.swing.JTextField();
-        tfdsenha = new javax.swing.JPasswordField();
-        tfdcpf = new javax.swing.JTextField();
-        tfdstatus = new javax.swing.JTextField();
-        tfdemail = new javax.swing.JTextField();
-        tfdestado = new javax.swing.JTextField();
-        tfdcidade = new javax.swing.JTextField();
-        tfdtelefone = new javax.swing.JTextField();
-        tfdatividade = new javax.swing.JTextField();
-        tfddata = new com.toedter.calendar.JDateChooser();
-        tfdsexo = new javax.swing.JTextField();
-        btncadastrar = new javax.swing.JButton();
-        backgroundcadastro = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
+        btnhome = new javax.swing.JButton();
+        btncadastro = new javax.swing.JButton();
+        backgroundmenu = new javax.swing.JLabel();
+        pnlcadastrarfunc = new javax.swing.JPanel();
+        tfddata = new com.toedter.calendar.JDateChooser();
+        btncadastrar = new javax.swing.JButton();
+        tfdsenha = new javax.swing.JPasswordField();
+        tfdstatus = new javax.swing.JTextField();
+        tfdsexo = new javax.swing.JTextField();
+        tfdcpf = new javax.swing.JTextField();
+        tfdtelefone = new javax.swing.JTextField();
+        tfdemail = new javax.swing.JTextField();
+        tfdcidade = new javax.swing.JTextField();
+        tfdestado = new javax.swing.JTextField();
+        tfdatividade = new javax.swing.JTextField();
+        tfdnome = new javax.swing.JTextField();
+        tfdusuario = new javax.swing.JTextField();
+        cadastroform = new javax.swing.JLabel();
+        pnlcadastros = new javax.swing.JPanel();
+        tfdbusca = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabelalist = new javax.swing.JTable();
+        btnbuscar = new javax.swing.JButton();
+        btnadicionar = new javax.swing.JButton();
+        backgroundcadastro = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         background.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        cadastros.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tfdusuario.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdusuario.setBorder(null);
-        cadastros.add(tfdusuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 280, 270, 30));
+        btnhome.setBackground(new java.awt.Color(58, 203, 199));
+        btnhome.setForeground(new java.awt.Color(58, 203, 199));
+        btnhome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home.png"))); // NOI18N
+        btnhome.setBorder(null);
+        btnhome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnhomeActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnhome, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 180, 140, 50));
 
-        tfdnome.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdnome.setBorder(null);
-        cadastros.add(tfdnome, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 140, 270, 30));
+        btncadastro.setBackground(new java.awt.Color(58, 203, 199));
+        btncadastro.setForeground(new java.awt.Color(58, 203, 199));
+        btncadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/iconcadastro.png"))); // NOI18N
+        btncadastro.setBorder(null);
+        btncadastro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncadastroActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btncadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 250, 140, 50));
 
-        tfdsenha.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        tfdsenha.setToolTipText("");
-        tfdsenha.setBorder(null);
-        cadastros.add(tfdsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 360, 260, 30));
+        backgroundmenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/background.png"))); // NOI18N
+        jPanel2.add(backgroundmenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        tfdcpf.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdcpf.setBorder(null);
-        cadastros.add(tfdcpf, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 280, 280, 30));
+        background.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        tfdstatus.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdstatus.setBorder(null);
-        cadastros.add(tfdstatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 210, 280, 30));
+        pnlcadastrarfunc.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tfdemail.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdemail.setBorder(null);
-        cadastros.add(tfdemail, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 130, 280, 30));
+        tfddata.setBackground(new java.awt.Color(218, 218, 218));
+        tfddata.setToolTipText("");
+        pnlcadastrarfunc.add(tfddata, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 490, 340, 30));
 
-        tfdestado.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdestado.setBorder(null);
-        cadastros.add(tfdestado, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 520, 280, 30));
-
-        tfdcidade.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdcidade.setBorder(null);
-        cadastros.add(tfdcidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 530, 280, 30));
-
-        tfdtelefone.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdtelefone.setBorder(null);
-        cadastros.add(tfdtelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 360, 280, 30));
-
-        tfdatividade.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdatividade.setBorder(null);
-        cadastros.add(tfdatividade, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 450, 280, 30));
-        cadastros.add(tfddata, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 450, 280, 40));
-
-        tfdsexo.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdsexo.setToolTipText("");
-        cadastros.add(tfdsexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 200, 290, 40));
-
-        btncadastrar.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        btncadastrar.setBackground(new java.awt.Color(58, 203, 199));
+        btncadastrar.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        btncadastrar.setForeground(new java.awt.Color(255, 255, 255));
         btncadastrar.setText("Cadastrar");
-        btncadastrar.setToolTipText("");
+        btncadastrar.setBorder(null);
         btncadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btncadastrarActionPerformed(evt);
             }
         });
-        cadastros.add(btncadastrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 610, 230, 50));
+        pnlcadastrarfunc.add(btncadastrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 630, 140, 40));
 
-        backgroundcadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastroview.png"))); // NOI18N
-        cadastros.add(backgroundcadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        tfdsenha.setBackground(new java.awt.Color(218, 218, 218));
+        tfdsenha.setToolTipText("");
+        tfdsenha.setBorder(null);
+        pnlcadastrarfunc.add(tfdsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 320, 320, 30));
 
-        background.add(cadastros, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 700));
+        tfdstatus.setBackground(new java.awt.Color(218, 218, 218));
+        tfdstatus.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        tfdstatus.setToolTipText("");
+        tfdstatus.setBorder(null);
+        pnlcadastrarfunc.add(tfdstatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 160, 320, 30));
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1200, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
-        );
+        tfdsexo.setBackground(new java.awt.Color(218, 218, 218));
+        tfdsexo.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        tfdsexo.setToolTipText("");
+        tfdsexo.setBorder(null);
+        pnlcadastrarfunc.add(tfdsexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 230, 320, 30));
 
-        background.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        tfdcpf.setBackground(new java.awt.Color(218, 218, 218));
+        tfdcpf.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        tfdcpf.setToolTipText("");
+        tfdcpf.setBorder(null);
+        pnlcadastrarfunc.add(tfdcpf, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 320, 320, 30));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1200, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
-        );
+        tfdtelefone.setBackground(new java.awt.Color(218, 218, 218));
+        tfdtelefone.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        tfdtelefone.setToolTipText("");
+        tfdtelefone.setBorder(null);
+        pnlcadastrarfunc.add(tfdtelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 410, 320, 30));
 
-        background.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        tfdemail.setBackground(new java.awt.Color(218, 218, 218));
+        tfdemail.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        tfdemail.setToolTipText("");
+        tfdemail.setBorder(null);
+        pnlcadastrarfunc.add(tfdemail, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 570, 320, 30));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1200, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
-        );
+        tfdcidade.setBackground(new java.awt.Color(218, 218, 218));
+        tfdcidade.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        tfdcidade.setToolTipText("");
+        tfdcidade.setBorder(null);
+        pnlcadastrarfunc.add(tfdcidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 570, 320, 30));
 
-        background.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        tfdestado.setBackground(new java.awt.Color(218, 218, 218));
+        tfdestado.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        tfdestado.setToolTipText("");
+        tfdestado.setBorder(null);
+        pnlcadastrarfunc.add(tfdestado, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 490, 320, 30));
+
+        tfdatividade.setBackground(new java.awt.Color(218, 218, 218));
+        tfdatividade.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        tfdatividade.setToolTipText("");
+        tfdatividade.setBorder(null);
+        pnlcadastrarfunc.add(tfdatividade, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 410, 320, 30));
+
+        tfdnome.setBackground(new java.awt.Color(218, 218, 218));
+        tfdnome.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        tfdnome.setToolTipText("");
+        tfdnome.setBorder(null);
+        pnlcadastrarfunc.add(tfdnome, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 160, 320, 30));
+
+        tfdusuario.setBackground(new java.awt.Color(218, 218, 218));
+        tfdusuario.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        tfdusuario.setToolTipText("");
+        tfdusuario.setBorder(null);
+        pnlcadastrarfunc.add(tfdusuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 243, 320, 30));
+
+        cadastroform.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastroform.png"))); // NOI18N
+        pnlcadastrarfunc.add(cadastroform, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        background.add(pnlcadastrarfunc, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1040, 700));
+
+        pnlcadastros.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        tfdbusca.setBackground(new java.awt.Color(218, 218, 218));
+        tfdbusca.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        tfdbusca.setText("Buscar");
+        tfdbusca.setToolTipText("");
+        tfdbusca.setBorder(null);
+        pnlcadastros.add(tfdbusca, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 34, 670, 30));
+
+        tabelalist.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tabelalist);
+
+        pnlcadastros.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 120, 930, 480));
+
+        btnbuscar.setBackground(new java.awt.Color(58, 203, 199));
+        btnbuscar.setFont(new java.awt.Font("Poppins", 0, 13)); // NOI18N
+        btnbuscar.setForeground(new java.awt.Color(255, 255, 255));
+        btnbuscar.setText("Buscar");
+        btnbuscar.setToolTipText("");
+        btnbuscar.setBorder(null);
+        pnlcadastros.add(btnbuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 33, 100, 30));
+
+        btnadicionar.setBackground(new java.awt.Color(230, 230, 230));
+        btnadicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
+        btnadicionar.setToolTipText("");
+        btnadicionar.setBorder(null);
+        btnadicionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnadicionarActionPerformed(evt);
+            }
+        });
+        pnlcadastros.add(btnadicionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 630, 50, 40));
+
+        backgroundcadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastrolist.png"))); // NOI18N
+        pnlcadastros.add(backgroundcadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        background.add(pnlcadastros, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1040, 700));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -180,8 +255,12 @@ public class ApplicationView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnhomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhomeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnhomeActionPerformed
+
     private void btncadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastrarActionPerformed
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         
         Funcionario funcionario = new Funcionario();
         funcionario.setNome(tfdnome.getText());
@@ -209,6 +288,14 @@ public class ApplicationView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Erro ao cadastrar funcionário!");
         }
     }//GEN-LAST:event_btncadastrarActionPerformed
+
+    private void btnadicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnadicionarActionPerformed
+        pnlcadastrarfunc.setVisible(true);
+    }//GEN-LAST:event_btnadicionarActionPerformed
+
+    private void btncadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastroActionPerformed
+        pnlcadastros.setVisible(true);
+    }//GEN-LAST:event_btncadastroActionPerformed
     
     public LocalDate convertToLocalDate(Date dateToConvert) {
         return dateToConvert.toInstant()
@@ -254,12 +341,20 @@ public class ApplicationView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
     private javax.swing.JLabel backgroundcadastro;
+    private javax.swing.JLabel backgroundmenu;
+    private javax.swing.JButton btnadicionar;
+    private javax.swing.JButton btnbuscar;
     private javax.swing.JButton btncadastrar;
-    private javax.swing.JPanel cadastros;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton btncadastro;
+    private javax.swing.JButton btnhome;
+    private javax.swing.JLabel cadastroform;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel pnlcadastrarfunc;
+    private javax.swing.JPanel pnlcadastros;
+    private javax.swing.JTable tabelalist;
     private javax.swing.JTextField tfdatividade;
+    private javax.swing.JTextField tfdbusca;
     private javax.swing.JTextField tfdcidade;
     private javax.swing.JTextField tfdcpf;
     private com.toedter.calendar.JDateChooser tfddata;

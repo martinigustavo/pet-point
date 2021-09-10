@@ -43,7 +43,7 @@ public class AppRunner {
         } else {
             System.out.println("Funcionário não foi salvo");
         }
-        
+        /*
         // teste excluir registro
         int idTeste = 3;
         Optional<Funcionario> funcOpt2 = fd.buscar(idTeste);
