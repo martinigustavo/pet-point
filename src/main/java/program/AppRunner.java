@@ -15,6 +15,7 @@ public class AppRunner {
         // Set swing frame visible after this comment
         // código que inicializa a aplicaçao (janela do login/cadastro)      
         new LoginView().setVisible(true);
+//        new ApplicationView().setVisible(true);
                 
         /*
         // testes de persistencia

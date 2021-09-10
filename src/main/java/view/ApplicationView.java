@@ -10,8 +10,13 @@ import entities.Funcionario;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import org.hibernate.SessionFactory;
 import utils.Criptografar;
 import utils.HibernateUtil;
@@ -23,16 +28,30 @@ import utils.VisualsConfig;
  */
 public class ApplicationView extends javax.swing.JFrame {
 
+    private final Funcionario funcLogado;
+    private final SessionFactory sessionFactory;
+    private FuncionarioDao fd;
+    private String busca;
+    private int id;
+
     /**
      * Creates new form ApplicationView
      */
-    public ApplicationView() {
+    public ApplicationView(Funcionario funcLogado) {
         initComponents();
-        
-        pnlcadastrarfunc.setVisible(true);
+
+        pnlcadastrarfunc.setVisible(false);
         pnlcadastros.setVisible(false);
- 
-        VisualsConfig.setPropsToWindow(this, "Cadastro de Funcionário", tfdatividade);
+
+        VisualsConfig.setPropsToWindow(this, "Cadastro de Funcionário", txfAtividade);
+
+        this.funcLogado = funcLogado;
+        this.sessionFactory = HibernateUtil.getSessionFactory();
+        this.fd = new FuncionarioDao(sessionFactory);
+        this.busca = "";
+        this.id = 0;
+        
+        lblLogado.setText(funcLogado.getNome());
     }
 
     /**
@@ -48,27 +67,28 @@ public class ApplicationView extends javax.swing.JFrame {
         pnlmenulateral = new javax.swing.JPanel();
         btnhome = new javax.swing.JButton();
         btncadastro = new javax.swing.JButton();
+        lblLogado = new javax.swing.JLabel();
         barralateral = new javax.swing.JLabel();
         pnlhome = new javax.swing.JPanel();
         pnlcadastrarfunc = new javax.swing.JPanel();
-        tfddata = new com.toedter.calendar.JDateChooser();
-        btncadastrar = new javax.swing.JButton();
-        tfdsenha = new javax.swing.JPasswordField();
-        tfdstatus = new javax.swing.JTextField();
-        tfdsexo = new javax.swing.JTextField();
-        tfdcpf = new javax.swing.JTextField();
-        tfdtelefone = new javax.swing.JTextField();
-        tfdemail = new javax.swing.JTextField();
-        tfdcidade = new javax.swing.JTextField();
-        tfdestado = new javax.swing.JTextField();
-        tfdatividade = new javax.swing.JTextField();
-        tfdnome = new javax.swing.JTextField();
-        tfdusuario = new javax.swing.JTextField();
+        ftfData = new com.toedter.calendar.JDateChooser();
+        btnSalvar = new javax.swing.JButton();
+        pwfSenha = new javax.swing.JPasswordField();
+        txfEmail = new javax.swing.JTextField();
+        txfCidade = new javax.swing.JTextField();
+        txfEstado = new javax.swing.JTextField();
+        txfAtividade = new javax.swing.JTextField();
+        txfNome = new javax.swing.JTextField();
+        txfUsuario = new javax.swing.JTextField();
+        cbxSexo = new javax.swing.JComboBox<>();
+        cbxStatus = new javax.swing.JComboBox<>();
+        ftfCpf = new javax.swing.JFormattedTextField();
+        ftfTelefone = new javax.swing.JFormattedTextField();
         cadastroform = new javax.swing.JLabel();
         pnlcadastros = new javax.swing.JPanel();
         tfdbusca = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelalist = new javax.swing.JTable();
+        tblFuncionario = new javax.swing.JTable();
         btnbuscar = new javax.swing.JButton();
         btnadicionar = new javax.swing.JButton();
         backgroundcadastro = new javax.swing.JLabel();
@@ -101,6 +121,11 @@ public class ApplicationView extends javax.swing.JFrame {
         });
         pnlmenulateral.add(btncadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 250, 140, 50));
 
+        lblLogado.setForeground(new java.awt.Color(0, 0, 0));
+        lblLogado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblLogado.setText("logado");
+        pnlmenulateral.add(lblLogado, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 650, 130, 30));
+
         barralateral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/barralateral.png"))); // NOI18N
         pnlmenulateral.add(barralateral, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -121,86 +146,83 @@ public class ApplicationView extends javax.swing.JFrame {
 
         pnlcadastrarfunc.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tfddata.setBackground(new java.awt.Color(218, 218, 218));
-        tfddata.setToolTipText("");
-        pnlcadastrarfunc.add(tfddata, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 490, 340, 30));
+        ftfData.setBackground(new java.awt.Color(218, 218, 218));
+        ftfData.setToolTipText("");
+        pnlcadastrarfunc.add(ftfData, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 490, 340, 30));
 
-        btncadastrar.setBackground(new java.awt.Color(58, 203, 199));
-        btncadastrar.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
-        btncadastrar.setForeground(new java.awt.Color(255, 255, 255));
-        btncadastrar.setText("Cadastrar");
-        btncadastrar.setBorder(null);
-        btncadastrar.addActionListener(new java.awt.event.ActionListener() {
+        btnSalvar.setBackground(new java.awt.Color(58, 203, 199));
+        btnSalvar.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        btnSalvar.setForeground(new java.awt.Color(255, 255, 255));
+        btnSalvar.setText("Salvar");
+        btnSalvar.setBorder(null);
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btncadastrarActionPerformed(evt);
+                btnSalvarActionPerformed(evt);
             }
         });
-        pnlcadastrarfunc.add(btncadastrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 630, 140, 40));
+        pnlcadastrarfunc.add(btnSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 630, 140, 40));
 
-        tfdsenha.setBackground(new java.awt.Color(218, 218, 218));
-        tfdsenha.setToolTipText("");
-        tfdsenha.setBorder(null);
-        pnlcadastrarfunc.add(tfdsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 320, 320, 30));
+        pwfSenha.setBackground(new java.awt.Color(218, 218, 218));
+        pwfSenha.setToolTipText("");
+        pwfSenha.setBorder(null);
+        pnlcadastrarfunc.add(pwfSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 320, 320, 30));
 
-        tfdstatus.setBackground(new java.awt.Color(218, 218, 218));
-        tfdstatus.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdstatus.setToolTipText("");
-        tfdstatus.setBorder(null);
-        pnlcadastrarfunc.add(tfdstatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 160, 320, 30));
+        txfEmail.setBackground(new java.awt.Color(218, 218, 218));
+        txfEmail.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        txfEmail.setToolTipText("");
+        txfEmail.setBorder(null);
+        pnlcadastrarfunc.add(txfEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 570, 320, 30));
 
-        tfdsexo.setBackground(new java.awt.Color(218, 218, 218));
-        tfdsexo.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdsexo.setToolTipText("");
-        tfdsexo.setBorder(null);
-        pnlcadastrarfunc.add(tfdsexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 230, 320, 30));
+        txfCidade.setBackground(new java.awt.Color(218, 218, 218));
+        txfCidade.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        txfCidade.setToolTipText("");
+        txfCidade.setBorder(null);
+        pnlcadastrarfunc.add(txfCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 570, 320, 30));
 
-        tfdcpf.setBackground(new java.awt.Color(218, 218, 218));
-        tfdcpf.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdcpf.setToolTipText("");
-        tfdcpf.setBorder(null);
-        pnlcadastrarfunc.add(tfdcpf, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 320, 320, 30));
+        txfEstado.setBackground(new java.awt.Color(218, 218, 218));
+        txfEstado.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        txfEstado.setToolTipText("");
+        txfEstado.setBorder(null);
+        pnlcadastrarfunc.add(txfEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 490, 320, 30));
 
-        tfdtelefone.setBackground(new java.awt.Color(218, 218, 218));
-        tfdtelefone.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdtelefone.setToolTipText("");
-        tfdtelefone.setBorder(null);
-        pnlcadastrarfunc.add(tfdtelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 410, 320, 30));
+        txfAtividade.setBackground(new java.awt.Color(218, 218, 218));
+        txfAtividade.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        txfAtividade.setToolTipText("");
+        txfAtividade.setBorder(null);
+        pnlcadastrarfunc.add(txfAtividade, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 410, 320, 30));
 
-        tfdemail.setBackground(new java.awt.Color(218, 218, 218));
-        tfdemail.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdemail.setToolTipText("");
-        tfdemail.setBorder(null);
-        pnlcadastrarfunc.add(tfdemail, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 570, 320, 30));
+        txfNome.setBackground(new java.awt.Color(218, 218, 218));
+        txfNome.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        txfNome.setToolTipText("");
+        txfNome.setBorder(null);
+        pnlcadastrarfunc.add(txfNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 160, 320, 30));
 
-        tfdcidade.setBackground(new java.awt.Color(218, 218, 218));
-        tfdcidade.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdcidade.setToolTipText("");
-        tfdcidade.setBorder(null);
-        pnlcadastrarfunc.add(tfdcidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 570, 320, 30));
+        txfUsuario.setBackground(new java.awt.Color(218, 218, 218));
+        txfUsuario.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        txfUsuario.setToolTipText("");
+        txfUsuario.setBorder(null);
+        pnlcadastrarfunc.add(txfUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 243, 320, 30));
 
-        tfdestado.setBackground(new java.awt.Color(218, 218, 218));
-        tfdestado.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdestado.setToolTipText("");
-        tfdestado.setBorder(null);
-        pnlcadastrarfunc.add(tfdestado, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 490, 320, 30));
+        cbxSexo.setBackground(new java.awt.Color(218, 218, 218));
+        cbxSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Feminino", "Masculino" }));
+        pnlcadastrarfunc.add(cbxSexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 236, 330, 40));
 
-        tfdatividade.setBackground(new java.awt.Color(218, 218, 218));
-        tfdatividade.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdatividade.setToolTipText("");
-        tfdatividade.setBorder(null);
-        pnlcadastrarfunc.add(tfdatividade, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 410, 320, 30));
+        cbxStatus.setBackground(new java.awt.Color(218, 218, 218));
+        cbxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Ativo", "Inativo" }));
+        pnlcadastrarfunc.add(cbxStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 160, 340, 40));
 
-        tfdnome.setBackground(new java.awt.Color(218, 218, 218));
-        tfdnome.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdnome.setToolTipText("");
-        tfdnome.setBorder(null);
-        pnlcadastrarfunc.add(tfdnome, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 160, 320, 30));
+        ftfCpf.setBackground(new java.awt.Color(218, 218, 218));
+        ftfCpf.setBorder(null);
+        try {
+            ftfCpf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        pnlcadastrarfunc.add(ftfCpf, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 320, 320, 30));
 
-        tfdusuario.setBackground(new java.awt.Color(218, 218, 218));
-        tfdusuario.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdusuario.setToolTipText("");
-        tfdusuario.setBorder(null);
-        pnlcadastrarfunc.add(tfdusuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 243, 320, 30));
+        ftfTelefone.setBackground(new java.awt.Color(218, 218, 218));
+        ftfTelefone.setBorder(null);
+        pnlcadastrarfunc.add(ftfTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 410, 320, 30));
 
         cadastroform.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastroform.png"))); // NOI18N
         pnlcadastrarfunc.add(cadastroform, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -211,23 +233,50 @@ public class ApplicationView extends javax.swing.JFrame {
 
         tfdbusca.setBackground(new java.awt.Color(218, 218, 218));
         tfdbusca.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdbusca.setText("Buscar");
         tfdbusca.setToolTipText("");
         tfdbusca.setBorder(null);
+        tfdbusca.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tfdbuscaKeyReleased(evt);
+            }
+        });
         pnlcadastros.add(tfdbusca, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 34, 670, 30));
 
-        tabelalist.setModel(new javax.swing.table.DefaultTableModel(
+        tblFuncionario.setBackground(new java.awt.Color(218, 218, 218));
+        tblFuncionario.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "id", "Nome"
             }
-        ));
-        jScrollPane1.setViewportView(tabelalist);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblFuncionario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblFuncionarioMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblFuncionario);
+        if (tblFuncionario.getColumnModel().getColumnCount() > 0) {
+            tblFuncionario.getColumnModel().getColumn(0).setMinWidth(70);
+            tblFuncionario.getColumnModel().getColumn(0).setPreferredWidth(70);
+            tblFuncionario.getColumnModel().getColumn(0).setMaxWidth(70);
+        }
 
         pnlcadastros.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 120, 930, 480));
 
@@ -237,6 +286,11 @@ public class ApplicationView extends javax.swing.JFrame {
         btnbuscar.setText("Buscar");
         btnbuscar.setToolTipText("");
         btnbuscar.setBorder(null);
+        btnbuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnbuscarActionPerformed(evt);
+            }
+        });
         pnlcadastros.add(btnbuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 33, 100, 30));
 
         btnadicionar.setBackground(new java.awt.Color(230, 230, 230));
@@ -269,46 +323,110 @@ public class ApplicationView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void limparCadastro() {
+//        txfBusca.setText("");
+        txfNome.setText("");
+        txfEmail.setText("");
+        txfAtividade.setText("");
+        txfCidade.setText("");
+        txfEstado.setText("");
+//        txfRua.setText("");
+//        txfBairro.setText("");
+        txfUsuario.setText("");
+        pwfSenha.setText("");
+
+//        ftfNumero.setText("");
+        ftfData.setDate(null);
+        ftfCpf.setText("");
+        ftfTelefone.setText("");
+
+        cbxSexo.setSelectedIndex(0);
+        cbxStatus.setSelectedIndex(0);
+
+        busca = "";
+        id = 0;
+    }
+
     private void btnhomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhomeActionPerformed
         pnlmenulateral.setVisible(true);
         pnlcadastrarfunc.setVisible(false);
         pnlcadastros.setVisible(false);
     }//GEN-LAST:event_btnhomeActionPerformed
 
-    private void btncadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastrarActionPerformed
-         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        
-        Funcionario funcionario = new Funcionario();
-        funcionario.setNome(tfdnome.getText());
-        funcionario.setSexo(tfdsexo.getText());
-        funcionario.setCpf(tfdcpf.getText());
-        funcionario.setTelefone(tfdtelefone.getText());
-        funcionario.setEmail(tfdemail.getText());
-        funcionario.setEndereco(tfdestado.getText());
-        funcionario.setCidade(tfdcidade.getText());
-        funcionario.setEstado(tfdestado.getText());
-        funcionario.setData_nascimento(convertToLocalDate(tfddata.getDate()));
-        funcionario.setData_cadastro(LocalDate.now());
-        funcionario.setStatus(tfdstatus.getText());
-        funcionario.setUsuario(tfdusuario.getText());
-        char[] getSenha = tfdsenha.getPassword();
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        String nome = txfNome.getText().trim();
+        String email = txfEmail.getText().trim();
+        String atividade = txfAtividade.getText().trim();
+        String cidade = txfCidade.getText().trim();
+        String estado = txfEstado.getText().trim();
+//        String rua = txfRua.getText().trim();
+//        String numero = ftfNumero.getText().trim();
+//        String bairro = txfBairro.getText().trim();
+//        String endereco = rua.isBlank()
+//                ? ""
+//                : rua + ", " + numero + ", " + bairro;
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+        LocalDate dataNasc = convertToLocalDate(ftfData.getDate());
+        String sexo = cbxSexo.getSelectedItem().toString();
+        String status = cbxStatus.getSelectedItem().toString();
+        String telefone = ftfTelefone.getText();
+        String cpf = ftfCpf.getText();
+        String usuario = txfUsuario.getText().trim();
+        char[] getSenha = pwfSenha.getPassword();
         String senha = String.valueOf(getSenha);
-        funcionario.setSenha(Criptografar.encriptografar(senha));
-        funcionario.setAtividade(tfdatividade.getText());
-        
-        FuncionarioDao fd = new FuncionarioDao(sessionFactory);
-        Optional<Funcionario> funcOpt = fd.salvar(funcionario);
-        if (funcOpt.isPresent()) {
-            JOptionPane.showMessageDialog(null, "Funcionário salvo com sucesso!");
-        } else {
-            JOptionPane.showMessageDialog(null, "Erro ao cadastrar funcionário!");
+
+        if (nome.isBlank() || email.isBlank() || atividade.isBlank()
+                || cidade.isBlank() || estado.isBlank()
+                || sexo.equals("Selecione") || status.equals("Selecione")
+                || telefone.equals("(  )      -    ") || cpf.equals("   .   .   -  ")
+                || usuario.isBlank() || senha.isBlank()) {
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
+            return;
         }
-    }//GEN-LAST:event_btncadastrarActionPerformed
+
+        Funcionario func = new Funcionario();
+        func.setNome(nome);
+        func.setEmail(email);
+        func.setAtividade(atividade);
+        func.setCidade(cidade);
+        func.setEstado(estado);
+//        func.setEndereco(endereco);
+        func.setData_cadastro(LocalDate.now());
+        func.setData_nascimento(dataNasc);
+        func.setSexo(sexo);
+        func.setStatus(status);
+        func.setTelefone(telefone);
+        func.setCpf(cpf);
+        func.setUsuario(usuario);
+        func.setSenha(Criptografar.encriptografar(senha));
+
+        Optional<Funcionario> funcionario0 = Optional.empty();
+
+        if (id == 0) {
+            funcionario0 = fd.salvar(func);
+        } else {
+            func.setId(id);
+            funcionario0 = fd.atualizar(func);
+        }
+
+        if (funcionario0.isPresent()) {
+            if (id == 0) {
+                JOptionPane.showMessageDialog(null, "Funcionário cadastrado com sucesso!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Funcionário atualizado com sucesso!");
+            }
+            this.limparCadastro();
+        } else {
+            JOptionPane.showMessageDialog(null, "Problema ao cadastrar funcionário.");
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnadicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnadicionarActionPerformed
         pnlcadastrarfunc.setVisible(true);
         pnlhome.setVisible(false);
         pnlcadastros.setVisible(false);
+        
+        this.limparCadastro();
     }//GEN-LAST:event_btnadicionarActionPerformed
 
     private void btncadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastroActionPerformed
@@ -316,11 +434,132 @@ public class ApplicationView extends javax.swing.JFrame {
         pnlcadastrarfunc.setVisible(false);
         pnlcadastros.setVisible(true);
     }//GEN-LAST:event_btncadastroActionPerformed
-    
+
+    private void tblFuncionarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblFuncionarioMouseClicked
+        try {
+            String idString = String.valueOf(tblFuncionario.getValueAt(tblFuncionario.getSelectedRow(), 0));
+            id = Integer.parseInt(idString);
+
+            Optional<Funcionario> func = new FuncionarioDao(sessionFactory).buscar(id);
+
+            if (func.isPresent()) {
+                txfNome.setText(func.get().getNome());
+                txfUsuario.setText(func.get().getUsuario());
+                ftfCpf.setText(func.get().getCpf());
+                ftfTelefone.setText(func.get().getTelefone());
+                txfAtividade.setText(func.get().getAtividade());
+                ftfData.setDate(convertToDateViaInstant(func.get().getData_nascimento()));
+                txfEstado.setText(func.get().getEstado());
+                txfCidade.setText(func.get().getCidade());
+                txfEmail.setText(func.get().getEmail());
+
+                if (func.get().getSexo().equals("Feminino")) {
+                    cbxSexo.setSelectedIndex(1);
+                } else {
+                    cbxSexo.setSelectedIndex(2);
+                }
+                
+                if (func.get().getStatus().equals("Ativo")) {
+                    cbxStatus.setSelectedIndex(1);
+                } else {
+                    cbxStatus.setSelectedIndex(2);
+                }
+
+                pnlcadastrarfunc.setVisible(true);
+                pnlhome.setVisible(false);
+                pnlcadastros.setVisible(false);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Nenhum funcionário selecionado.");
+        }
+    }//GEN-LAST:event_tblFuncionarioMouseClicked
+
+    private void tfdbuscaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdbuscaKeyReleased
+        busca = tfdbusca.getText();
+        List<Funcionario> funcionarios = new FuncionarioDao(sessionFactory).buscarPorNome(busca);
+
+        Object[] cabecalho = {"id", "Nome"};
+        Object[][] dadosTabela = new Object[funcionarios.size()][2];
+        if (funcionarios.size() > 0) {
+            for (int i = 0; i < funcionarios.size(); i++) {
+                dadosTabela[i][0] = funcionarios.get(i).getId();
+                dadosTabela[i][1] = funcionarios.get(i).getNome();
+            }
+        }
+
+        tblFuncionario.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+
+        });
+
+        tblFuncionario.setSelectionMode(0);
+
+        // redimensiona as colunas de uma tabela
+        TableColumn column = null;
+        for (int i = 0; i < tblFuncionario.getColumnCount(); i++) {
+            column = tblFuncionario.getColumnModel().getColumn(i);
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+            column.setCellRenderer(centerRenderer);
+        }
+
+        column = tblFuncionario.getColumnModel().getColumn(0);
+        column.setPreferredWidth(70);
+        column.setMaxWidth(70);
+        column.setMinWidth(70);
+    }//GEN-LAST:event_tfdbuscaKeyReleased
+
+    private void btnbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscarActionPerformed
+        busca = tfdbusca.getText();
+        List<Funcionario> funcionarios = new FuncionarioDao(sessionFactory).buscarPorNome(busca);
+
+        Object[] cabecalho = {"id", "Nome"};
+        Object[][] dadosTabela = new Object[funcionarios.size()][2];
+        if (funcionarios.size() > 0) {
+            for (int i = 0; i < funcionarios.size(); i++) {
+                dadosTabela[i][0] = funcionarios.get(i).getId();
+                dadosTabela[i][1] = funcionarios.get(i).getNome();
+            }
+        }
+
+        tblFuncionario.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+
+        });
+
+        tblFuncionario.setSelectionMode(0);
+
+        // redimensiona as colunas de uma tabela
+        TableColumn column = null;
+        for (int i = 0; i < tblFuncionario.getColumnCount(); i++) {
+            column = tblFuncionario.getColumnModel().getColumn(i);
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+            column.setCellRenderer(centerRenderer);
+        }
+
+        column = tblFuncionario.getColumnModel().getColumn(0);
+        column.setPreferredWidth(70);
+        column.setMaxWidth(70);
+        column.setMinWidth(70);
+    }//GEN-LAST:event_btnbuscarActionPerformed
+
     public LocalDate convertToLocalDate(Date dateToConvert) {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
+    }
+
+    public Date convertToDateViaInstant(LocalDate dateToConvert) {
+        return java.util.Date.from(dateToConvert.atStartOfDay()
+                .atZone(ZoneId.systemDefault())
+                .toInstant());
     }
 
     /**
@@ -353,7 +592,7 @@ public class ApplicationView extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ApplicationView().setVisible(true);
+                new ApplicationView(null).setVisible(true);
             }
         });
     }
@@ -362,30 +601,31 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JPanel background;
     private javax.swing.JLabel backgroundcadastro;
     private javax.swing.JLabel barralateral;
+    private javax.swing.JButton btnSalvar;
     private javax.swing.JButton btnadicionar;
     private javax.swing.JButton btnbuscar;
-    private javax.swing.JButton btncadastrar;
     private javax.swing.JButton btncadastro;
     private javax.swing.JButton btnhome;
     private javax.swing.JLabel cadastroform;
+    private javax.swing.JComboBox<String> cbxSexo;
+    private javax.swing.JComboBox<String> cbxStatus;
+    private javax.swing.JFormattedTextField ftfCpf;
+    private com.toedter.calendar.JDateChooser ftfData;
+    private javax.swing.JFormattedTextField ftfTelefone;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblLogado;
     private javax.swing.JPanel pnlcadastrarfunc;
     private javax.swing.JPanel pnlcadastros;
     private javax.swing.JPanel pnlhome;
     private javax.swing.JPanel pnlmenulateral;
-    private javax.swing.JTable tabelalist;
-    private javax.swing.JTextField tfdatividade;
+    private javax.swing.JPasswordField pwfSenha;
+    private javax.swing.JTable tblFuncionario;
     private javax.swing.JTextField tfdbusca;
-    private javax.swing.JTextField tfdcidade;
-    private javax.swing.JTextField tfdcpf;
-    private com.toedter.calendar.JDateChooser tfddata;
-    private javax.swing.JTextField tfdemail;
-    private javax.swing.JTextField tfdestado;
-    private javax.swing.JTextField tfdnome;
-    private javax.swing.JPasswordField tfdsenha;
-    private javax.swing.JTextField tfdsexo;
-    private javax.swing.JTextField tfdstatus;
-    private javax.swing.JTextField tfdtelefone;
-    private javax.swing.JTextField tfdusuario;
+    private javax.swing.JTextField txfAtividade;
+    private javax.swing.JTextField txfCidade;
+    private javax.swing.JTextField txfEmail;
+    private javax.swing.JTextField txfEstado;
+    private javax.swing.JTextField txfNome;
+    private javax.swing.JTextField txfUsuario;
     // End of variables declaration//GEN-END:variables
 }

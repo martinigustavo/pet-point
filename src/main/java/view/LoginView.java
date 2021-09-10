@@ -5,8 +5,9 @@
  */
 package view;
 
-import dao.LoginDao;
+import dao.FuncionarioDao;
 import entities.Funcionario;
+import java.awt.event.KeyEvent;
 import java.util.Optional;
 import javax.swing.JOptionPane;
 import org.hibernate.SessionFactory;
@@ -26,6 +27,7 @@ public class LoginView extends javax.swing.JFrame {
     public LoginView() {
         initComponents();
         VisualsConfig.setPropsToWindow(this, "Login", rootPane);
+        lblerror.setVisible(false);
     }
 
     /**
@@ -38,8 +40,8 @@ public class LoginView extends javax.swing.JFrame {
     private void initComponents() {
 
         panelLogin = new javax.swing.JPanel();
-        tfdusername = new javax.swing.JTextField();
-        tfdpassword = new javax.swing.JPasswordField();
+        txfUsuario = new javax.swing.JTextField();
+        txfSenha = new javax.swing.JPasswordField();
         btnLogin = new javax.swing.JLabel();
         lblerror = new javax.swing.JLabel();
         background = new javax.swing.JLabel();
@@ -48,17 +50,37 @@ public class LoginView extends javax.swing.JFrame {
 
         panelLogin.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tfdusername.setBackground(new java.awt.Color(225, 225, 225));
-        tfdusername.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdusername.setToolTipText("Nome de usuário");
-        tfdusername.setBorder(null);
-        panelLogin.add(tfdusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 290, 320, 30));
+        txfUsuario.setBackground(new java.awt.Color(225, 225, 225));
+        txfUsuario.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        txfUsuario.setToolTipText("Nome de usuário");
+        txfUsuario.setBorder(null);
+        txfUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txfUsuarioMouseClicked(evt);
+            }
+        });
+        txfUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txfUsuarioKeyReleased(evt);
+            }
+        });
+        panelLogin.add(txfUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 290, 320, 30));
 
-        tfdpassword.setBackground(new java.awt.Color(225, 225, 225));
-        tfdpassword.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        tfdpassword.setToolTipText("Senha");
-        tfdpassword.setBorder(null);
-        panelLogin.add(tfdpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 390, 320, 30));
+        txfSenha.setBackground(new java.awt.Color(225, 225, 225));
+        txfSenha.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        txfSenha.setToolTipText("Senha");
+        txfSenha.setBorder(null);
+        txfSenha.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txfSenhaMouseClicked(evt);
+            }
+        });
+        txfSenha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txfSenhaKeyReleased(evt);
+            }
+        });
+        panelLogin.add(txfSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 390, 320, 30));
 
         btnLogin.setToolTipText("");
         btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -90,29 +112,58 @@ public class LoginView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
-        String usuario = tfdusername.getText();
+    private void login() {
+        String usuario = txfUsuario.getText();
 
-        char[] getSenha = tfdpassword.getPassword();
+        char[] getSenha = txfSenha.getPassword();
+        String senha = String.valueOf(getSenha);
         String senhaCriptografada = Criptografar
-                .encriptografar(String.valueOf(getSenha));
+                .encriptografar(senha);
+        
+        if (usuario.isBlank() || senha.isBlank()) {
+            JOptionPane.showMessageDialog(null, "Você deve preencher o usuário e senha para prosseguir.");
+            return;
+        }
 
         SessionFactory sf = HibernateUtil.getSessionFactory();
 
-        Optional<Funcionario> funcionario = new LoginDao(sf).buscarPorUsuario(usuario);
-        
+        Optional<Funcionario> funcionario = new FuncionarioDao(sf).buscarPorUsuario(usuario);
+
         if (funcionario.isPresent()) {
-           if (funcionario.get().getSenha().equals(senhaCriptografada)) {
-               JOptionPane.showMessageDialog(null, "Funcionário logado com sucesso!");
-               this.dispose();
-               new ApplicationView().setVisible(true);
-           } else {
-               JOptionPane.showMessageDialog(null, "Dados informados estão incorretos.");
-           }
+            if (funcionario.get().getSenha().equals(senhaCriptografada)) {
+                this.dispose();
+                new ApplicationView(funcionario.get()).setVisible(true);
+            } else {
+                lblerror.setVisible(true);
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Este funcionário não está cadastrado.");
         }
+    }
+
+    private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
+        this.login();
     }//GEN-LAST:event_btnLoginMouseClicked
+
+    private void txfUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txfUsuarioMouseClicked
+        lblerror.setVisible(false);
+    }//GEN-LAST:event_txfUsuarioMouseClicked
+
+    private void txfSenhaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txfSenhaMouseClicked
+        lblerror.setVisible(false);
+    }//GEN-LAST:event_txfSenhaMouseClicked
+
+    private void txfSenhaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txfSenhaKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            this.login();
+        }
+    }//GEN-LAST:event_txfSenhaKeyReleased
+
+    private void txfUsuarioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txfUsuarioKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            txfSenha.requestFocus();
+        }
+    }//GEN-LAST:event_txfUsuarioKeyReleased
 
     /**
      * @param args the command line arguments
@@ -155,7 +206,7 @@ public class LoginView extends javax.swing.JFrame {
     private javax.swing.JLabel btnLogin;
     private javax.swing.JLabel lblerror;
     private javax.swing.JPanel panelLogin;
-    private javax.swing.JPasswordField tfdpassword;
-    private javax.swing.JTextField tfdusername;
+    private javax.swing.JPasswordField txfSenha;
+    private javax.swing.JTextField txfUsuario;
     // End of variables declaration//GEN-END:variables
 }
