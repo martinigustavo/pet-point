@@ -113,31 +113,39 @@ public class LoginView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void login() {
-        String usuario = txfUsuario.getText();
+        try {
+            String usuario = txfUsuario.getText();
 
-        char[] getSenha = txfSenha.getPassword();
-        String senha = String.valueOf(getSenha);
-        String senhaCriptografada = Criptografar
-                .encriptografar(senha);
-        
-        if (usuario.isBlank() || senha.isBlank()) {
-            JOptionPane.showMessageDialog(null, "Você deve preencher o usuário e senha para prosseguir.");
-            return;
-        }
+            char[] getSenha = txfSenha.getPassword();
+            String senha = String.valueOf(getSenha);
+            String senhaCriptografada = Criptografar
+                    .encriptografar(senha);
 
-        SessionFactory sf = HibernateUtil.getSessionFactory();
-
-        Optional<Funcionario> funcionario = new FuncionarioDao(sf).buscarPorUsuario(usuario);
-
-        if (funcionario.isPresent()) {
-            if (funcionario.get().getSenha().equals(senhaCriptografada)) {
-                this.dispose();
-                new ApplicationView(funcionario.get()).setVisible(true);
-            } else {
-                lblerror.setVisible(true);
+            if (usuario.isBlank() || senha.isBlank()) {
+                JOptionPane.showMessageDialog(null, "Você deve preencher o usuário e senha para prosseguir.");
+                return;
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Este funcionário não está cadastrado.");
+
+            SessionFactory sf = HibernateUtil.getSessionFactory();
+
+            Optional<Funcionario> funcionario = new FuncionarioDao(sf).buscarPorUsuario(usuario);
+
+            if (funcionario.isPresent()) {
+                if (funcionario.get().getSenha().equals(senhaCriptografada)) {
+                    this.dispose();
+                    new ApplicationView(funcionario.get()).setVisible(true);
+                } else {
+                    lblerror.setVisible(true);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Este funcionário não está cadastrado.");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao acessar aplicação."
+                    + "\n"
+                    + "Mensagem de erro: "
+                    + e.getMessage());
+
         }
     }
 
