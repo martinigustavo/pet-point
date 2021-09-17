@@ -84,13 +84,22 @@ public class ApplicationView extends javax.swing.JFrame {
         cbxStatus = new javax.swing.JComboBox<>();
         ftfCpf = new javax.swing.JFormattedTextField();
         ftfTelefone = new javax.swing.JFormattedTextField();
+        btnBackFunc = new javax.swing.JButton();
         cadastroform = new javax.swing.JLabel();
+        pnlcadastrarcliente = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        btnBackCliente = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        txfNomeCliente = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        ftfCpfCliente = new javax.swing.JFormattedTextField();
         pnlcadastros = new javax.swing.JPanel();
         tfdbusca = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblFuncionario = new javax.swing.JTable();
         btnbuscar = new javax.swing.JButton();
-        btnadicionar = new javax.swing.JButton();
+        btnAdicionarFunc = new javax.swing.JButton();
+        btnAdicionarCliente = new javax.swing.JButton();
         backgroundcadastro = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -231,10 +240,83 @@ public class ApplicationView extends javax.swing.JFrame {
         }
         pnlcadastrarfunc.add(ftfTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 410, 320, 30));
 
+        btnBackFunc.setBackground(new java.awt.Color(230, 230, 230));
+        btnBackFunc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/left-chevron.png"))); // NOI18N
+        btnBackFunc.setToolTipText("Voltar");
+        btnBackFunc.setBorder(null);
+        btnBackFunc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackFuncActionPerformed(evt);
+            }
+        });
+        pnlcadastrarfunc.add(btnBackFunc, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, -1, -1));
+
         cadastroform.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastroform.png"))); // NOI18N
         pnlcadastrarfunc.add(cadastroform, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         background.add(pnlcadastrarfunc, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1040, 700));
+
+        pnlcadastrarcliente.setBackground(new java.awt.Color(230, 230, 230));
+
+        jLabel1.setText("Nome:");
+
+        btnBackCliente.setBackground(new java.awt.Color(230, 230, 230));
+        btnBackCliente.setForeground(new java.awt.Color(230, 230, 230));
+        btnBackCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/left-chevron.png"))); // NOI18N
+        btnBackCliente.setBorder(null);
+        btnBackCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackClienteActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("CADASTRAR CLIENTE");
+
+        jLabel3.setText("CPF:");
+
+        try {
+            ftfCpfCliente.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        javax.swing.GroupLayout pnlcadastrarclienteLayout = new javax.swing.GroupLayout(pnlcadastrarcliente);
+        pnlcadastrarcliente.setLayout(pnlcadastrarclienteLayout);
+        pnlcadastrarclienteLayout.setHorizontalGroup(
+            pnlcadastrarclienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlcadastrarclienteLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(btnBackCliente)
+                .addGap(71, 71, 71)
+                .addGroup(pnlcadastrarclienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlcadastrarclienteLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(txfNomeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(86, 86, 86)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ftfCpfCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2))
+                .addContainerGap(320, Short.MAX_VALUE))
+        );
+        pnlcadastrarclienteLayout.setVerticalGroup(
+            pnlcadastrarclienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlcadastrarclienteLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(pnlcadastrarclienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnBackCliente)
+                    .addComponent(jLabel2))
+                .addGap(30, 30, 30)
+                .addGroup(pnlcadastrarclienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txfNomeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(ftfCpfCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(582, Short.MAX_VALUE))
+        );
+
+        background.add(pnlcadastrarcliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1040, -1));
 
         pnlcadastros.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -300,16 +382,29 @@ public class ApplicationView extends javax.swing.JFrame {
         });
         pnlcadastros.add(btnbuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 33, 100, 30));
 
-        btnadicionar.setBackground(new java.awt.Color(230, 230, 230));
-        btnadicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
-        btnadicionar.setToolTipText("");
-        btnadicionar.setBorder(null);
-        btnadicionar.addActionListener(new java.awt.event.ActionListener() {
+        btnAdicionarFunc.setBackground(new java.awt.Color(230, 230, 230));
+        btnAdicionarFunc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
+        btnAdicionarFunc.setText("Novo funcionário");
+        btnAdicionarFunc.setToolTipText("");
+        btnAdicionarFunc.setBorder(null);
+        btnAdicionarFunc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnadicionarActionPerformed(evt);
+                btnAdicionarFuncActionPerformed(evt);
             }
         });
-        pnlcadastros.add(btnadicionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 630, 50, 40));
+        pnlcadastros.add(btnAdicionarFunc, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 630, 170, 40));
+
+        btnAdicionarCliente.setBackground(new java.awt.Color(230, 230, 230));
+        btnAdicionarCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
+        btnAdicionarCliente.setText("Novo cliente");
+        btnAdicionarCliente.setToolTipText("");
+        btnAdicionarCliente.setBorder(null);
+        btnAdicionarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdicionarClienteActionPerformed(evt);
+            }
+        });
+        pnlcadastros.add(btnAdicionarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 630, 170, 40));
 
         backgroundcadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastrolist.png"))); // NOI18N
         pnlcadastros.add(backgroundcadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -355,9 +450,8 @@ public class ApplicationView extends javax.swing.JFrame {
     }
 
     private void btnhomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhomeActionPerformed
+        desativarTelas();
         pnlmenulateral.setVisible(true);
-        pnlcadastrarfunc.setVisible(false);
-        pnlcadastros.setVisible(false);
     }//GEN-LAST:event_btnhomeActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
@@ -428,17 +522,15 @@ public class ApplicationView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
-    private void btnadicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnadicionarActionPerformed
+    private void btnAdicionarFuncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarFuncActionPerformed
+        desativarTelas();
         pnlcadastrarfunc.setVisible(true);
-        pnlhome.setVisible(false);
-        pnlcadastros.setVisible(false);
         
         this.limparCadastro();
-    }//GEN-LAST:event_btnadicionarActionPerformed
+    }//GEN-LAST:event_btnAdicionarFuncActionPerformed
 
     private void btncadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastroActionPerformed
-        pnlhome.setVisible(false);
-        pnlcadastrarfunc.setVisible(false);
+        desativarTelas();
         pnlcadastros.setVisible(true);
     }//GEN-LAST:event_btncadastroActionPerformed
 
@@ -472,9 +564,8 @@ public class ApplicationView extends javax.swing.JFrame {
                     cbxStatus.setSelectedIndex(2);
                 }
 
+                desativarTelas();
                 pnlcadastrarfunc.setVisible(true);
-                pnlhome.setVisible(false);
-                pnlcadastros.setVisible(false);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Nenhum funcionário selecionado.");
@@ -557,6 +648,30 @@ public class ApplicationView extends javax.swing.JFrame {
         column.setMinWidth(70);
     }//GEN-LAST:event_btnbuscarActionPerformed
 
+    private void btnAdicionarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarClienteActionPerformed
+        desativarTelas();
+        pnlcadastrarcliente.setVisible(true);
+        
+        this.limparCadastro();
+    }//GEN-LAST:event_btnAdicionarClienteActionPerformed
+
+    private void btnBackClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackClienteActionPerformed
+        desativarTelas();
+        pnlcadastros.setVisible(true);
+    }//GEN-LAST:event_btnBackClienteActionPerformed
+
+    private void btnBackFuncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackFuncActionPerformed
+        desativarTelas();
+        pnlcadastros.setVisible(true);
+    }//GEN-LAST:event_btnBackFuncActionPerformed
+
+    public void desativarTelas() {
+        pnlhome.setVisible(false);
+        pnlcadastrarfunc.setVisible(false);
+        pnlcadastrarcliente.setVisible(false);
+        pnlcadastros.setVisible(false);
+    }
+    
     public LocalDate convertToLocalDate(Date dateToConvert) {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
@@ -608,8 +723,11 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JPanel background;
     private javax.swing.JLabel backgroundcadastro;
     private javax.swing.JLabel barralateral;
+    private javax.swing.JButton btnAdicionarCliente;
+    private javax.swing.JButton btnAdicionarFunc;
+    private javax.swing.JButton btnBackCliente;
+    private javax.swing.JButton btnBackFunc;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JButton btnadicionar;
     private javax.swing.JButton btnbuscar;
     private javax.swing.JButton btncadastro;
     private javax.swing.JButton btnhome;
@@ -617,10 +735,15 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbxSexo;
     private javax.swing.JComboBox<String> cbxStatus;
     private javax.swing.JFormattedTextField ftfCpf;
+    private javax.swing.JFormattedTextField ftfCpfCliente;
     private com.toedter.calendar.JDateChooser ftfData;
     private javax.swing.JFormattedTextField ftfTelefone;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblLogado;
+    private javax.swing.JPanel pnlcadastrarcliente;
     private javax.swing.JPanel pnlcadastrarfunc;
     private javax.swing.JPanel pnlcadastros;
     private javax.swing.JPanel pnlhome;
@@ -633,6 +756,7 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JTextField txfEmail;
     private javax.swing.JTextField txfEstado;
     private javax.swing.JTextField txfNome;
+    private javax.swing.JTextField txfNomeCliente;
     private javax.swing.JTextField txfUsuario;
     // End of variables declaration//GEN-END:variables
 }
