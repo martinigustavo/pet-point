@@ -9,6 +9,7 @@ import dao.FuncionarioDao;
 import entities.Funcionario;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +37,7 @@ public class ApplicationView extends javax.swing.JFrame {
 
     /**
      * Creates new form ApplicationView
+     * 
      */
     public ApplicationView(Funcionario funcLogado) {
         initComponents();
@@ -75,6 +77,9 @@ public class ApplicationView extends javax.swing.JFrame {
         btnSalvar = new javax.swing.JButton();
         pwfSenha = new javax.swing.JPasswordField();
         txfEmail = new javax.swing.JTextField();
+        ftfNumero = new javax.swing.JTextField();
+        txfRua = new javax.swing.JTextField();
+        txfBairro = new javax.swing.JTextField();
         txfCidade = new javax.swing.JTextField();
         txfEstado = new javax.swing.JTextField();
         txfAtividade = new javax.swing.JTextField();
@@ -97,10 +102,9 @@ public class ApplicationView extends javax.swing.JFrame {
         tfdbusca = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblFuncionario = new javax.swing.JTable();
-        btnbuscar = new javax.swing.JButton();
         btnAdicionarFunc = new javax.swing.JButton();
         btnAdicionarCliente = new javax.swing.JButton();
-        backgroundcadastro = new javax.swing.JLabel();
+        fundobusca = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -132,37 +136,36 @@ public class ApplicationView extends javax.swing.JFrame {
         });
         pnlmenulateral.add(btncadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 250, 140, 50));
 
-        lblLogado.setForeground(new java.awt.Color(0, 0, 0));
         lblLogado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblLogado.setText("logado");
-        pnlmenulateral.add(lblLogado, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 650, 130, 30));
+        pnlmenulateral.add(lblLogado, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 1020, 130, 30));
 
         barralateral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/barralateral.png"))); // NOI18N
         pnlmenulateral.add(barralateral, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        background.add(pnlmenulateral, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, 700));
+        background.add(pnlmenulateral, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, 1080));
 
         javax.swing.GroupLayout pnlhomeLayout = new javax.swing.GroupLayout(pnlhome);
         pnlhome.setLayout(pnlhomeLayout);
         pnlhomeLayout.setHorizontalGroup(
             pnlhomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1040, Short.MAX_VALUE)
+            .addGap(0, 1760, Short.MAX_VALUE)
         );
         pnlhomeLayout.setVerticalGroup(
             pnlhomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
+            .addGap(0, 1080, Short.MAX_VALUE)
         );
 
-        background.add(pnlhome, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1040, 700));
+        background.add(pnlhome, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1760, 1080));
 
         pnlcadastrarfunc.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         ftfData.setBackground(new java.awt.Color(218, 218, 218));
         ftfData.setToolTipText("");
-        pnlcadastrarfunc.add(ftfData, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 490, 340, 30));
+        pnlcadastrarfunc.add(ftfData, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 220, 390, 40));
 
         btnSalvar.setBackground(new java.awt.Color(58, 203, 199));
-        btnSalvar.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        btnSalvar.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         btnSalvar.setForeground(new java.awt.Color(255, 255, 255));
         btnSalvar.setText("Salvar");
         btnSalvar.setBorder(null);
@@ -171,56 +174,74 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnSalvarActionPerformed(evt);
             }
         });
-        pnlcadastrarfunc.add(btnSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 630, 140, 40));
+        pnlcadastrarfunc.add(btnSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1430, 1010, 190, 40));
 
         pwfSenha.setBackground(new java.awt.Color(218, 218, 218));
         pwfSenha.setToolTipText("");
         pwfSenha.setBorder(null);
-        pnlcadastrarfunc.add(pwfSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 320, 320, 30));
+        pnlcadastrarfunc.add(pwfSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(1210, 460, 390, 40));
 
         txfEmail.setBackground(new java.awt.Color(218, 218, 218));
         txfEmail.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         txfEmail.setToolTipText("");
         txfEmail.setBorder(null);
-        pnlcadastrarfunc.add(txfEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 570, 320, 30));
+        pnlcadastrarfunc.add(txfEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 550, 860, 40));
+
+        ftfNumero.setBackground(new java.awt.Color(218, 218, 218));
+        ftfNumero.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        ftfNumero.setToolTipText("");
+        ftfNumero.setBorder(null);
+        pnlcadastrarfunc.add(ftfNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 790, 370, 30));
+
+        txfRua.setBackground(new java.awt.Color(218, 218, 218));
+        txfRua.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        txfRua.setToolTipText("");
+        txfRua.setBorder(null);
+        pnlcadastrarfunc.add(txfRua, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 900, 370, 30));
+
+        txfBairro.setBackground(new java.awt.Color(218, 218, 218));
+        txfBairro.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        txfBairro.setToolTipText("");
+        txfBairro.setBorder(null);
+        pnlcadastrarfunc.add(txfBairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 780, 370, 40));
 
         txfCidade.setBackground(new java.awt.Color(218, 218, 218));
         txfCidade.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         txfCidade.setToolTipText("");
         txfCidade.setBorder(null);
-        pnlcadastrarfunc.add(txfCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 570, 320, 30));
+        pnlcadastrarfunc.add(txfCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 900, 370, 40));
 
         txfEstado.setBackground(new java.awt.Color(218, 218, 218));
         txfEstado.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         txfEstado.setToolTipText("");
         txfEstado.setBorder(null);
-        pnlcadastrarfunc.add(txfEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 490, 320, 30));
+        pnlcadastrarfunc.add(txfEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 780, 390, 40));
 
         txfAtividade.setBackground(new java.awt.Color(218, 218, 218));
         txfAtividade.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         txfAtividade.setToolTipText("");
         txfAtividade.setBorder(null);
-        pnlcadastrarfunc.add(txfAtividade, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 410, 320, 30));
+        pnlcadastrarfunc.add(txfAtividade, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 230, 360, 40));
 
         txfNome.setBackground(new java.awt.Color(218, 218, 218));
         txfNome.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         txfNome.setToolTipText("");
         txfNome.setBorder(null);
-        pnlcadastrarfunc.add(txfNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 160, 320, 30));
+        pnlcadastrarfunc.add(txfNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 230, 390, 30));
 
         txfUsuario.setBackground(new java.awt.Color(218, 218, 218));
         txfUsuario.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         txfUsuario.setToolTipText("");
         txfUsuario.setBorder(null);
-        pnlcadastrarfunc.add(txfUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 243, 320, 30));
+        pnlcadastrarfunc.add(txfUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(1210, 350, 380, 30));
 
         cbxSexo.setBackground(new java.awt.Color(218, 218, 218));
         cbxSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Feminino", "Masculino" }));
-        pnlcadastrarfunc.add(cbxSexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 236, 330, 40));
+        pnlcadastrarfunc.add(cbxSexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 460, 390, 40));
 
         cbxStatus.setBackground(new java.awt.Color(218, 218, 218));
         cbxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Ativo", "Inativo" }));
-        pnlcadastrarfunc.add(cbxStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 160, 340, 40));
+        pnlcadastrarfunc.add(cbxStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 350, 380, 40));
 
         ftfCpf.setBackground(new java.awt.Color(218, 218, 218));
         ftfCpf.setBorder(null);
@@ -229,7 +250,7 @@ public class ApplicationView extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        pnlcadastrarfunc.add(ftfCpf, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 320, 320, 30));
+        pnlcadastrarfunc.add(ftfCpf, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 350, 390, 40));
 
         ftfTelefone.setBackground(new java.awt.Color(218, 218, 218));
         ftfTelefone.setBorder(null);
@@ -238,7 +259,7 @@ public class ApplicationView extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        pnlcadastrarfunc.add(ftfTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 410, 320, 30));
+        pnlcadastrarfunc.add(ftfTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 550, 370, 40));
 
         btnBackFunc.setBackground(new java.awt.Color(230, 230, 230));
         btnBackFunc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/left-chevron.png"))); // NOI18N
@@ -249,12 +270,12 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnBackFuncActionPerformed(evt);
             }
         });
-        pnlcadastrarfunc.add(btnBackFunc, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, -1, -1));
+        pnlcadastrarfunc.add(btnBackFunc, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 40, -1, -1));
 
-        cadastroform.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastroform.png"))); // NOI18N
-        pnlcadastrarfunc.add(cadastroform, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        cadastroform.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastrofuncionario.png"))); // NOI18N
+        pnlcadastrarfunc.add(cadastroform, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1760, 1080));
 
-        background.add(pnlcadastrarfunc, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1040, 700));
+        background.add(pnlcadastrarfunc, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1760, 1080));
 
         pnlcadastrarcliente.setBackground(new java.awt.Color(230, 230, 230));
 
@@ -298,7 +319,7 @@ public class ApplicationView extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ftfCpfCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2))
-                .addContainerGap(320, Short.MAX_VALUE))
+                .addContainerGap(234, Short.MAX_VALUE))
         );
         pnlcadastrarclienteLayout.setVerticalGroup(
             pnlcadastrarclienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -313,14 +334,14 @@ public class ApplicationView extends javax.swing.JFrame {
                     .addComponent(txfNomeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(ftfCpfCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(582, Short.MAX_VALUE))
+                .addContainerGap(837, Short.MAX_VALUE))
         );
 
-        background.add(pnlcadastrarcliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1040, -1));
+        background.add(pnlcadastrarcliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 130, 930, 950));
 
         pnlcadastros.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tfdbusca.setBackground(new java.awt.Color(218, 218, 218));
+        tfdbusca.setBackground(new java.awt.Color(215, 214, 214));
         tfdbusca.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         tfdbusca.setToolTipText("");
         tfdbusca.setBorder(null);
@@ -329,7 +350,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 tfdbuscaKeyReleased(evt);
             }
         });
-        pnlcadastros.add(tfdbusca, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 34, 670, 30));
+        pnlcadastros.add(tfdbusca, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 60, 1150, 40));
 
         tblFuncionario.setBackground(new java.awt.Color(218, 218, 218));
         tblFuncionario.setModel(new javax.swing.table.DefaultTableModel(
@@ -367,22 +388,9 @@ public class ApplicationView extends javax.swing.JFrame {
             tblFuncionario.getColumnModel().getColumn(0).setMaxWidth(70);
         }
 
-        pnlcadastros.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 120, 930, 480));
+        pnlcadastros.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 160, 1450, 800));
 
-        btnbuscar.setBackground(new java.awt.Color(58, 203, 199));
-        btnbuscar.setFont(new java.awt.Font("Poppins", 0, 13)); // NOI18N
-        btnbuscar.setForeground(new java.awt.Color(255, 255, 255));
-        btnbuscar.setText("Buscar");
-        btnbuscar.setToolTipText("");
-        btnbuscar.setBorder(null);
-        btnbuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnbuscarActionPerformed(evt);
-            }
-        });
-        pnlcadastros.add(btnbuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 33, 100, 30));
-
-        btnAdicionarFunc.setBackground(new java.awt.Color(230, 230, 230));
+        btnAdicionarFunc.setBackground(new java.awt.Color(225, 225, 225));
         btnAdicionarFunc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
         btnAdicionarFunc.setText("Novo funcionário");
         btnAdicionarFunc.setToolTipText("");
@@ -392,9 +400,9 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnAdicionarFuncActionPerformed(evt);
             }
         });
-        pnlcadastros.add(btnAdicionarFunc, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 630, 170, 40));
+        pnlcadastros.add(btnAdicionarFunc, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 980, 170, 40));
 
-        btnAdicionarCliente.setBackground(new java.awt.Color(230, 230, 230));
+        btnAdicionarCliente.setBackground(new java.awt.Color(225, 225, 225));
         btnAdicionarCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
         btnAdicionarCliente.setText("Novo cliente");
         btnAdicionarCliente.setToolTipText("");
@@ -404,18 +412,18 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnAdicionarClienteActionPerformed(evt);
             }
         });
-        pnlcadastros.add(btnAdicionarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 630, 170, 40));
+        pnlcadastros.add(btnAdicionarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(1400, 980, 170, 40));
 
-        backgroundcadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastrolist.png"))); // NOI18N
-        pnlcadastros.add(backgroundcadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        fundobusca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastrolista.png"))); // NOI18N
+        pnlcadastros.add(fundobusca, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1770, -1));
 
-        background.add(pnlcadastros, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1040, 700));
+        background.add(pnlcadastros, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1760, 1080));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(background, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -460,13 +468,13 @@ public class ApplicationView extends javax.swing.JFrame {
         String atividade = txfAtividade.getText().trim();
         String cidade = txfCidade.getText().trim();
         String estado = txfEstado.getText().trim();
-//        String rua = txfRua.getText().trim();
-//        String numero = ftfNumero.getText().trim();
-//        String bairro = txfBairro.getText().trim();
-//        String endereco = rua.isBlank()
-//                ? ""
-//                : rua + ", " + numero + ", " + bairro;
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+        String rua = txfRua.getText().trim();
+        String numero = ftfNumero.getText().trim();
+        String bairro = txfBairro.getText().trim();
+        String endereco = rua.isBlank()
+                ? ""
+                : rua + ", " + numero + ", " + bairro;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
         LocalDate dataNasc = convertToLocalDate(ftfData.getDate());
         String sexo = cbxSexo.getSelectedItem().toString();
         String status = cbxStatus.getSelectedItem().toString();
@@ -522,17 +530,34 @@ public class ApplicationView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
-    private void btnAdicionarFuncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarFuncActionPerformed
-        desativarTelas();
-        pnlcadastrarfunc.setVisible(true);
-        
-        this.limparCadastro();
-    }//GEN-LAST:event_btnAdicionarFuncActionPerformed
-
     private void btncadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastroActionPerformed
         desativarTelas();
         pnlcadastros.setVisible(true);
     }//GEN-LAST:event_btncadastroActionPerformed
+
+    private void btnBackClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackClienteActionPerformed
+        desativarTelas();
+        pnlcadastros.setVisible(true);
+    }//GEN-LAST:event_btnBackClienteActionPerformed
+
+    private void btnBackFuncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackFuncActionPerformed
+        desativarTelas();
+        pnlcadastros.setVisible(true);
+    }//GEN-LAST:event_btnBackFuncActionPerformed
+
+    private void btnAdicionarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarClienteActionPerformed
+        desativarTelas();
+        pnlcadastrarcliente.setVisible(true);
+
+        this.limparCadastro();
+    }//GEN-LAST:event_btnAdicionarClienteActionPerformed
+
+    private void btnAdicionarFuncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarFuncActionPerformed
+        desativarTelas();
+        pnlcadastrarfunc.setVisible(true);
+
+        this.limparCadastro();
+    }//GEN-LAST:event_btnAdicionarFuncActionPerformed
 
     private void tblFuncionarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblFuncionarioMouseClicked
         try {
@@ -557,7 +582,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 } else {
                     cbxSexo.setSelectedIndex(2);
                 }
-                
+
                 if (func.get().getStatus().equals("Ativo")) {
                     cbxStatus.setSelectedIndex(1);
                 } else {
@@ -609,61 +634,6 @@ public class ApplicationView extends javax.swing.JFrame {
         column.setMaxWidth(70);
         column.setMinWidth(70);
     }//GEN-LAST:event_tfdbuscaKeyReleased
-
-    private void btnbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscarActionPerformed
-        busca = tfdbusca.getText();
-        List<Funcionario> funcionarios = new FuncionarioDao(sessionFactory).buscarPorNome(busca);
-
-        Object[] cabecalho = {"id", "Nome"};
-        Object[][] dadosTabela = new Object[funcionarios.size()][2];
-        if (funcionarios.size() > 0) {
-            for (int i = 0; i < funcionarios.size(); i++) {
-                dadosTabela[i][0] = funcionarios.get(i).getId();
-                dadosTabela[i][1] = funcionarios.get(i).getNome();
-            }
-        }
-
-        tblFuncionario.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-
-        });
-
-        tblFuncionario.setSelectionMode(0);
-
-        // redimensiona as colunas de uma tabela
-        TableColumn column = null;
-        for (int i = 0; i < tblFuncionario.getColumnCount(); i++) {
-            column = tblFuncionario.getColumnModel().getColumn(i);
-            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-            column.setCellRenderer(centerRenderer);
-        }
-
-        column = tblFuncionario.getColumnModel().getColumn(0);
-        column.setPreferredWidth(70);
-        column.setMaxWidth(70);
-        column.setMinWidth(70);
-    }//GEN-LAST:event_btnbuscarActionPerformed
-
-    private void btnAdicionarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarClienteActionPerformed
-        desativarTelas();
-        pnlcadastrarcliente.setVisible(true);
-        
-        this.limparCadastro();
-    }//GEN-LAST:event_btnAdicionarClienteActionPerformed
-
-    private void btnBackClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackClienteActionPerformed
-        desativarTelas();
-        pnlcadastros.setVisible(true);
-    }//GEN-LAST:event_btnBackClienteActionPerformed
-
-    private void btnBackFuncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackFuncActionPerformed
-        desativarTelas();
-        pnlcadastros.setVisible(true);
-    }//GEN-LAST:event_btnBackFuncActionPerformed
 
     public void desativarTelas() {
         pnlhome.setVisible(false);
@@ -721,14 +691,12 @@ public class ApplicationView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
-    private javax.swing.JLabel backgroundcadastro;
     private javax.swing.JLabel barralateral;
     private javax.swing.JButton btnAdicionarCliente;
     private javax.swing.JButton btnAdicionarFunc;
     private javax.swing.JButton btnBackCliente;
     private javax.swing.JButton btnBackFunc;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JButton btnbuscar;
     private javax.swing.JButton btncadastro;
     private javax.swing.JButton btnhome;
     private javax.swing.JLabel cadastroform;
@@ -737,7 +705,9 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField ftfCpf;
     private javax.swing.JFormattedTextField ftfCpfCliente;
     private com.toedter.calendar.JDateChooser ftfData;
+    private javax.swing.JTextField ftfNumero;
     private javax.swing.JFormattedTextField ftfTelefone;
+    private javax.swing.JLabel fundobusca;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -752,11 +722,13 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JTable tblFuncionario;
     private javax.swing.JTextField tfdbusca;
     private javax.swing.JTextField txfAtividade;
+    private javax.swing.JTextField txfBairro;
     private javax.swing.JTextField txfCidade;
     private javax.swing.JTextField txfEmail;
     private javax.swing.JTextField txfEstado;
     private javax.swing.JTextField txfNome;
     private javax.swing.JTextField txfNomeCliente;
+    private javax.swing.JTextField txfRua;
     private javax.swing.JTextField txfUsuario;
     // End of variables declaration//GEN-END:variables
 }

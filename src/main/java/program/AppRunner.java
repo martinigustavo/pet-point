@@ -1,6 +1,12 @@
 
 package program;
 
+import dao.FuncionarioDao;
+import entities.Funcionario;
+import java.time.LocalDate;
+import java.util.Optional;
+import org.hibernate.SessionFactory;
+import utils.HibernateUtil;
 import utils.VisualsConfig;
 import view.ApplicationView;
 import view.LoginView;
@@ -14,8 +20,8 @@ public class AppRunner {
 
         // Set swing frame visible after this comment
         // código que inicializa a aplicaçao (janela do login/cadastro)      
-        new LoginView().setVisible(true);
-//        new ApplicationView().setVisible(true);
+         new LoginView().setVisible(true);
+         // new ApplicationView().setVisible(true);
                 
         /*
         // testes de persistencia
@@ -33,8 +39,8 @@ public class AppRunner {
         funcionario.setData_nascimento(LocalDate.of(1983, 12, 20));
         funcionario.setData_cadastro(LocalDate.now());
         funcionario.setStatus("ativo");
-        funcionario.setUsuario("user");
-        funcionario.setSenha("abcd1234");
+        funcionario.setUsuario("admin");
+        funcionario.setSenha("admin");
         funcionario.setAtividade("atividade");
 
         // teste salvar

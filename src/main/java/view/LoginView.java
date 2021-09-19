@@ -64,7 +64,7 @@ public class LoginView extends javax.swing.JFrame {
                 txfUsuarioKeyReleased(evt);
             }
         });
-        panelLogin.add(txfUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 290, 320, 30));
+        panelLogin.add(txfUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 470, 530, 40));
 
         txfSenha.setBackground(new java.awt.Color(225, 225, 225));
         txfSenha.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -80,7 +80,7 @@ public class LoginView extends javax.swing.JFrame {
                 txfSenhaKeyReleased(evt);
             }
         });
-        panelLogin.add(txfSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 390, 320, 30));
+        panelLogin.add(txfSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 630, 530, 40));
 
         btnLogin.setToolTipText("");
         btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -88,15 +88,15 @@ public class LoginView extends javax.swing.JFrame {
                 btnLoginMouseClicked(evt);
             }
         });
-        panelLogin.add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 540, 200, 50));
+        panelLogin.add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(1340, 810, 300, 70));
 
         lblerror.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         lblerror.setForeground(new java.awt.Color(255, 0, 0));
         lblerror.setText("Usuário ou senha incorretos.");
-        panelLogin.add(lblerror, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 440, 160, 20));
+        panelLogin.add(lblerror, new org.netbeans.lib.awtextra.AbsoluteConstraints(1610, 700, 160, 20));
 
-        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/telalogin.png"))); // NOI18N
-        panelLogin.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 700));
+        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/login.png"))); // NOI18N
+        panelLogin.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1920, 1080));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
