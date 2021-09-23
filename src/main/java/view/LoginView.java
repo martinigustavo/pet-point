@@ -10,15 +10,13 @@ import entities.Funcionario;
 import java.awt.event.KeyEvent;
 import java.util.Optional;
 import javax.swing.JOptionPane;
+import lombok.extern.log4j.Log4j2;
 import org.hibernate.SessionFactory;
 import utils.Criptografar;
 import utils.HibernateUtil;
 import utils.VisualsConfig;
 
-/**
- *
- * @author evely
- */
+@Log4j2
 public class LoginView extends javax.swing.JFrame {
 
     /**
@@ -132,15 +130,24 @@ public class LoginView extends javax.swing.JFrame {
 
             if (funcionario.isPresent()) {
                 if (funcionario.get().getSenha().equals(senhaCriptografada)) {
+                    log.info("Usuário " + funcionario.get().getUsuario()
+                            + " logado com sucesso.");
+
                     this.dispose();
                     new ApplicationView(funcionario.get()).setVisible(true);
                 } else {
+                    log.warn("Senha incorreta informada para o usuário "
+                            + funcionario.get().getUsuario(), ".");
                     lblerror.setVisible(true);
                 }
             } else {
+                log.warn("Usuário informado não está cadastrado: "
+                        + usuario);
                 JOptionPane.showMessageDialog(null, "Este funcionário não está cadastrado.");
             }
         } catch (Exception e) {
+            log.error("Erro ao acessar aplicação: " + e.getMessage());
+
             JOptionPane.showMessageDialog(null, "Erro ao acessar aplicação."
                     + "\n"
                     + "Mensagem de erro: "
