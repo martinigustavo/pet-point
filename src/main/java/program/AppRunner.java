@@ -1,28 +1,34 @@
-
 package program;
 
-import dao.FuncionarioDao;
 import entities.Funcionario;
-import java.time.LocalDate;
-import java.util.Optional;
-import org.hibernate.SessionFactory;
-import utils.HibernateUtil;
+import lombok.extern.log4j.Log4j2;
 import utils.VisualsConfig;
 import view.ApplicationView;
 import view.LoginView;
 
+@Log4j2
 public class AppRunner {
 
-    public static void appRunner() {
+//    private static final Logger LOG = LogManager.getLogger(AppRunner.class);
 
+    public static void appRunner() {
+      
+        log.info("Aplicação inicializando..........");
+        log.debug("This is a DEBUG log.");
+        log.error("This is an ERROR log.");
+        log.warn("This is a WARN log.");
+        log.trace("This is a TRACE log");
+        
         VisualsConfig.createLookAndFeel();
 //        VisualsConfig.setAppFont();
 
         // Set swing frame visible after this comment
         // código que inicializa a aplicaçao (janela do login/cadastro)      
          new LoginView().setVisible(true);
-         // new ApplicationView().setVisible(true);
-                
+//        new ApplicationView(new Funcionario()).setVisible(true);
+        
+//        log.debug("Fechando aplicação.......");
+
         /*
         // testes de persistencia
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -74,7 +80,6 @@ public class AppRunner {
             System.out.println("Email: " + func.getEmail());
             System.out.println("---------------------------------------");
         });
-        */
-
+         */
     }
 }
