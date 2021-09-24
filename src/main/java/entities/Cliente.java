@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "CLIENTE")
 public class Cliente extends Pessoa {
     
     @OneToMany(mappedBy = "cliente")

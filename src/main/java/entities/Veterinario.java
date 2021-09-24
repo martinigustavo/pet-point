@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "VETERINARIO")
 public class Veterinario extends Funcionario {
     
     private String crmv;
