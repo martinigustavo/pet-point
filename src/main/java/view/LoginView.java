@@ -42,9 +42,12 @@ public class LoginView extends javax.swing.JFrame {
         txfSenha = new javax.swing.JPasswordField();
         btnLogin = new javax.swing.JLabel();
         lblerror = new javax.swing.JLabel();
+        lblFechar = new javax.swing.JLabel();
         background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        setResizable(false);
 
         panelLogin.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -62,7 +65,7 @@ public class LoginView extends javax.swing.JFrame {
                 txfUsuarioKeyReleased(evt);
             }
         });
-        panelLogin.add(txfUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 470, 530, 40));
+        panelLogin.add(txfUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 290, 320, 30));
 
         txfSenha.setBackground(new java.awt.Color(225, 225, 225));
         txfSenha.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -78,7 +81,7 @@ public class LoginView extends javax.swing.JFrame {
                 txfSenhaKeyReleased(evt);
             }
         });
-        panelLogin.add(txfSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 630, 530, 40));
+        panelLogin.add(txfSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 390, 320, 30));
 
         btnLogin.setToolTipText("");
         btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -86,28 +89,39 @@ public class LoginView extends javax.swing.JFrame {
                 btnLoginMouseClicked(evt);
             }
         });
-        panelLogin.add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(1340, 810, 300, 70));
+        panelLogin.add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 540, 200, 50));
 
         lblerror.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         lblerror.setForeground(new java.awt.Color(255, 0, 0));
         lblerror.setText("Usuário ou senha incorretos.");
         panelLogin.add(lblerror, new org.netbeans.lib.awtextra.AbsoluteConstraints(1610, 700, 160, 20));
 
-        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/login.png"))); // NOI18N
-        panelLogin.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1920, 1080));
+        lblFechar.setFont(new java.awt.Font("Poppins", 1, 24)); // NOI18N
+        lblFechar.setForeground(new java.awt.Color(0, 204, 204));
+        lblFechar.setText("X");
+        lblFechar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblFecharMouseClicked(evt);
+            }
+        });
+        panelLogin.add(lblFechar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 10, -1, -1));
+
+        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/telalogin.png"))); // NOI18N
+        panelLogin.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 700));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelLogin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 1200, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void login() {
@@ -180,6 +194,10 @@ public class LoginView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txfUsuarioKeyReleased
 
+    private void lblFecharMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFecharMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_lblFecharMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -219,6 +237,7 @@ public class LoginView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel background;
     private javax.swing.JLabel btnLogin;
+    private javax.swing.JLabel lblFechar;
     private javax.swing.JLabel lblerror;
     private javax.swing.JPanel panelLogin;
     private javax.swing.JPasswordField txfSenha;
