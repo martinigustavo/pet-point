@@ -12,6 +12,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import org.hibernate.SessionFactory;
 import utils.Criptografar;
@@ -24,7 +25,7 @@ import utils.HibernateUtil;
 public class DlgVeterinario extends javax.swing.JDialog {
 
     private int id = 0;
-    private VeterinarioDao vd;
+    private Veterinario vet = new Veterinario();
     private final SessionFactory sessionFactory;
     
     public DlgVeterinario(java.awt.Frame parent, boolean modal) {
@@ -37,8 +38,7 @@ public class DlgVeterinario extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
          this.sessionFactory = HibernateUtil.getSessionFactory();
-         this.vd = new VeterinarioDao(sessionFactory);
-         
+                this.vet = medico;
                 txfNome.setText(medico.getNome());
                 txfUsuario.setText(medico.getUsuario());
                 ftfCpf.setText(medico.getCpf());
@@ -48,7 +48,11 @@ public class DlgVeterinario extends javax.swing.JDialog {
                 txfEstado.setText(medico.getEstado());
                 txfCidade.setText(medico.getCidade());
                 txfEmail.setText(medico.getEmail());
-         
+                //endereço
+                String[] endereco = medico.getEndereco().split(Pattern.quote(",")); 
+                txfRua.setText(endereco[0]);
+                ftfNumero.setText(endereco[1]);
+                txfBairro.setText(endereco[2]);
           if (medico.getSexo().equals("Feminino")) {
                     cbxSexo.setSelectedIndex(1);
                 } else {
@@ -229,6 +233,7 @@ public class DlgVeterinario extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        VeterinarioDao vd = new VeterinarioDao(sessionFactory);
         String nome = txfNome.getText().trim();
         String email = txfEmail.getText().trim();
         String crmv = txfCrmv.getText().trim();
@@ -259,30 +264,28 @@ public class DlgVeterinario extends javax.swing.JDialog {
             return;
         }
 
-        Veterinario med = new Veterinario();
-        id = med.getId();
-        med.setNome(nome);
-        med.setEmail(email);
-        med.setCrmv(crmv);
-        med.setCidade(cidade);
-        med.setEstado(estado);
-        //        func.setEndereco(endereco);
-        med.setData_cadastro(LocalDate.now());
-        med.setData_nascimento(dataNasc);
-        med.setSexo(sexo);
-        med.setStatus(status);
-        med.setTelefone(telefone);
-        med.setCpf(cpf);
-        med.setUsuario(usuario);
-        med.setSenha(Criptografar.encriptografar(senha));
+        id = vet.getId();
+        vet.setNome(nome);
+        vet.setEmail(email);
+        vet.setCrmv(crmv);
+        vet.setCidade(cidade);
+        vet.setEstado(estado);
+        vet.setEndereco(endereco);
+        vet.setData_cadastro(LocalDate.now());
+        vet.setData_nascimento(dataNasc);
+        vet.setSexo(sexo);
+        vet.setStatus(status);
+        vet.setTelefone(telefone);
+        vet.setCpf(cpf);
+        vet.setUsuario(usuario);
+        vet.setSenha(Criptografar.encriptografar(senha));
 
         Optional<Veterinario> medico0 = Optional.empty();
 
         if (id == 0) {
-            medico0 = vd.salvar(med);
+            medico0 = vd.salvar(vet);
         } else {
-            med.setId(id);
-            medico0 = vd.atualizar(med);
+            medico0 = vd.atualizar(vet);
         }
 
         if (medico0.isPresent()) {

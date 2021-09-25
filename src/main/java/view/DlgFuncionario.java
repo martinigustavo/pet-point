@@ -12,6 +12,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import org.hibernate.SessionFactory;
 import utils.Criptografar;
@@ -24,7 +25,7 @@ import utils.HibernateUtil;
 public class DlgFuncionario extends javax.swing.JDialog {
     
     private int id = 0;
-    private FuncionarioDao fd;
+    private Funcionario funcionario = new Funcionario();
     private final SessionFactory sessionFactory;
     
      public DlgFuncionario(java.awt.Frame parent, boolean modal) {
@@ -37,8 +38,7 @@ public class DlgFuncionario extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
          this.sessionFactory = HibernateUtil.getSessionFactory();
-         this.fd = new FuncionarioDao(sessionFactory);
-         
+                this.funcionario = funcionario;
                 txfNome.setText(funcionario.getNome());
                 txfUsuario.setText(funcionario.getUsuario());
                 ftfCpf.setText(funcionario.getCpf());
@@ -48,6 +48,10 @@ public class DlgFuncionario extends javax.swing.JDialog {
                 txfEstado.setText(funcionario.getEstado());
                 txfCidade.setText(funcionario.getCidade());
                 txfEmail.setText(funcionario.getEmail());
+                String[] endereco = funcionario.getEndereco().split(Pattern.quote(",")); 
+                txfRua.setText(endereco[0]);
+                ftfNumero.setText(endereco[1]);
+                txfBairro.setText(endereco[2]);
          
           if (funcionario.getSexo().equals("Feminino")) {
                     cbxSexo.setSelectedIndex(1);
@@ -93,7 +97,6 @@ public class DlgFuncionario extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1620, 1050));
         setUndecorated(true);
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -113,6 +116,11 @@ public class DlgFuncionario extends javax.swing.JDialog {
         btncadastrar.setForeground(new java.awt.Color(255, 255, 255));
         btncadastrar.setText("Cadastrar");
         btncadastrar.setBorder(null);
+        btncadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncadastrarActionPerformed(evt);
+            }
+        });
         getContentPane().add(btncadastrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 640, 170, 40));
 
         txfBairro.setBackground(new java.awt.Color(218, 218, 218));
@@ -215,6 +223,73 @@ public class DlgFuncionario extends javax.swing.JDialog {
     private void lblFecharMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFecharMouseClicked
         this.dispose();
     }//GEN-LAST:event_lblFecharMouseClicked
+
+    private void btncadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastrarActionPerformed
+        FuncionarioDao fd = new FuncionarioDao(sessionFactory);
+        String nome = txfNome.getText().trim();
+        String email = txfEmail.getText().trim();
+        String atividade = txfAtividade.getText().trim();
+        String cidade = txfCidade.getText().trim();
+        String estado = txfEstado.getText().trim();
+        String rua = txfRua.getText().trim();
+        String numero = ftfNumero.getText().trim();
+        String bairro = txfBairro.getText().trim();
+        String endereco = rua.isBlank()
+                ? ""
+                : rua + ", " + numero + ", " + bairro;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+        LocalDate dataNasc = convertToLocalDate(ftfData.getDate());
+        String sexo = cbxSexo.getSelectedItem().toString();
+        String status = cbxStatus.getSelectedItem().toString();
+        String telefone = ftfTelefone.getText();
+        String cpf = ftfCpf.getText();
+        String usuario = txfUsuario.getText().trim();
+        char[] getSenha = pwfSenha.getPassword();
+        String senha = String.valueOf(getSenha);
+
+        if (nome.isBlank() || email.isBlank() || atividade.isBlank()
+                || cidade.isBlank() || estado.isBlank()
+                || sexo.equals("Selecione") || status.equals("Selecione")
+                || telefone.equals("(  )      -    ") || cpf.equals("   .   .   -  ")
+                || usuario.isBlank() || senha.isBlank()) {
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
+            return;
+        }
+
+        id = funcionario.getId();
+        funcionario.setNome(nome);
+        funcionario.setEmail(email);
+        funcionario.setAtividade(atividade);
+        funcionario.setCidade(cidade);
+        funcionario.setEstado(estado);
+        funcionario.setEndereco(endereco);
+        funcionario.setData_cadastro(LocalDate.now());
+        funcionario.setData_nascimento(dataNasc);
+        funcionario.setSexo(sexo);
+        funcionario.setStatus(status);
+        funcionario.setTelefone(telefone);
+        funcionario.setCpf(cpf);
+        funcionario.setUsuario(usuario);
+        funcionario.setSenha(Criptografar.encriptografar(senha));
+
+        Optional<Funcionario> funcionario0 = Optional.empty();
+
+        if (id == 0) {
+            funcionario0 = fd.salvar(funcionario);
+        } else {
+            funcionario0 = fd.atualizar(funcionario);
+        }
+
+        if (funcionario0.isPresent()) {
+            if (id == 0) {
+                JOptionPane.showMessageDialog(null, "Funcionário cadastrado com sucesso!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Funcionário atualizado com sucesso!");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Problema ao cadastrar funcionário.");
+        }
+    }//GEN-LAST:event_btncadastrarActionPerformed
 
     public LocalDate convertToLocalDate(Date dateToConvert) {
         return dateToConvert.toInstant()

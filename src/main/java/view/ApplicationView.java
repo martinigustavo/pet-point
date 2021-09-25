@@ -256,6 +256,7 @@ public class ApplicationView extends javax.swing.JFrame {
             id = Integer.parseInt(idString);
             
              if (id < 0) {
+                 System.out.println("Id menor que 0");
             //lblmensagem.setVisible(true);
         } else {
             System.out.println(cmbescolher.getSelectedIndex());
