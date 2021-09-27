@@ -14,14 +14,12 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import lombok.extern.log4j.Log4j2;
 import org.hibernate.SessionFactory;
 import utils.Criptografar;
 import utils.HibernateUtil;
 
-/**
- *
- * @author evely
- */
+@Log4j2
 public class DlgFuncionario extends javax.swing.JDialog {
 
     private int id = 0;
@@ -225,69 +223,75 @@ public class DlgFuncionario extends javax.swing.JDialog {
     }//GEN-LAST:event_lblFecharMouseClicked
 
     private void btncadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastrarActionPerformed
-        FuncionarioDao fd = new FuncionarioDao(sessionFactory);
-        String nome = txfNome.getText().trim();
-        String email = txfEmail.getText().trim();
-        String atividade = txfAtividade.getText().trim();
-        String cidade = txfCidade.getText().trim();
-        String estado = txfEstado.getText().trim();
-        String rua = txfRua.getText().trim();
-        String numero = ftfNumero.getText().trim();
-        String bairro = txfBairro.getText().trim();
-        String endereco = rua.isBlank()
-                ? ""
-                : rua + ", " + numero + ", " + bairro;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
-        LocalDate dataNasc = convertToLocalDate(ftfData.getDate());
-        String sexo = cbxSexo.getSelectedItem().toString();
-        String status = cbxStatus.getSelectedItem().toString();
-        String telefone = ftfTelefone.getText();
-        String cpf = ftfCpf.getText();
-        String usuario = txfUsuario.getText().trim();
-        char[] getSenha = pwfSenha.getPassword();
-        String senha = String.valueOf(getSenha);
+        try {
+            FuncionarioDao fd = new FuncionarioDao(sessionFactory);
+            String nome = txfNome.getText().trim();
+            String email = txfEmail.getText().trim();
+            String atividade = txfAtividade.getText().trim();
+            String cidade = txfCidade.getText().trim();
+            String estado = txfEstado.getText().trim();
+            String rua = txfRua.getText().trim();
+            String numero = ftfNumero.getText().trim();
+            String bairro = txfBairro.getText().trim();
+            String endereco = rua.isBlank()
+                    ? ""
+                    : rua + ", " + numero + ", " + bairro;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+            LocalDate dataNasc = convertToLocalDate(ftfData.getDate());
+            String sexo = cbxSexo.getSelectedItem().toString();
+            String status = cbxStatus.getSelectedItem().toString();
+            String telefone = ftfTelefone.getText();
+            String cpf = ftfCpf.getText();
+            String usuario = txfUsuario.getText().trim();
+            char[] getSenha = pwfSenha.getPassword();
+            String senha = String.valueOf(getSenha);
 
-        if (nome.isBlank() || email.isBlank() || atividade.isBlank()
-                || cidade.isBlank() || estado.isBlank()
-                || sexo.equals("Selecione") || status.equals("Selecione")
-                || telefone.equals("(  )      -    ") || cpf.equals("   .   .   -  ")
-                || usuario.isBlank() || senha.isBlank()) {
-            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
-            return;
-        }
-
-        id = funcionario.getId();
-        funcionario.setNome(nome);
-        funcionario.setEmail(email);
-        funcionario.setAtividade(atividade);
-        funcionario.setCidade(cidade);
-        funcionario.setEstado(estado);
-        funcionario.setEndereco(endereco);
-        funcionario.setData_cadastro(LocalDate.now());
-        funcionario.setData_nascimento(dataNasc);
-        funcionario.setSexo(sexo);
-        funcionario.setStatus(status);
-        funcionario.setTelefone(telefone);
-        funcionario.setCpf(cpf);
-        funcionario.setUsuario(usuario);
-        funcionario.setSenha(Criptografar.encriptografar(senha));
-
-        Optional<Funcionario> funcionario0 = Optional.empty();
-
-        if (id == 0) {
-            funcionario0 = fd.salvar(funcionario);
-        } else {
-            funcionario0 = fd.atualizar(funcionario);
-        }
-
-        if (funcionario0.isPresent()) {
-            if (id == 0) {
-                JOptionPane.showMessageDialog(null, "Funcionário cadastrado com sucesso!");
-            } else {
-                JOptionPane.showMessageDialog(null, "Funcionário atualizado com sucesso!");
+            if (nome.isBlank() || email.isBlank() || atividade.isBlank()
+                    || cidade.isBlank() || estado.isBlank()
+                    || sexo.equals("Selecione") || status.equals("Selecione")
+                    || telefone.equals("(  )      -    ") || cpf.equals("   .   .   -  ")
+                    || usuario.isBlank() || senha.isBlank()) {
+                JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
+                return;
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Problema ao cadastrar funcionário.");
+
+            id = funcionario.getId();
+            funcionario.setNome(nome);
+            funcionario.setEmail(email);
+            funcionario.setAtividade(atividade);
+            funcionario.setCidade(cidade);
+            funcionario.setEstado(estado);
+            funcionario.setEndereco(endereco);
+            funcionario.setData_cadastro(LocalDate.now());
+            funcionario.setData_nascimento(dataNasc);
+            funcionario.setSexo(sexo);
+            funcionario.setStatus(status);
+            funcionario.setTelefone(telefone);
+            funcionario.setCpf(cpf);
+            funcionario.setUsuario(usuario);
+            funcionario.setSenha(Criptografar.encriptografar(senha));
+
+            Optional<Funcionario> funcionario0 = Optional.empty();
+
+            if (id == 0) {
+                funcionario0 = fd.salvar(funcionario);
+            } else {
+                funcionario0 = fd.atualizar(funcionario);
+            }
+
+            if (funcionario0.isPresent()) {
+                if (id == 0) {
+                    JOptionPane.showMessageDialog(null, "Funcionário cadastrado com sucesso!");
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Funcionário atualizado com sucesso!");
+                    this.dispose();
+                }
+            }
+        } catch (Exception e) {
+            log.error("Erro ao cadastrar funcionário: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar funcionário.");
+            this.dispose();
         }
     }//GEN-LAST:event_btncadastrarActionPerformed
 

@@ -13,7 +13,6 @@ import entities.Funcionario;
 import entities.Veterinario;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -22,15 +21,12 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import lombok.extern.log4j.Log4j2;
 import org.hibernate.SessionFactory;
-import utils.Criptografar;
 import utils.HibernateUtil;
 import utils.VisualsConfig;
 
-/**
- *
- * @author evely
- */
+@Log4j2
 public class ApplicationView extends javax.swing.JFrame {
 
     private final Funcionario funcLogado;
@@ -314,51 +310,63 @@ public class ApplicationView extends javax.swing.JFrame {
                 pnlcadastrarfunc.setVisible(true);
              */
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Nenhum funcionário selecionado.");
+            log.error("Erro ao selecionar na tabela de cadastros "
+                    + "(combobox selected_index: "
+                    + cmbescolher.getSelectedIndex()
+                    + "): " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao selecionar.");
         }
     }//GEN-LAST:event_tblgeralMouseClicked
 
     private void tfdbuscaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdbuscaKeyReleased
-        busca = tfdbusca.getText();
+        try {
+            busca = tfdbusca.getText();
 
-        switch (cmbescolher.getSelectedIndex()) {
-            case 0: {
-                List<Funcionario> funcionarios = new FuncionarioDao(sessionFactory).buscarPorNome(busca);
+            switch (cmbescolher.getSelectedIndex()) {
+                case 0: {
+                    List<Funcionario> funcionarios = new FuncionarioDao(sessionFactory).buscarPorNome(busca);
 
-                Object[] cabecalho = {"id", "Nome"};
-                Object[][] dadosTabela = new Object[funcionarios.size()][2];
-                if (funcionarios.size() > 0) {
-                    for (int i = 0; i < funcionarios.size(); i++) {
-                        dadosTabela[i][0] = funcionarios.get(i).getId();
-                        dadosTabela[i][1] = funcionarios.get(i).getNome();
-                    }
-                }
-
-                tblgeral.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
-                    @Override
-                    public boolean isCellEditable(int row, int column) {
-                        return false;
+                    Object[] cabecalho = {"id", "Nome"};
+                    Object[][] dadosTabela = new Object[funcionarios.size()][2];
+                    if (funcionarios.size() > 0) {
+                        for (int i = 0; i < funcionarios.size(); i++) {
+                            dadosTabela[i][0] = funcionarios.get(i).getId();
+                            dadosTabela[i][1] = funcionarios.get(i).getNome();
+                        }
                     }
 
-                });
+                    tblgeral.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
 
-                tblgeral.setSelectionMode(0);
+                    });
 
-                // redimensiona as colunas de uma tabela
-                TableColumn column = null;
-                for (int i = 0; i < tblgeral.getColumnCount(); i++) {
-                    column = tblgeral.getColumnModel().getColumn(i);
-                    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-                    centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-                    column.setCellRenderer(centerRenderer);
+                    tblgeral.setSelectionMode(0);
+
+                    // redimensiona as colunas de uma tabela
+                    TableColumn column = null;
+                    for (int i = 0; i < tblgeral.getColumnCount(); i++) {
+                        column = tblgeral.getColumnModel().getColumn(i);
+                        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+                        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+                        column.setCellRenderer(centerRenderer);
+                    }
+
+                    column = tblgeral.getColumnModel().getColumn(0);
+                    column.setPreferredWidth(70);
+                    column.setMaxWidth(70);
+                    column.setMinWidth(70);
+                    break;
                 }
-
-                column = tblgeral.getColumnModel().getColumn(0);
-                column.setPreferredWidth(70);
-                column.setMaxWidth(70);
-                column.setMinWidth(70);
-                break;
             }
+        } catch (Exception e) {
+            log.error("Erro ao buscar na tabela de cadastros "
+                    + "(combobox selected_index: "
+                    + cmbescolher.getSelectedIndex()
+                    + "): " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao buscar.");
         }
     }//GEN-LAST:event_tfdbuscaKeyReleased
 

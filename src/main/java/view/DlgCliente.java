@@ -14,13 +14,11 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import lombok.extern.log4j.Log4j2;
 import org.hibernate.SessionFactory;
 import utils.HibernateUtil;
 
-/**
- *
- * @author evely
- */
+@Log4j2
 public class DlgCliente extends javax.swing.JDialog {
 
     int id = 0;
@@ -213,63 +211,67 @@ public class DlgCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_lblFecharMouseClicked
 
     private void btncadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastrarActionPerformed
-        ClienteDao cd = new ClienteDao(sessionFactory);
-        String nome = txfNome.getText().trim();
-        String email = txfEmail.getText().trim();
-        String cidade = txfCidade.getText().trim();
-        String estado = txfEstado.getText().trim();
-        String rua = txfRua.getText().trim();
-        String numero = ftfNumero.getText().trim();
-        String bairro = txfBairro.getText().trim();
-        String endereco = rua.isBlank()
-                ? ""
-                : rua + ", " + numero + ", " + bairro;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
-        LocalDate dataNasc = convertToLocalDate(ftfData.getDate());
-        String sexo = cbxSexo.getSelectedItem().toString();
-        String status = cbxStatus.getSelectedItem().toString();
-        String telefone = ftfTelefone.getText();
-        String cpf = ftfCpf.getText();
+        try {
+            ClienteDao cd = new ClienteDao(sessionFactory);
 
-        if (nome.isBlank() || email.isBlank()
-                || cidade.isBlank() || estado.isBlank()
-                || sexo.equals("Selecione") || status.equals("Selecione")
-                || telefone.equals("(  )      -    ") || cpf.equals("   .   .   -  ")) {
-            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
-            return;
-        }
+            String nome = txfNome.getText().trim();
+            String email = txfEmail.getText().trim();
+            String cidade = txfCidade.getText().trim();
+            String estado = txfEstado.getText().trim();
+            String rua = txfRua.getText().trim();
+            String numero = ftfNumero.getText().trim();
+            String bairro = txfBairro.getText().trim();
+            String endereco = rua.isBlank()
+                    ? ""
+                    : rua + ", " + numero + ", " + bairro;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+            LocalDate dataNasc = convertToLocalDate(ftfData.getDate());
+            String sexo = cbxSexo.getSelectedItem().toString();
+            String status = cbxStatus.getSelectedItem().toString();
+            String telefone = ftfTelefone.getText();
+            String cpf = ftfCpf.getText();
 
-        id = cli.getId();
-        cli.setNome(nome);
-        cli.setEmail(email);
-        cli.setCidade(cidade);
-        cli.setEstado(estado);
-        cli.setEndereco(endereco);
-        cli.setData_cadastro(LocalDate.now());
-        cli.setData_nascimento(dataNasc);
-        cli.setSexo(sexo);
-        cli.setStatus(status);
-        cli.setTelefone(telefone);
-        cli.setCpf(cpf);
-
-        Optional<Cliente> cliente0 = Optional.empty();
-
-        if (id == 0) {
-            cliente0 = cd.salvar(cli);
-        } else {
-            cli.setId(id);
-            cliente0 = cd.atualizar(cli);
-        }
-
-        if (cliente0.isPresent()) {
-            if (id == 0) {
-                JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso!");
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(null, "Cliente atualizado com sucesso!");
-                this.dispose();
+            if (nome.isBlank() || email.isBlank()
+                    || cidade.isBlank() || estado.isBlank()
+                    || sexo.equals("Selecione") || status.equals("Selecione")
+                    || telefone.equals("(  )      -    ") || cpf.equals("   .   .   -  ")) {
+                JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
+                return;
             }
-        } else {
+
+            id = cli.getId();
+            cli.setNome(nome);
+            cli.setEmail(email);
+            cli.setCidade(cidade);
+            cli.setEstado(estado);
+            cli.setEndereco(endereco);
+            cli.setData_cadastro(LocalDate.now());
+            cli.setData_nascimento(dataNasc);
+            cli.setSexo(sexo);
+            cli.setStatus(status);
+            cli.setTelefone(telefone);
+            cli.setCpf(cpf);
+
+            Optional<Cliente> cliente0 = Optional.empty();
+
+            if (id == 0) {
+                cliente0 = cd.salvar(cli);
+            } else {
+                cli.setId(id);
+                cliente0 = cd.atualizar(cli);
+            }
+
+            if (cliente0.isPresent()) {
+                if (id == 0) {
+                    JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso!");
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Cliente atualizado com sucesso!");
+                    this.dispose();
+                }
+            }
+        } catch (Exception e) {
+            log.error("Erro ao cadastrar cliente: " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Problema ao cadastrar cliente.");
             this.dispose();
         }

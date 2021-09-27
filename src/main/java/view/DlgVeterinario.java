@@ -14,14 +14,12 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import lombok.extern.log4j.Log4j2;
 import org.hibernate.SessionFactory;
 import utils.Criptografar;
 import utils.HibernateUtil;
 
-/**
- *
- * @author evely
- */
+@Log4j2
 public class DlgVeterinario extends javax.swing.JDialog {
 
     private int id = 0;
@@ -233,69 +231,75 @@ public class DlgVeterinario extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        VeterinarioDao vd = new VeterinarioDao(sessionFactory);
-        String nome = txfNome.getText().trim();
-        String email = txfEmail.getText().trim();
-        String crmv = txfCrmv.getText().trim();
-        String cidade = txfCidade.getText().trim();
-        String estado = txfEstado.getText().trim();
-        String rua = txfRua.getText().trim();
-        String numero = ftfNumero.getText().trim();
-        String bairro = txfBairro.getText().trim();
-        String endereco = rua.isBlank()
-                ? ""
-                : rua + ", " + numero + ", " + bairro;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
-        LocalDate dataNasc = convertToLocalDate(ftfData.getDate());
-        String sexo = cbxSexo.getSelectedItem().toString();
-        String status = cbxStatus.getSelectedItem().toString();
-        String telefone = ftfTelefone.getText();
-        String cpf = ftfCpf.getText();
-        String usuario = txfUsuario.getText().trim();
-        char[] getSenha = pwfSenha.getPassword();
-        String senha = String.valueOf(getSenha);
+        try {
+            VeterinarioDao vd = new VeterinarioDao(sessionFactory);
+            String nome = txfNome.getText().trim();
+            String email = txfEmail.getText().trim();
+            String crmv = txfCrmv.getText().trim();
+            String cidade = txfCidade.getText().trim();
+            String estado = txfEstado.getText().trim();
+            String rua = txfRua.getText().trim();
+            String numero = ftfNumero.getText().trim();
+            String bairro = txfBairro.getText().trim();
+            String endereco = rua.isBlank()
+                    ? ""
+                    : rua + ", " + numero + ", " + bairro;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+            LocalDate dataNasc = convertToLocalDate(ftfData.getDate());
+            String sexo = cbxSexo.getSelectedItem().toString();
+            String status = cbxStatus.getSelectedItem().toString();
+            String telefone = ftfTelefone.getText();
+            String cpf = ftfCpf.getText();
+            String usuario = txfUsuario.getText().trim();
+            char[] getSenha = pwfSenha.getPassword();
+            String senha = String.valueOf(getSenha);
 
-        if (nome.isBlank() || email.isBlank() || crmv.isBlank()
-                || cidade.isBlank() || estado.isBlank()
-                || sexo.equals("Selecione") || status.equals("Selecione")
-                || telefone.equals("(  )      -    ") || cpf.equals("   .   .   -  ")
-                || usuario.isBlank() || senha.isBlank()) {
-            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
-            return;
-        }
-
-        id = vet.getId();
-        vet.setNome(nome);
-        vet.setEmail(email);
-        vet.setCrmv(crmv);
-        vet.setCidade(cidade);
-        vet.setEstado(estado);
-        vet.setEndereco(endereco);
-        vet.setData_cadastro(LocalDate.now());
-        vet.setData_nascimento(dataNasc);
-        vet.setSexo(sexo);
-        vet.setStatus(status);
-        vet.setTelefone(telefone);
-        vet.setCpf(cpf);
-        vet.setUsuario(usuario);
-        vet.setSenha(Criptografar.encriptografar(senha));
-
-        Optional<Veterinario> medico0 = Optional.empty();
-
-        if (id == 0) {
-            medico0 = vd.salvar(vet);
-        } else {
-            medico0 = vd.atualizar(vet);
-        }
-
-        if (medico0.isPresent()) {
-            if (id == 0) {
-                JOptionPane.showMessageDialog(null, "Veterinário cadastrado com sucesso!");
-            } else {
-                JOptionPane.showMessageDialog(null, "Veterinário atualizado com sucesso!");
+            if (nome.isBlank() || email.isBlank() || crmv.isBlank()
+                    || cidade.isBlank() || estado.isBlank()
+                    || sexo.equals("Selecione") || status.equals("Selecione")
+                    || telefone.equals("(  )      -    ") || cpf.equals("   .   .   -  ")
+                    || usuario.isBlank() || senha.isBlank()) {
+                JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
+                return;
             }
-        } else {
+
+            id = vet.getId();
+            vet.setNome(nome);
+            vet.setEmail(email);
+            vet.setCrmv(crmv);
+            vet.setCidade(cidade);
+            vet.setEstado(estado);
+            vet.setEndereco(endereco);
+            vet.setData_cadastro(LocalDate.now());
+            vet.setData_nascimento(dataNasc);
+            vet.setSexo(sexo);
+            vet.setStatus(status);
+            vet.setTelefone(telefone);
+            vet.setCpf(cpf);
+            vet.setUsuario(usuario);
+            vet.setSenha(Criptografar.encriptografar(senha));
+
+            Optional<Veterinario> medico0 = Optional.empty();
+
+            if (id == 0) {
+                medico0 = vd.salvar(vet);
+            } else {
+                medico0 = vd.atualizar(vet);
+            }
+
+            if (medico0.isPresent()) {
+                if (id == 0) {
+                    JOptionPane.showMessageDialog(null, "Veterinário cadastrado com sucesso!");
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Veterinário atualizado com sucesso!");
+                    this.dispose();
+                }
+            }
+        } catch (Exception e) {
+            log.error("Erro ao cadastrar veterinário: " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Problema ao cadastrar veterinário.");
+            this.dispose();
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
