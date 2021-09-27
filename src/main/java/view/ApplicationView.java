@@ -41,21 +41,20 @@ public class ApplicationView extends javax.swing.JFrame {
 
     /**
      * Creates new form ApplicationView
-     * 
+     *
      */
     public ApplicationView(Funcionario funcLogado) {
         initComponents();
 
         pnlcadastros.setVisible(false);
 
-        //VisualsConfig.setPropsToWindow(this, "Cadastro de Funcionário", txfAtividade);
-
+        VisualsConfig.setPropsToWindow(this, "Pet Point", rootPane);
         this.funcLogado = funcLogado;
         this.sessionFactory = HibernateUtil.getSessionFactory();
         this.fd = new FuncionarioDao(sessionFactory);
         this.busca = "";
         this.id = 0;
-        
+
         lblLogado.setText(funcLogado.getNome());
     }
 
@@ -251,42 +250,42 @@ public class ApplicationView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     private void tblgeralMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblgeralMouseClicked
-         try {
+        try {
             String idString = String.valueOf(tblgeral.getValueAt(tblgeral.getSelectedRow(), 0));
             id = Integer.parseInt(idString);
-            
-             if (id < 0) {
-                 System.out.println("Id menor que 0");
-            //lblmensagem.setVisible(true);
-        } else {
-            System.out.println(cmbescolher.getSelectedIndex());
-            switch (cmbescolher.getSelectedIndex()) {
-                case 0: {
-                Optional<Funcionario> func = new FuncionarioDao(sessionFactory).buscar(id);
-                Funcionario funcionario = func.get();
-                DlgFuncionario funcionarioTela = new DlgFuncionario(null, true, funcionario);
-                funcionarioTela.setVisible(true);
-                    break;
+
+            if (id < 0) {
+                System.out.println("Id menor que 0");
+                //lblmensagem.setVisible(true);
+            } else {
+                System.out.println(cmbescolher.getSelectedIndex());
+                switch (cmbescolher.getSelectedIndex()) {
+                    case 0: {
+                        Optional<Funcionario> func = new FuncionarioDao(sessionFactory).buscar(id);
+                        Funcionario funcionario = func.get();
+                        DlgFuncionario funcionarioTela = new DlgFuncionario(null, true, funcionario);
+                        funcionarioTela.setVisible(true);
+                        break;
+                    }
+                    case 1: {
+                        Optional<Cliente> cli = new ClienteDao(sessionFactory).buscar(id);
+                        Cliente cliente = cli.get();
+                        DlgCliente clienteTela = new DlgCliente(null, true, cliente);
+                        clienteTela.setVisible(true);
+                        break;
+                    }
+                    case 2: {
+                        Optional<Veterinario> vet = new VeterinarioDao(sessionFactory).buscar(id);
+                        Veterinario veterinario = vet.get();
+                        DlgVeterinario veterinarioTela = new DlgVeterinario(null, true, veterinario);
+                        veterinarioTela.setVisible(true);
+                        break;
+                    }
+                    default:
+                        break;
                 }
-                case 1: {
-                Optional<Cliente> cli = new ClienteDao(sessionFactory).buscar(id);
-                Cliente cliente = cli.get();
-                DlgCliente clienteTela = new DlgCliente(null, true, cliente);
-                clienteTela.setVisible(true);
-                    break;
-                }
-                case 2: {
-                Optional<Veterinario> vet = new VeterinarioDao(sessionFactory).buscar(id);
-                Veterinario veterinario = vet.get();
-                DlgVeterinario veterinarioTela = new DlgVeterinario(null, true, veterinario);
-                veterinarioTela.setVisible(true);
-                    break;
-                }
-                default:
-                    break;
             }
-        }
-                       
+
             /*
             if (func.isPresent()) {
                 txfNome.setText(func.get().getNome());
@@ -313,7 +312,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 
                 desativarTelas();
                 pnlcadastrarfunc.setVisible(true);
-                */           
+             */
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Nenhum funcionário selecionado.");
         }
@@ -321,53 +320,53 @@ public class ApplicationView extends javax.swing.JFrame {
 
     private void tfdbuscaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdbuscaKeyReleased
         busca = tfdbusca.getText();
-        
-         switch (cmbescolher.getSelectedIndex()) {
-         case 0: {
-        List<Funcionario> funcionarios = new FuncionarioDao(sessionFactory).buscarPorNome(busca);
 
-        Object[] cabecalho = {"id", "Nome"};
-        Object[][] dadosTabela = new Object[funcionarios.size()][2];
-        if (funcionarios.size() > 0) {
-            for (int i = 0; i < funcionarios.size(); i++) {
-                dadosTabela[i][0] = funcionarios.get(i).getId();
-                dadosTabela[i][1] = funcionarios.get(i).getNome();
+        switch (cmbescolher.getSelectedIndex()) {
+            case 0: {
+                List<Funcionario> funcionarios = new FuncionarioDao(sessionFactory).buscarPorNome(busca);
+
+                Object[] cabecalho = {"id", "Nome"};
+                Object[][] dadosTabela = new Object[funcionarios.size()][2];
+                if (funcionarios.size() > 0) {
+                    for (int i = 0; i < funcionarios.size(); i++) {
+                        dadosTabela[i][0] = funcionarios.get(i).getId();
+                        dadosTabela[i][1] = funcionarios.get(i).getNome();
+                    }
+                }
+
+                tblgeral.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+
+                });
+
+                tblgeral.setSelectionMode(0);
+
+                // redimensiona as colunas de uma tabela
+                TableColumn column = null;
+                for (int i = 0; i < tblgeral.getColumnCount(); i++) {
+                    column = tblgeral.getColumnModel().getColumn(i);
+                    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+                    centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+                    column.setCellRenderer(centerRenderer);
+                }
+
+                column = tblgeral.getColumnModel().getColumn(0);
+                column.setPreferredWidth(70);
+                column.setMaxWidth(70);
+                column.setMinWidth(70);
+                break;
             }
         }
-
-        tblgeral.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-
-        });
-
-        tblgeral.setSelectionMode(0);
-
-        // redimensiona as colunas de uma tabela
-        TableColumn column = null;
-        for (int i = 0; i < tblgeral.getColumnCount(); i++) {
-            column = tblgeral.getColumnModel().getColumn(i);
-            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-            column.setCellRenderer(centerRenderer);
-        }
-
-        column = tblgeral.getColumnModel().getColumn(0);
-        column.setPreferredWidth(70);
-        column.setMaxWidth(70);
-        column.setMinWidth(70);
-        break;
-       }
-     }
     }//GEN-LAST:event_tfdbuscaKeyReleased
 
     public void desativarTelas() {
         pnlhome.setVisible(false);
         pnlcadastros.setVisible(false);
     }
-    
+
     public LocalDate convertToLocalDate(Date dateToConvert) {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())

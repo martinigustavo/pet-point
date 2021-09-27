@@ -26,42 +26,42 @@ public class DlgCliente extends javax.swing.JDialog {
     int id = 0;
     private Cliente cli = new Cliente();
     private final SessionFactory sessionFactory;
-    
+
     public DlgCliente(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);       
+        super(parent, modal);
         initComponents();
         this.sessionFactory = HibernateUtil.getSessionFactory();
     }
-    
+
     public DlgCliente(java.awt.Frame parent, boolean modal, Cliente cliente) {
         super(parent, modal);
         initComponents();
         this.sessionFactory = HibernateUtil.getSessionFactory();
-                this.cli = cliente;
-                txfNome.setText(cliente.getNome());
-                ftfCpf.setText(cliente.getCpf());
-                ftfTelefone.setText(cliente.getTelefone());
-                ftfData.setDate(convertToDateViaInstant(cliente.getData_nascimento()));
-                txfEstado.setText(cliente.getEstado());
-                txfCidade.setText(cliente.getCidade());
-                txfEmail.setText(cliente.getEmail());
-                //endereço
-                String[] endereco = cliente.getEndereco().split(Pattern.quote(",")); 
-                txfRua.setText(endereco[0]);
-                ftfNumero.setText(endereco[1]);
-                txfBairro.setText(endereco[2]);
-         
-          if (cliente.getSexo().equals("Feminino")) {
-                    cbxSexo.setSelectedIndex(1);
-                } else {
-                    cbxSexo.setSelectedIndex(2);
-            }
-          
-           if (cliente.getStatus().equals("Ativo")) {
-                    cbxStatus.setSelectedIndex(1);
-                } else {
-                    cbxStatus.setSelectedIndex(2);
-                }
+        this.cli = cliente;
+        txfNome.setText(cliente.getNome());
+        ftfCpf.setText(cliente.getCpf());
+        ftfTelefone.setText(cliente.getTelefone());
+        ftfData.setDate(convertToDateViaInstant(cliente.getData_nascimento()));
+        txfEstado.setText(cliente.getEstado());
+        txfCidade.setText(cliente.getCidade());
+        txfEmail.setText(cliente.getEmail());
+        //endereço
+        String[] endereco = cliente.getEndereco().split(Pattern.quote(","));
+        txfRua.setText(endereco[0]);
+        ftfNumero.setText(endereco[1]);
+        txfBairro.setText(endereco[2]);
+
+        if (cliente.getSexo().equals("Feminino")) {
+            cbxSexo.setSelectedIndex(1);
+        } else {
+            cbxSexo.setSelectedIndex(2);
+        }
+
+        if (cliente.getStatus().equals("Ativo")) {
+            cbxStatus.setSelectedIndex(1);
+        } else {
+            cbxStatus.setSelectedIndex(2);
+        }
     }
 
     /**
@@ -222,8 +222,8 @@ public class DlgCliente extends javax.swing.JDialog {
         String numero = ftfNumero.getText().trim();
         String bairro = txfBairro.getText().trim();
         String endereco = rua.isBlank()
-        ? ""
-        : rua + ", " + numero + ", " + bairro;
+                ? ""
+                : rua + ", " + numero + ", " + bairro;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
         LocalDate dataNasc = convertToLocalDate(ftfData.getDate());
         String sexo = cbxSexo.getSelectedItem().toString();
@@ -232,9 +232,9 @@ public class DlgCliente extends javax.swing.JDialog {
         String cpf = ftfCpf.getText();
 
         if (nome.isBlank() || email.isBlank()
-            || cidade.isBlank() || estado.isBlank()
-            || sexo.equals("Selecione") || status.equals("Selecione")
-            || telefone.equals("(  )      -    ") || cpf.equals("   .   .   -  ")) {
+                || cidade.isBlank() || estado.isBlank()
+                || sexo.equals("Selecione") || status.equals("Selecione")
+                || telefone.equals("(  )      -    ") || cpf.equals("   .   .   -  ")) {
             JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
             return;
         }
@@ -263,19 +263,19 @@ public class DlgCliente extends javax.swing.JDialog {
 
         if (cliente0.isPresent()) {
             if (id == 0) {
-                JOptionPane.showMessageDialog(null, "Funcionário cadastrado com sucesso!");
+                JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso!");
                 this.dispose();
             } else {
-                JOptionPane.showMessageDialog(null, "Funcionário atualizado com sucesso!");
+                JOptionPane.showMessageDialog(null, "Cliente atualizado com sucesso!");
                 this.dispose();
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Problema ao cadastrar funcionário.");
+            JOptionPane.showMessageDialog(null, "Problema ao cadastrar cliente.");
             this.dispose();
         }
     }//GEN-LAST:event_btncadastrarActionPerformed
-    
-        public LocalDate convertToLocalDate(Date dateToConvert) {
+
+    public LocalDate convertToLocalDate(Date dateToConvert) {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();

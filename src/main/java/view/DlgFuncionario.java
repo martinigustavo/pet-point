@@ -23,48 +23,48 @@ import utils.HibernateUtil;
  * @author evely
  */
 public class DlgFuncionario extends javax.swing.JDialog {
-    
+
     private int id = 0;
     private Funcionario funcionario = new Funcionario();
     private final SessionFactory sessionFactory;
-    
-     public DlgFuncionario(java.awt.Frame parent, boolean modal) {
+
+    public DlgFuncionario(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-         this.sessionFactory = HibernateUtil.getSessionFactory();
+        this.sessionFactory = HibernateUtil.getSessionFactory();
     }
-     
+
     public DlgFuncionario(java.awt.Frame parent, boolean modal, Funcionario funcionario) {
         super(parent, modal);
         initComponents();
-         this.sessionFactory = HibernateUtil.getSessionFactory();
-                this.funcionario = funcionario;
-                txfNome.setText(funcionario.getNome());
-                txfUsuario.setText(funcionario.getUsuario());
-                ftfCpf.setText(funcionario.getCpf());
-                ftfTelefone.setText(funcionario.getTelefone());
-                txfAtividade.setText(funcionario.getAtividade());
-                ftfData.setDate(convertToDateViaInstant(funcionario.getData_nascimento()));
-                txfEstado.setText(funcionario.getEstado());
-                txfCidade.setText(funcionario.getCidade());
-                txfEmail.setText(funcionario.getEmail());
-                String[] endereco = funcionario.getEndereco().split(Pattern.quote(",")); 
-                txfRua.setText(endereco[0]);
-                ftfNumero.setText(endereco[1]);
-                txfBairro.setText(endereco[2]);
-         
-          if (funcionario.getSexo().equals("Feminino")) {
-                    cbxSexo.setSelectedIndex(1);
-                } else {
-                    cbxSexo.setSelectedIndex(2);
-            }
-          
-           if (funcionario.getStatus().equals("Ativo")) {
-                    cbxStatus.setSelectedIndex(1);
-                } else {
-                    cbxStatus.setSelectedIndex(2);
-                }
-         
+        this.sessionFactory = HibernateUtil.getSessionFactory();
+        this.funcionario = funcionario;
+        txfNome.setText(funcionario.getNome());
+        txfUsuario.setText(funcionario.getUsuario());
+        ftfCpf.setText(funcionario.getCpf());
+        ftfTelefone.setText(funcionario.getTelefone());
+        txfAtividade.setText(funcionario.getAtividade());
+        ftfData.setDate(convertToDateViaInstant(funcionario.getData_nascimento()));
+        txfEstado.setText(funcionario.getEstado());
+        txfCidade.setText(funcionario.getCidade());
+        txfEmail.setText(funcionario.getEmail());
+        String[] endereco = funcionario.getEndereco().split(Pattern.quote(","));
+        txfRua.setText(endereco[0]);
+        ftfNumero.setText(endereco[1]);
+        txfBairro.setText(endereco[2]);
+
+        if (funcionario.getSexo().equals("Feminino")) {
+            cbxSexo.setSelectedIndex(1);
+        } else {
+            cbxSexo.setSelectedIndex(2);
+        }
+
+        if (funcionario.getStatus().equals("Ativo")) {
+            cbxStatus.setSelectedIndex(1);
+        } else {
+            cbxStatus.setSelectedIndex(2);
+        }
+
     }
 
     /**

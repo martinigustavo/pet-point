@@ -27,44 +27,44 @@ public class DlgVeterinario extends javax.swing.JDialog {
     private int id = 0;
     private Veterinario vet = new Veterinario();
     private final SessionFactory sessionFactory;
-    
+
     public DlgVeterinario(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.sessionFactory = HibernateUtil.getSessionFactory();
     }
-    
-     public DlgVeterinario(java.awt.Frame parent, boolean modal, Veterinario medico) {
+
+    public DlgVeterinario(java.awt.Frame parent, boolean modal, Veterinario medico) {
         super(parent, modal);
         initComponents();
-         this.sessionFactory = HibernateUtil.getSessionFactory();
-                this.vet = medico;
-                txfNome.setText(medico.getNome());
-                txfUsuario.setText(medico.getUsuario());
-                ftfCpf.setText(medico.getCpf());
-                ftfTelefone.setText(medico.getTelefone());
-                txfCrmv.setText(medico.getAtividade());
-                ftfData.setDate(convertToDateViaInstant(medico.getData_nascimento()));
-                txfEstado.setText(medico.getEstado());
-                txfCidade.setText(medico.getCidade());
-                txfEmail.setText(medico.getEmail());
-                //endereço
-                String[] endereco = medico.getEndereco().split(Pattern.quote(",")); 
-                txfRua.setText(endereco[0]);
-                ftfNumero.setText(endereco[1]);
-                txfBairro.setText(endereco[2]);
-          if (medico.getSexo().equals("Feminino")) {
-                    cbxSexo.setSelectedIndex(1);
-                } else {
-                    cbxSexo.setSelectedIndex(2);
-            }
-          
-           if (medico.getStatus().equals("Ativo")) {
-                    cbxStatus.setSelectedIndex(1);
-                } else {
-                    cbxStatus.setSelectedIndex(2);
-                }
-         
+        this.sessionFactory = HibernateUtil.getSessionFactory();
+        this.vet = medico;
+        txfNome.setText(medico.getNome());
+        txfUsuario.setText(medico.getUsuario());
+        ftfCpf.setText(medico.getCpf());
+        ftfTelefone.setText(medico.getTelefone());
+        txfCrmv.setText(medico.getAtividade());
+        ftfData.setDate(convertToDateViaInstant(medico.getData_nascimento()));
+        txfEstado.setText(medico.getEstado());
+        txfCidade.setText(medico.getCidade());
+        txfEmail.setText(medico.getEmail());
+        //endereço
+        String[] endereco = medico.getEndereco().split(Pattern.quote(","));
+        txfRua.setText(endereco[0]);
+        ftfNumero.setText(endereco[1]);
+        txfBairro.setText(endereco[2]);
+        if (medico.getSexo().equals("Feminino")) {
+            cbxSexo.setSelectedIndex(1);
+        } else {
+            cbxSexo.setSelectedIndex(2);
+        }
+
+        if (medico.getStatus().equals("Ativo")) {
+            cbxStatus.setSelectedIndex(1);
+        } else {
+            cbxStatus.setSelectedIndex(2);
+        }
+
     }
 
     /**
@@ -243,8 +243,8 @@ public class DlgVeterinario extends javax.swing.JDialog {
         String numero = ftfNumero.getText().trim();
         String bairro = txfBairro.getText().trim();
         String endereco = rua.isBlank()
-        ? ""
-        : rua + ", " + numero + ", " + bairro;
+                ? ""
+                : rua + ", " + numero + ", " + bairro;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
         LocalDate dataNasc = convertToLocalDate(ftfData.getDate());
         String sexo = cbxSexo.getSelectedItem().toString();
@@ -256,10 +256,10 @@ public class DlgVeterinario extends javax.swing.JDialog {
         String senha = String.valueOf(getSenha);
 
         if (nome.isBlank() || email.isBlank() || crmv.isBlank()
-            || cidade.isBlank() || estado.isBlank()
-            || sexo.equals("Selecione") || status.equals("Selecione")
-            || telefone.equals("(  )      -    ") || cpf.equals("   .   .   -  ")
-            || usuario.isBlank() || senha.isBlank()) {
+                || cidade.isBlank() || estado.isBlank()
+                || sexo.equals("Selecione") || status.equals("Selecione")
+                || telefone.equals("(  )      -    ") || cpf.equals("   .   .   -  ")
+                || usuario.isBlank() || senha.isBlank()) {
             JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
             return;
         }
@@ -290,12 +290,12 @@ public class DlgVeterinario extends javax.swing.JDialog {
 
         if (medico0.isPresent()) {
             if (id == 0) {
-                JOptionPane.showMessageDialog(null, "Funcionário cadastrado com sucesso!");
+                JOptionPane.showMessageDialog(null, "Veterinário cadastrado com sucesso!");
             } else {
-                JOptionPane.showMessageDialog(null, "Funcionário atualizado com sucesso!");
+                JOptionPane.showMessageDialog(null, "Veterinário atualizado com sucesso!");
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Problema ao cadastrar funcionário.");
+            JOptionPane.showMessageDialog(null, "Problema ao cadastrar veterinário.");
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
