@@ -86,12 +86,12 @@ public class DlgVeterinario extends javax.swing.JDialog {
         txfUsuario = new javax.swing.JTextField();
         ftfCpf = new javax.swing.JFormattedTextField();
         txfEstado = new javax.swing.JTextField();
-        btnSalvar = new javax.swing.JButton();
         ftfNumero = new javax.swing.JTextField();
         txfNome = new javax.swing.JTextField();
         ftfData = new com.toedter.calendar.JDateChooser();
         txfRua = new javax.swing.JTextField();
         txfCidade = new javax.swing.JTextField();
+        btncadastrar = new javax.swing.JButton();
         background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -171,18 +171,6 @@ public class DlgVeterinario extends javax.swing.JDialog {
         txfEstado.setBorder(null);
         pnlcadastromedico.add(txfEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 520, 250, 30));
 
-        btnSalvar.setBackground(new java.awt.Color(58, 203, 199));
-        btnSalvar.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
-        btnSalvar.setForeground(new java.awt.Color(255, 255, 255));
-        btnSalvar.setText("Salvar");
-        btnSalvar.setBorder(null);
-        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalvarActionPerformed(evt);
-            }
-        });
-        pnlcadastromedico.add(btnSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1420, 1010, 190, 40));
-
         ftfNumero.setBackground(new java.awt.Color(218, 218, 218));
         ftfNumero.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         ftfNumero.setToolTipText("");
@@ -211,6 +199,18 @@ public class DlgVeterinario extends javax.swing.JDialog {
         txfCidade.setBorder(null);
         pnlcadastromedico.add(txfCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 610, 260, 20));
 
+        btncadastrar.setBackground(new java.awt.Color(58, 203, 199));
+        btncadastrar.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        btncadastrar.setForeground(new java.awt.Color(255, 255, 255));
+        btncadastrar.setText("Cadastrar");
+        btncadastrar.setBorder(null);
+        btncadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncadastrarActionPerformed(evt);
+            }
+        });
+        pnlcadastromedico.add(btncadastrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 640, 170, 40));
+
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastromedico.png"))); // NOI18N
         background.setToolTipText("");
         pnlcadastromedico.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -230,7 +230,11 @@ public class DlgVeterinario extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+    private void lblFecharMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFecharMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_lblFecharMouseClicked
+
+    private void btncadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastrarActionPerformed
         try {
             VeterinarioDao vd = new VeterinarioDao(sessionFactory);
             String nome = txfNome.getText().trim();
@@ -301,11 +305,7 @@ public class DlgVeterinario extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Problema ao cadastrar veterinário.");
             this.dispose();
         }
-    }//GEN-LAST:event_btnSalvarActionPerformed
-
-    private void lblFecharMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFecharMouseClicked
-        this.dispose();
-    }//GEN-LAST:event_lblFecharMouseClicked
+    }//GEN-LAST:event_btncadastrarActionPerformed
 
     public LocalDate convertToLocalDate(Date dateToConvert) {
         return dateToConvert.toInstant()
@@ -321,7 +321,7 @@ public class DlgVeterinario extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel background;
-    private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btncadastrar;
     private javax.swing.JComboBox<String> cbxSexo;
     private javax.swing.JComboBox<String> cbxStatus;
     private javax.swing.JFormattedTextField ftfCpf;
