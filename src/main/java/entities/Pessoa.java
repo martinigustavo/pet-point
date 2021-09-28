@@ -43,6 +43,7 @@ public abstract class Pessoa {
     private LocalDate data_nascimento;
     private LocalDate data_cadastro;
     private String status;
+    private String tipo;
     
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(

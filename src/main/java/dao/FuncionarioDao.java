@@ -48,7 +48,7 @@ public class FuncionarioDao extends AbstractGenericDao<Funcionario> {
         List<Funcionario> resultList = new LinkedList<>();
 
         try {
-            Query<Funcionario> query = session.createQuery("SELECT p FROM Funcionario p WHERE lower(p.nome) LIKE lower(:nome)")
+            Query<Funcionario> query = session.createQuery("SELECT f FROM Funcionario f WHERE lower(f.nome) LIKE lower(:nome) AND f.tipo = 'funcionario'")
                     .setParameter("nome", "%" + nome + "%");
             resultList = query.list();
             transaction.commit();

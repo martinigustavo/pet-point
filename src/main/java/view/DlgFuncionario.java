@@ -270,6 +270,7 @@ public class DlgFuncionario extends javax.swing.JDialog {
             funcionario.setCpf(cpf);
             funcionario.setUsuario(usuario);
             funcionario.setSenha(Criptografar.encriptografar(senha));
+            funcionario.setTipo("funcionario");
 
             Optional<Funcionario> funcionario0 = Optional.empty();
 

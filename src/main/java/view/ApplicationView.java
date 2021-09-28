@@ -322,49 +322,80 @@ public class ApplicationView extends javax.swing.JFrame {
         try {
             busca = tfdbusca.getText();
 
+            Object[] cabecalho = {"id", "Nome"};
+            Object[][] dadosTabela = new Object[0][2];
+
             switch (cmbescolher.getSelectedIndex()) {
                 case 0: {
                     List<Funcionario> funcionarios = new FuncionarioDao(sessionFactory).buscarPorNome(busca);
 
-                    Object[] cabecalho = {"id", "Nome"};
-                    Object[][] dadosTabela = new Object[funcionarios.size()][2];
+                    dadosTabela = new Object[funcionarios.size()][2];
                     if (funcionarios.size() > 0) {
                         for (int i = 0; i < funcionarios.size(); i++) {
                             dadosTabela[i][0] = funcionarios.get(i).getId();
                             dadosTabela[i][1] = funcionarios.get(i).getNome();
                         }
                     }
-
-                    tblgeral.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
-                        @Override
-                        public boolean isCellEditable(int row, int column) {
-                            return false;
-                        }
-
-                    });
-
-                    tblgeral.setSelectionMode(0);
-
-                    // redimensiona as colunas de uma tabela
-                    TableColumn column = null;
-                    for (int i = 0; i < tblgeral.getColumnCount(); i++) {
-                        column = tblgeral.getColumnModel().getColumn(i);
-                        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-                        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-                        column.setCellRenderer(centerRenderer);
-                    }
-
-                    column = tblgeral.getColumnModel().getColumn(0);
-                    column.setPreferredWidth(70);
-                    column.setMaxWidth(70);
-                    column.setMinWidth(70);
                     break;
                 }
+
+                case 1: {
+                    List<Cliente> clientes = new ClienteDao(sessionFactory).buscarPorNome(busca);
+
+                    dadosTabela = new Object[clientes.size()][2];
+                    if (clientes.size() > 0) {
+                        for (int i = 0; i < clientes.size(); i++) {
+                            dadosTabela[i][0] = clientes.get(i).getId();
+                            dadosTabela[i][1] = clientes.get(i).getNome();
+                        }
+                    }
+                    break;
+                }
+
+                case 2: {
+                    List<Veterinario> veterinarios = new VeterinarioDao(sessionFactory).buscarPorNome(busca);
+
+                    dadosTabela = new Object[veterinarios.size()][2];
+                    if (veterinarios.size() > 0) {
+                        for (int i = 0; i < veterinarios.size(); i++) {
+                            dadosTabela[i][0] = veterinarios.get(i).getId();
+                            dadosTabela[i][1] = veterinarios.get(i).getNome();
+                        }
+                    }
+                    break;
+                }
+
+                default:
+                    break;
             }
+
+            tblgeral.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+
+            });
+
+            tblgeral.setSelectionMode(0);
+
+            // redimensiona as colunas de uma tabela
+            TableColumn column = null;
+            for (int i = 0; i < tblgeral.getColumnCount(); i++) {
+                column = tblgeral.getColumnModel().getColumn(i);
+                DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+                centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+                column.setCellRenderer(centerRenderer);
+            }
+
+            column = tblgeral.getColumnModel().getColumn(0);
+            column.setPreferredWidth(70);
+            column.setMaxWidth(70);
+            column.setMinWidth(70);
         } catch (Exception e) {
             log.error("Erro ao buscar na tabela de cadastros "
-                    + "(combobox selected_index: "
-                    + cmbescolher.getSelectedIndex()
+                    + "(combobox selected_item: "
+                    + cmbescolher.getSelectedItem().toString()
                     + "): " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Erro ao buscar.");
         }

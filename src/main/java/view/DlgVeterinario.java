@@ -282,7 +282,8 @@ public class DlgVeterinario extends javax.swing.JDialog {
             vet.setCpf(cpf);
             vet.setUsuario(usuario);
             vet.setSenha(Criptografar.encriptografar(senha));
-
+            vet.setTipo("veterinario");
+            
             Optional<Veterinario> medico0 = Optional.empty();
 
             if (id == 0) {
