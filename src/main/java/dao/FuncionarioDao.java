@@ -9,11 +9,13 @@ import entities.Funcionario;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import lombok.extern.log4j.Log4j2;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+@Log4j2
 public class FuncionarioDao extends AbstractGenericDao<Funcionario> {
 
     public FuncionarioDao(SessionFactory sessionFactory) {
@@ -34,6 +36,7 @@ public class FuncionarioDao extends AbstractGenericDao<Funcionario> {
             return resultado;
         } catch (Exception e) {
             System.out.println("Erro ao buscar funcionário pelo usuário: " + e.getMessage());
+            log.error("Erro ao buscar funcionário pelo usuário: " + e.getMessage());
         } finally {
             session.close();
         }
@@ -54,6 +57,7 @@ public class FuncionarioDao extends AbstractGenericDao<Funcionario> {
             transaction.commit();
         } catch (Exception e) {
             System.out.println("Erro ao buscar funcionários pelo nome: " + e.getMessage());
+            log.error("Erro ao buscar funcionários pelo nome: " + e.getMessage());
         } finally {
             session.close();
         }

@@ -5,13 +5,16 @@
  */
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.criteria.CriteriaQuery;
+import lombok.extern.log4j.Log4j2;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+@Log4j2
 public abstract class AbstractGenericDao<T> implements GenericDao<T> {
 
     private final SessionFactory sessionFactory;
@@ -21,7 +24,7 @@ public abstract class AbstractGenericDao<T> implements GenericDao<T> {
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
-    
+
     public AbstractGenericDao(SessionFactory sessionFactory, Class<T> entityClass, String entityName) {
         this.sessionFactory = sessionFactory;
         this.entityClass = entityClass;
@@ -40,6 +43,7 @@ public abstract class AbstractGenericDao<T> implements GenericDao<T> {
             return Optional.of(entity);
         } catch (Exception e) {
             System.out.println("Erro ao salvar registro (" + entityName + "): " + e.getMessage());
+            log.error("Erro ao salvar registro (" + entityName + "): " + e.getMessage());
         } finally {
             session.close();
         }
@@ -59,6 +63,7 @@ public abstract class AbstractGenericDao<T> implements GenericDao<T> {
             return Optional.of(entity);
         } catch (Exception e) {
             System.out.println("Erro ao atualizar registro (" + entityName + "): " + e.getMessage());
+            log.error("Erro ao atualizar registro (" + entityName + "): " + e.getMessage());
         } finally {
             session.close();
         }
@@ -76,6 +81,7 @@ public abstract class AbstractGenericDao<T> implements GenericDao<T> {
             transaction.commit();
         } catch (Exception e) {
             System.out.println("Erro ao excluir registro (" + entityName + "): " + e.getMessage());
+            log.error("Erro ao excluir registro (" + entityName + "): " + e.getMessage());
         } finally {
             session.close();
         }
@@ -93,19 +99,28 @@ public abstract class AbstractGenericDao<T> implements GenericDao<T> {
             return Optional.of(entity);
         } catch (Exception e) {
             System.out.println("Erro ao buscar registro por id (" + entityName + "): " + e.getMessage());
+            log.error("Erro ao buscar registro por id (" + entityName + "): " + e.getMessage());
         } finally {
             session.close();
         }
 
         return Optional.empty();
     }
-    
+
     @Override
     public List<T> buscarTodos() {
         Session session = sessionFactory.openSession();
-        CriteriaQuery<T> query = session.getCriteriaBuilder().createQuery(entityClass);
-        query.select(query.from(entityClass));
-        return session.createQuery(query).getResultList();
+        List<T> resultList = new ArrayList<>();
+
+        try {
+            CriteriaQuery<T> query = session.getCriteriaBuilder().createQuery(entityClass);
+            query.select(query.from(entityClass));
+            resultList = session.createQuery(query).getResultList();
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar todos os registros (" + entityName + "): " + e.getMessage());
+            log.error("Erro ao buscar todos os registros (" + entityName + "): " + e.getMessage());
+        }
+        return resultList;
     }
 
 }

@@ -8,11 +8,13 @@ package dao;
 import entities.Veterinario;
 import java.util.LinkedList;
 import java.util.List;
+import lombok.extern.log4j.Log4j2;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+@Log4j2
 public class VeterinarioDao extends AbstractGenericDao<Veterinario> {
 
     public VeterinarioDao(SessionFactory sessionFactory) {
@@ -32,6 +34,7 @@ public class VeterinarioDao extends AbstractGenericDao<Veterinario> {
             transaction.commit();
         } catch (Exception e) {
             System.out.println("Erro ao buscar veterinários pelo nome: " + e.getMessage());
+            log.error("Erro ao buscar veterinários pelo nome: " + e.getMessage());
         } finally {
             session.close();
         }
