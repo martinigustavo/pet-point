@@ -10,23 +10,22 @@ import view.LoginView;
 public class AppRunner {
 
 //    private static final Logger LOG = LogManager.getLogger(AppRunner.class);
-
     public static void appRunner() {
-      
+
         log.info("Aplicação inicializando..........");
         log.debug("This is a DEBUG log.");
         log.error("This is an ERROR log.");
         log.warn("This is a WARN log.");
         log.trace("This is a TRACE log");
-        
+
         VisualsConfig.createLookAndFeel();
 //        VisualsConfig.setAppFont();
 
         // Set swing frame visible after this comment
         // código que inicializa a aplicaçao (janela do login/cadastro)      
-      //   new LoginView().setVisible(true);
-       new ApplicationView(new Funcionario()).setVisible(true);
-        
+//         new LoginView().setVisible(true);
+        new ApplicationView(new Funcionario()).setVisible(true);
+
 //        log.debug("Fechando aplicação.......");
 
         /*

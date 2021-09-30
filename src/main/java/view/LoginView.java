@@ -124,7 +124,7 @@ public class LoginView extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void login() {
+    private void logar() {
         try {
             String usuario = txfUsuario.getText();
 
@@ -143,20 +143,21 @@ public class LoginView extends javax.swing.JFrame {
             Optional<Funcionario> funcionario = new FuncionarioDao(sf).buscarPorUsuario(usuario);
 
             if (funcionario.isPresent()) {
-                if (funcionario.get().getSenha().equals(senhaCriptografada)) {
-                    log.info("Usuário " + funcionario.get().getUsuario()
-                            + " logado com sucesso.");
+                if (funcionario.get().isLogado()) {
+                    JOptionPane.showMessageDialog(null, "Usuário já está logado no sistema!");
+                    return;
+                }
 
+                if (funcionario.get().getSenha().equals(senhaCriptografada)) {
+                    funcionario.get().setLogado(true);
+                    new FuncionarioDao(sf).atualizar(funcionario.get());
+                    
                     this.dispose();
                     new ApplicationView(funcionario.get()).setVisible(true);
                 } else {
-                    log.warn("Senha incorreta informada para o usuário "
-                            + funcionario.get().getUsuario(), ".");
                     lblerror.setVisible(true);
                 }
             } else {
-                log.warn("Usuário informado não está cadastrado: "
-                        + usuario);
                 JOptionPane.showMessageDialog(null, "Este funcionário não está cadastrado.");
             }
         } catch (Exception e) {
@@ -171,7 +172,7 @@ public class LoginView extends javax.swing.JFrame {
     }
 
     private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
-        this.login();
+        this.logar();
     }//GEN-LAST:event_btnLoginMouseClicked
 
     private void txfUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txfUsuarioMouseClicked
@@ -184,7 +185,7 @@ public class LoginView extends javax.swing.JFrame {
 
     private void txfSenhaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txfSenhaKeyReleased
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            this.login();
+            this.logar();
         }
     }//GEN-LAST:event_txfSenhaKeyReleased
 

@@ -11,6 +11,7 @@ import dao.VeterinarioDao;
 import entities.Cliente;
 import entities.Funcionario;
 import entities.Veterinario;
+import java.awt.event.WindowListener;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -52,6 +53,8 @@ public class ApplicationView extends javax.swing.JFrame {
         this.id = 0;
 
         lblLogado.setText(funcLogado.getNome());
+
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
 
     /**
@@ -79,6 +82,11 @@ public class ApplicationView extends javax.swing.JFrame {
         fundobusca = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         background.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -401,6 +409,16 @@ public class ApplicationView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tfdbuscaKeyReleased
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        int i = JOptionPane.showConfirmDialog(null, "Tem certeza de que deseja sair?");
+        if (i == 0) {
+            funcLogado.setLogado(false);
+            new FuncionarioDao(sessionFactory).atualizar(funcLogado);
+
+            System.exit(0);
+        }
+    }//GEN-LAST:event_formWindowClosing
+
     public void desativarTelas() {
         pnlhome.setVisible(false);
         pnlcadastros.setVisible(false);
@@ -418,6 +436,10 @@ public class ApplicationView extends javax.swing.JFrame {
                 .toInstant());
     }
 
+    @Override
+    public void setDefaultCloseOperation(int operation) {
+        super.setDefaultCloseOperation(operation); //To change body of generated methods, choose Tools | Templates.
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
