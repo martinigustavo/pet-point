@@ -436,11 +436,6 @@ public class ApplicationView extends javax.swing.JFrame {
                 .toInstant());
     }
 
-    @Override
-    public void setDefaultCloseOperation(int operation) {
-        super.setDefaultCloseOperation(operation); //To change body of generated methods, choose Tools | Templates.
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
     private javax.swing.JLabel barralateral;
