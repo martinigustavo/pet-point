@@ -71,6 +71,7 @@ public class ApplicationView extends javax.swing.JFrame {
         btnhome = new javax.swing.JButton();
         btncadastro = new javax.swing.JButton();
         lblLogado = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         barralateral = new javax.swing.JLabel();
         pnlhome = new javax.swing.JPanel();
         pnlcadastros = new javax.swing.JPanel();
@@ -119,6 +120,17 @@ public class ApplicationView extends javax.swing.JFrame {
         lblLogado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblLogado.setText("logado");
         pnlmenulateral.add(lblLogado, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 1020, 130, 30));
+
+        jButton1.setBackground(new java.awt.Color(58, 203, 199));
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/iconcadastro.png"))); // NOI18N
+        jButton1.setToolTipText("Cadastrar produto");
+        jButton1.setBorder(null);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        pnlmenulateral.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 130, 40));
 
         barralateral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/barralateral.png"))); // NOI18N
         pnlmenulateral.add(barralateral, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -419,6 +431,11 @@ public class ApplicationView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowClosing
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        DlgProduto tela = new DlgProduto(null, true);
+        tela.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     public void desativarTelas() {
         pnlhome.setVisible(false);
         pnlcadastros.setVisible(false);
@@ -444,6 +461,7 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JButton btnhome;
     private javax.swing.JComboBox<String> cmbescolher;
     private javax.swing.JLabel fundobusca;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblLogado;
     private javax.swing.JPanel pnlcadastros;
