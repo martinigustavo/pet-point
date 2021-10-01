@@ -25,7 +25,7 @@ import utils.VisualsConfig;
 public class DlgProduto extends javax.swing.JDialog {
 
     private int id = 0;
-    private Produto produto;
+    private Produto produto = new Produto();
     private final SessionFactory sessionFactory;
 
     public DlgProduto(java.awt.Frame parent, boolean modal) {
@@ -68,8 +68,7 @@ public class DlgProduto extends javax.swing.JDialog {
         cbxCategoria = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         cbxStatus = new javax.swing.JComboBox<>();
-        btnFechar = new javax.swing.JButton();
-        btnExcluir = new javax.swing.JButton();
+        btnSair = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
         btnNovo = new javax.swing.JButton();
         pnlConsulta = new javax.swing.JPanel();
@@ -118,17 +117,10 @@ public class DlgProduto extends javax.swing.JDialog {
 
         cbxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ativo", "Inativo" }));
 
-        btnFechar.setText("Fechar");
-        btnFechar.addActionListener(new java.awt.event.ActionListener() {
+        btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFecharActionPerformed(evt);
-            }
-        });
-
-        btnExcluir.setText("Excluir");
-        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcluirActionPerformed(evt);
+                btnSairActionPerformed(evt);
             }
         });
 
@@ -165,9 +157,7 @@ public class DlgProduto extends javax.swing.JDialog {
                             .addGap(18, 18, 18)
                             .addComponent(btnSalvar)
                             .addGap(18, 18, 18)
-                            .addComponent(btnExcluir)
-                            .addGap(18, 18, 18)
-                            .addComponent(btnFechar))
+                            .addComponent(btnSair))
                         .addGroup(pnlCadastroLayout.createSequentialGroup()
                             .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(txfSKU)
@@ -232,8 +222,7 @@ public class DlgProduto extends javax.swing.JDialog {
                     .addComponent(jScrollPane2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
                 .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnFechar)
-                    .addComponent(btnExcluir)
+                    .addComponent(btnSair)
                     .addComponent(btnSalvar)
                     .addComponent(btnNovo))
                 .addGap(32, 32, 32))
@@ -246,10 +235,23 @@ public class DlgProduto extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Id", "Nome"
+                "Id", "SKU", "Nome", "Categoria", "Status"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblProduto);
+        if (tblProduto.getColumnModel().getColumnCount() > 0) {
+            tblProduto.getColumnModel().getColumn(0).setMinWidth(70);
+            tblProduto.getColumnModel().getColumn(0).setPreferredWidth(70);
+            tblProduto.getColumnModel().getColumn(0).setMaxWidth(70);
+        }
 
         cbxBusca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SKU", "Nome", "Categoria" }));
 
@@ -323,9 +325,9 @@ public class DlgProduto extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         this.dispose();
-    }//GEN-LAST:event_btnFecharActionPerformed
+    }//GEN-LAST:event_btnSairActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         try {
@@ -360,8 +362,6 @@ public class DlgProduto extends javax.swing.JDialog {
                 return;
             }
 
-            produto = new Produto();
-            
             id = produto.getId();
             produto.setSKU(sku);
             produto.setNome(nome);
@@ -405,26 +405,20 @@ public class DlgProduto extends javax.swing.JDialog {
         ftfDesconto.setText("");
         cbxStatus.setSelectedIndex(0);
         cbxCategoria.setSelectedIndex(0);
-        
-        System.out.println("ID BOTAO NOVO ->> " + id);
     }//GEN-LAST:event_btnNovoActionPerformed
-
-    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         try {
             String busca = txfBusca.getText();
 
-            Object[] cabecalho = {"id", "Nome"};
-            Object[][] dadosTabela = new Object[0][2];
+            Object[] cabecalho = {"id", "SKU", "Nome", "Categoria", "Status"};
+            Object[][] dadosTabela = new Object[0][5];
 
             List<Produto> produtos = new ArrayList<>();
 
             switch (cbxBusca.getSelectedIndex()) {
                 case 0: {
-                    produtos = new ProdutoDao(sessionFactory).buscarCustomizavel("sku", busca);
+                    produtos = new ProdutoDao(sessionFactory).buscarCustomizavel("SKU", busca);
                     break;
                 }
 
@@ -442,11 +436,14 @@ public class DlgProduto extends javax.swing.JDialog {
                     break;
             }
 
-            dadosTabela = new Object[produtos.size()][2];
+            dadosTabela = new Object[produtos.size()][5];
             if (produtos.size() > 0) {
                 for (int i = 0; i < produtos.size(); i++) {
                     dadosTabela[i][0] = produtos.get(i).getId();
-                    dadosTabela[i][1] = produtos.get(i).getNome();
+                    dadosTabela[i][1] = produtos.get(i).getSKU();
+                    dadosTabela[i][2] = produtos.get(i).getNome();
+                    dadosTabela[i][3] = produtos.get(i).getCategoria();
+                    dadosTabela[i][4] = produtos.get(i).getStatus();
                 }
             }
 
@@ -487,28 +484,9 @@ public class DlgProduto extends javax.swing.JDialog {
             String idString = String.valueOf(tblProduto.getValueAt(tblProduto.getSelectedRow(), 0));
             id = Integer.parseInt(idString);
             Optional<Produto> produto0 = new ProdutoDao(sessionFactory).buscar(id);
-            Produto produto = produto0.get();
+            produto = produto0.get();
 
-            txfSKU.setText(produto.getSKU());
-            txfNome.setText(produto.getNome());
-            txaDescricao.setText(produto.getDescricao());
-            ftfEstoque.setText(String.valueOf(produto.getEstoque()));
-            ftfCusto.setText(String.valueOf(produto.getPreco_custo()));
-            ftfVenda.setText(String.valueOf(produto.getPreco_venda()));
-            ftfDesconto.setText(String.valueOf(produto.getDesconto()));
-
-            if (produto.getStatus().equals("Ativo")) {
-                cbxStatus.setSelectedIndex(0);
-            } else {
-                cbxStatus.setSelectedIndex(1);
-            }
-
-            String categoria = produto.getCategoria();
-            int index = ((DefaultComboBoxModel) cbxCategoria.getModel()).getIndexOf(categoria);
-            cbxCategoria.setSelectedIndex(index);
-            
-            tbpProduto.setSelectedIndex(0);
-            txfSKU.requestFocus();
+            this.carregarDadosProduto(produto);
         } catch (Exception e) {
             log.error("Erro ao selecionar na tabela de produtos "
                     + "(combobox selected_index: "
@@ -517,6 +495,29 @@ public class DlgProduto extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Erro ao selecionar.");
         }
     }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void carregarDadosProduto(Produto produto) {
+        txfSKU.setText(produto.getSKU());
+        txfNome.setText(produto.getNome());
+        txaDescricao.setText(produto.getDescricao());
+        ftfEstoque.setText(String.valueOf(produto.getEstoque()));
+        ftfCusto.setText(String.valueOf(produto.getPreco_custo()));
+        ftfVenda.setText(String.valueOf(produto.getPreco_venda()));
+        ftfDesconto.setText(String.valueOf(produto.getDesconto()));
+
+        if (produto.getStatus().equals("Ativo")) {
+            cbxStatus.setSelectedIndex(0);
+        } else {
+            cbxStatus.setSelectedIndex(1);
+        }
+
+        String categoria = produto.getCategoria();
+        int index = ((DefaultComboBoxModel) cbxCategoria.getModel()).getIndexOf(categoria);
+        cbxCategoria.setSelectedIndex(index);
+
+        tbpProduto.setSelectedIndex(0);
+        txfSKU.requestFocus();
+    }
 
     /**
      * @param args the command line arguments
@@ -568,9 +569,8 @@ public class DlgProduto extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnExcluir;
-    private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnSair;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton btnVerProduto;
     private javax.swing.JComboBox<String> cbxBusca;
