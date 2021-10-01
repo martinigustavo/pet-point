@@ -7,8 +7,15 @@ package view;
 
 import dao.ProdutoDao;
 import entities.Produto;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.SessionFactory;
 import utils.HibernateUtil;
@@ -16,17 +23,17 @@ import utils.VisualsConfig;
 
 @Log4j2
 public class DlgProduto extends javax.swing.JDialog {
-    
+
     private int id = 0;
-    private Produto produto = new Produto();
+    private Produto produto;
     private final SessionFactory sessionFactory;
-    
+
     public DlgProduto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
         this.sessionFactory = HibernateUtil.getSessionFactory();
-        
+
         VisualsConfig.setPropsToWindow(this, "Cadastrar produto", parent);
     }
 
@@ -67,11 +74,12 @@ public class DlgProduto extends javax.swing.JDialog {
         btnNovo = new javax.swing.JButton();
         pnlConsulta = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        tblProduto = new javax.swing.JTable();
+        cbxBusca = new javax.swing.JComboBox<>();
         txfBusca = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnVerProduto = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -233,24 +241,33 @@ public class DlgProduto extends javax.swing.JDialog {
 
         tbpProduto.addTab("Cadastro", pnlCadastro);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblProduto.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Id", "Nome"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblProduto);
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxBusca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SKU", "Nome", "Categoria" }));
 
-        jButton1.setText("Buscar");
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
-        jButton5.setText("Editar registro");
+        btnEditar.setText("Editar registro");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnVerProduto.setText("Ver produto");
 
         javax.swing.GroupLayout pnlConsultaLayout = new javax.swing.GroupLayout(pnlConsulta);
         pnlConsulta.setLayout(pnlConsultaLayout);
@@ -259,15 +276,18 @@ public class DlgProduto extends javax.swing.JDialog {
             .addGroup(pnlConsultaLayout.createSequentialGroup()
                 .addGap(79, 79, 79)
                 .addGroup(pnlConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton5)
+                    .addGroup(pnlConsultaLayout.createSequentialGroup()
+                        .addComponent(btnVerProduto)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEditar))
                     .addGroup(pnlConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 938, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(pnlConsultaLayout.createSequentialGroup()
-                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbxBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
                             .addComponent(txfBusca)
                             .addGap(18, 18, 18)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(90, Short.MAX_VALUE))
         );
         pnlConsultaLayout.setVerticalGroup(
@@ -275,13 +295,15 @@ public class DlgProduto extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlConsultaLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(pnlConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txfBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnBuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton5)
+                .addGroup(pnlConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEditar)
+                    .addComponent(btnVerProduto))
                 .addGap(44, 44, 44))
         );
 
@@ -308,7 +330,7 @@ public class DlgProduto extends javax.swing.JDialog {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         try {
             ProdutoDao produtoDao = new ProdutoDao(sessionFactory);
-            
+
             String sku = txfSKU.getText().trim();
             String nome = txfNome.getText().trim();
             String descricao = txaDescricao.getText();
@@ -318,25 +340,27 @@ public class DlgProduto extends javax.swing.JDialog {
             String desconto = ftfDesconto.getText();
             String status = cbxStatus.getSelectedItem().toString();
             String categoria = "";
-            
+
             if (sku.isBlank() || nome.isBlank() || descricao.isBlank()
                     || estoque.isBlank() || custo.isBlank()
                     || venda.isBlank() || desconto.isBlank()) {
                 JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
                 return;
             }
-            
+
             if (cbxCategoria.getSelectedIndex() == 0) {
                 JOptionPane.showMessageDialog(null, "Selecione uma categoria");
                 return;
             } else {
                 categoria = cbxCategoria.getSelectedItem().toString();
             }
-            
+
             if (Double.parseDouble(venda) < Double.parseDouble(custo)) {
                 JOptionPane.showMessageDialog(null, "O preço de venda deve ser maior que o preço de custo.");
                 return;
             }
+
+            produto = new Produto();
             
             id = produto.getId();
             produto.setSKU(sku);
@@ -348,15 +372,15 @@ public class DlgProduto extends javax.swing.JDialog {
             produto.setPreco_custo(Double.parseDouble(custo));
             produto.setPreco_venda(Double.parseDouble(venda));
             produto.setStatus(status);
-            
+
             Optional<Produto> produto0 = Optional.empty();
-            
+
             if (id == 0) {
                 produto0 = produtoDao.salvar(produto);
             } else {
                 produto0 = produtoDao.atualizar(produto);
             }
-            
+
             if (produto0.isPresent()) {
                 if (id == 0) {
                     JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
@@ -381,11 +405,118 @@ public class DlgProduto extends javax.swing.JDialog {
         ftfDesconto.setText("");
         cbxStatus.setSelectedIndex(0);
         cbxCategoria.setSelectedIndex(0);
+        
+        System.out.println("ID BOTAO NOVO ->> " + id);
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        try {
+            String busca = txfBusca.getText();
+
+            Object[] cabecalho = {"id", "Nome"};
+            Object[][] dadosTabela = new Object[0][2];
+
+            List<Produto> produtos = new ArrayList<>();
+
+            switch (cbxBusca.getSelectedIndex()) {
+                case 0: {
+                    produtos = new ProdutoDao(sessionFactory).buscarCustomizavel("sku", busca);
+                    break;
+                }
+
+                case 1: {
+                    produtos = new ProdutoDao(sessionFactory).buscarCustomizavel("nome", busca);
+                    break;
+                }
+
+                case 2: {
+                    produtos = new ProdutoDao(sessionFactory).buscarCustomizavel("categoria", busca);
+                    break;
+                }
+
+                default:
+                    break;
+            }
+
+            dadosTabela = new Object[produtos.size()][2];
+            if (produtos.size() > 0) {
+                for (int i = 0; i < produtos.size(); i++) {
+                    dadosTabela[i][0] = produtos.get(i).getId();
+                    dadosTabela[i][1] = produtos.get(i).getNome();
+                }
+            }
+
+            tblProduto.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+
+            });
+
+            tblProduto.setSelectionMode(0);
+
+            // redimensiona as colunas de uma tabela
+            TableColumn column = null;
+            for (int i = 0; i < tblProduto.getColumnCount(); i++) {
+                column = tblProduto.getColumnModel().getColumn(i);
+                DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+                centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+                column.setCellRenderer(centerRenderer);
+            }
+
+            column = tblProduto.getColumnModel().getColumn(0);
+            column.setPreferredWidth(70);
+            column.setMaxWidth(70);
+            column.setMinWidth(70);
+        } catch (Exception e) {
+            log.error("Erro ao buscar na tabela de produtos "
+                    + "(combobox selected_item: "
+                    + cbxBusca.getSelectedItem().toString()
+                    + "): " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao buscar.");
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        try {
+            String idString = String.valueOf(tblProduto.getValueAt(tblProduto.getSelectedRow(), 0));
+            id = Integer.parseInt(idString);
+            Optional<Produto> produto0 = new ProdutoDao(sessionFactory).buscar(id);
+            Produto produto = produto0.get();
+
+            txfSKU.setText(produto.getSKU());
+            txfNome.setText(produto.getNome());
+            txaDescricao.setText(produto.getDescricao());
+            ftfEstoque.setText(String.valueOf(produto.getEstoque()));
+            ftfCusto.setText(String.valueOf(produto.getPreco_custo()));
+            ftfVenda.setText(String.valueOf(produto.getPreco_venda()));
+            ftfDesconto.setText(String.valueOf(produto.getDesconto()));
+
+            if (produto.getStatus().equals("Ativo")) {
+                cbxStatus.setSelectedIndex(0);
+            } else {
+                cbxStatus.setSelectedIndex(1);
+            }
+
+            String categoria = produto.getCategoria();
+            int index = ((DefaultComboBoxModel) cbxCategoria.getModel()).getIndexOf(categoria);
+            cbxCategoria.setSelectedIndex(index);
+            
+            tbpProduto.setSelectedIndex(0);
+            txfSKU.requestFocus();
+        } catch (Exception e) {
+            log.error("Erro ao selecionar na tabela de produtos "
+                    + "(combobox selected_index: "
+                    + cbxBusca.getSelectedIndex()
+                    + "): " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao selecionar.");
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -435,19 +566,20 @@ public class DlgProduto extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnVerProduto;
+    private javax.swing.JComboBox<String> cbxBusca;
     private javax.swing.JComboBox<String> cbxCategoria;
     private javax.swing.JComboBox<String> cbxStatus;
     private javax.swing.JFormattedTextField ftfCusto;
     private javax.swing.JFormattedTextField ftfDesconto;
     private javax.swing.JFormattedTextField ftfEstoque;
     private javax.swing.JFormattedTextField ftfVenda;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -460,9 +592,9 @@ public class DlgProduto extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JPanel pnlCadastro;
     private javax.swing.JPanel pnlConsulta;
+    private javax.swing.JTable tblProduto;
     private javax.swing.JTabbedPane tbpProduto;
     private javax.swing.JTextArea txaDescricao;
     private javax.swing.JTextField txfBusca;
