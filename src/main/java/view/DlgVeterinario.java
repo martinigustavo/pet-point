@@ -29,6 +29,7 @@ public class DlgVeterinario extends javax.swing.JDialog {
     public DlgVeterinario(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        btnDeletar.setVisible(false);
         this.sessionFactory = HibernateUtil.getSessionFactory();
     }
 
@@ -37,6 +38,7 @@ public class DlgVeterinario extends javax.swing.JDialog {
         initComponents();
         this.sessionFactory = HibernateUtil.getSessionFactory();
         this.vet = medico;
+        btnDeletar.setVisible(true);
         txfNome.setText(medico.getNome());
         txfUsuario.setText(medico.getUsuario());
         ftfCpf.setText(medico.getCpf());
@@ -76,6 +78,7 @@ public class DlgVeterinario extends javax.swing.JDialog {
 
         pnlcadastromedico = new javax.swing.JPanel();
         lblFechar = new javax.swing.JLabel();
+        btnDeletar = new javax.swing.JButton();
         txfBairro = new javax.swing.JTextField();
         pwfSenha = new javax.swing.JPasswordField();
         cbxStatus = new javax.swing.JComboBox<>();
@@ -109,6 +112,19 @@ public class DlgVeterinario extends javax.swing.JDialog {
             }
         });
         pnlcadastromedico.add(lblFechar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 10, -1, -1));
+
+        btnDeletar.setBackground(new java.awt.Color(198, 0, 1));
+        btnDeletar.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        btnDeletar.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeletar.setText("Deletar");
+        btnDeletar.setToolTipText("");
+        btnDeletar.setBorder(null);
+        btnDeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeletarActionPerformed(evt);
+            }
+        });
+        pnlcadastromedico.add(btnDeletar, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 640, 170, 40));
 
         txfBairro.setBackground(new java.awt.Color(218, 218, 218));
         txfBairro.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -308,6 +324,19 @@ public class DlgVeterinario extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btncadastrarActionPerformed
 
+    private void btnDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarActionPerformed
+        try {
+            VeterinarioDao vd = new VeterinarioDao(sessionFactory);
+            vd.excluir(vet);
+            JOptionPane.showMessageDialog(null, "Veterinário deletado do sistema.");
+            this.dispose();
+        } catch (Exception e) {
+            log.error("Erro ao excluir veterinário: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao deletar veterinário.");
+            this.dispose();
+        }
+    }//GEN-LAST:event_btnDeletarActionPerformed
+
     public LocalDate convertToLocalDate(Date dateToConvert) {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
@@ -322,6 +351,7 @@ public class DlgVeterinario extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel background;
+    private javax.swing.JButton btnDeletar;
     private javax.swing.JButton btncadastrar;
     private javax.swing.JComboBox<String> cbxSexo;
     private javax.swing.JComboBox<String> cbxStatus;

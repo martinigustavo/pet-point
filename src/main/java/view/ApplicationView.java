@@ -11,6 +11,8 @@ import dao.VeterinarioDao;
 import entities.Cliente;
 import entities.Funcionario;
 import entities.Veterinario;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.WindowListener;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -51,6 +53,7 @@ public class ApplicationView extends javax.swing.JFrame {
         this.fd = new FuncionarioDao(sessionFactory);
         this.busca = "";
         this.id = 0;
+        configurarTblCadastros();
 
         lblLogado.setText(funcLogado.getNome());
 
@@ -164,6 +167,7 @@ public class ApplicationView extends javax.swing.JFrame {
         pnlcadastros.add(tfdbusca, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 60, 1150, 40));
 
         tblgeral.setBackground(new java.awt.Color(218, 218, 218));
+        tblgeral.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         tblgeral.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -187,6 +191,9 @@ public class ApplicationView extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblgeral.setRowHeight(35);
+        tblgeral.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        tblgeral.setShowVerticalLines(false);
         tblgeral.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblgeralMouseClicked(evt);
@@ -452,6 +459,13 @@ public class ApplicationView extends javax.swing.JFrame {
                 .atZone(ZoneId.systemDefault())
                 .toInstant());
     }
+    
+    public void configurarTblCadastros() {
+        tblgeral.getTableHeader().setFont(new Font("Poppins", Font.BOLD, 15));
+        tblgeral.getTableHeader().setForeground(Color.WHITE);
+        tblgeral.getTableHeader().setOpaque(false);
+        tblgeral.getTableHeader().setBackground(new Color(2, 166, 166));
+    }  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;

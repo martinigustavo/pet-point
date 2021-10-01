@@ -28,6 +28,7 @@ public class DlgCliente extends javax.swing.JDialog {
     public DlgCliente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        btnDeletar.setVisible(false);
         this.sessionFactory = HibernateUtil.getSessionFactory();
     }
 
@@ -36,6 +37,7 @@ public class DlgCliente extends javax.swing.JDialog {
         initComponents();
         this.sessionFactory = HibernateUtil.getSessionFactory();
         this.cli = cliente;
+        btnDeletar.setVisible(true);
         txfNome.setText(cliente.getNome());
         ftfCpf.setText(cliente.getCpf());
         ftfTelefone.setText(cliente.getTelefone());
@@ -74,6 +76,7 @@ public class DlgCliente extends javax.swing.JDialog {
         pnlcliente = new javax.swing.JPanel();
         lblFechar = new javax.swing.JLabel();
         btncadastrar = new javax.swing.JButton();
+        btnDeletar = new javax.swing.JButton();
         txfBairro = new javax.swing.JTextField();
         cbxStatus = new javax.swing.JComboBox<>();
         txfEmail = new javax.swing.JTextField();
@@ -115,6 +118,19 @@ public class DlgCliente extends javax.swing.JDialog {
             }
         });
         pnlcliente.add(btncadastrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 640, 170, 40));
+
+        btnDeletar.setBackground(new java.awt.Color(198, 0, 1));
+        btnDeletar.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        btnDeletar.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeletar.setText("Deletar");
+        btnDeletar.setToolTipText("");
+        btnDeletar.setBorder(null);
+        btnDeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeletarActionPerformed(evt);
+            }
+        });
+        pnlcliente.add(btnDeletar, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 640, 170, 40));
 
         txfBairro.setBackground(new java.awt.Color(218, 218, 218));
         txfBairro.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -278,6 +294,19 @@ public class DlgCliente extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btncadastrarActionPerformed
 
+    private void btnDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarActionPerformed
+        try {
+            ClienteDao cd = new ClienteDao(sessionFactory);
+            cd.excluir(cli);
+            JOptionPane.showMessageDialog(null, "Cliente deletado do sistema.");
+            this.dispose();
+        } catch (Exception e) {
+            log.error("Erro ao excluir cliente: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao deletar cliente.");
+            this.dispose();
+        }
+    }//GEN-LAST:event_btnDeletarActionPerformed
+
     public LocalDate convertToLocalDate(Date dateToConvert) {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
@@ -293,6 +322,7 @@ public class DlgCliente extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel background;
+    private javax.swing.JButton btnDeletar;
     private javax.swing.JButton btncadastrar;
     private javax.swing.JComboBox<String> cbxSexo;
     private javax.swing.JComboBox<String> cbxStatus;

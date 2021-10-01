@@ -30,6 +30,7 @@ public class DlgFuncionario extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.sessionFactory = HibernateUtil.getSessionFactory();
+         btnDeletar.setVisible(false);
     }
 
     public DlgFuncionario(java.awt.Frame parent, boolean modal, Funcionario funcionario) {
@@ -50,6 +51,7 @@ public class DlgFuncionario extends javax.swing.JDialog {
         txfRua.setText(endereco[0]);
         ftfNumero.setText(endereco[1]);
         txfBairro.setText(endereco[2]);
+        btnDeletar.setVisible(true);
 
         if (funcionario.getSexo().equals("Feminino")) {
             cbxSexo.setSelectedIndex(1);
@@ -75,6 +77,7 @@ public class DlgFuncionario extends javax.swing.JDialog {
     private void initComponents() {
 
         lblFechar = new javax.swing.JLabel();
+        btnDeletar = new javax.swing.JButton();
         btncadastrar = new javax.swing.JButton();
         txfBairro = new javax.swing.JTextField();
         pwfSenha = new javax.swing.JPasswordField();
@@ -108,6 +111,19 @@ public class DlgFuncionario extends javax.swing.JDialog {
             }
         });
         getContentPane().add(lblFechar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 10, -1, -1));
+
+        btnDeletar.setBackground(new java.awt.Color(198, 0, 1));
+        btnDeletar.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        btnDeletar.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeletar.setText("Deletar");
+        btnDeletar.setToolTipText("");
+        btnDeletar.setBorder(null);
+        btnDeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeletarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnDeletar, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 640, 170, 40));
 
         btncadastrar.setBackground(new java.awt.Color(58, 203, 199));
         btncadastrar.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
@@ -296,6 +312,19 @@ public class DlgFuncionario extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btncadastrarActionPerformed
 
+    private void btnDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarActionPerformed
+         try {
+            FuncionarioDao fd = new FuncionarioDao(sessionFactory);
+            fd.excluir(funcionario);    
+            JOptionPane.showMessageDialog(null, "Funcionário deletado do sistema.");
+            this.dispose();
+         } catch (Exception e) {
+            log.error("Erro ao excluir funcionário: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar funcionário.");
+            this.dispose();
+        }
+    }//GEN-LAST:event_btnDeletarActionPerformed
+
     public LocalDate convertToLocalDate(Date dateToConvert) {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
@@ -311,6 +340,7 @@ public class DlgFuncionario extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel background;
+    private javax.swing.JButton btnDeletar;
     private javax.swing.JButton btncadastrar;
     private javax.swing.JComboBox<String> cbxSexo;
     private javax.swing.JComboBox<String> cbxStatus;
