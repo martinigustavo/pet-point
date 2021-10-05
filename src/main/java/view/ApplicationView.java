@@ -13,7 +13,6 @@ import entities.Funcionario;
 import entities.Veterinario;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.WindowListener;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -54,7 +53,6 @@ public class ApplicationView extends javax.swing.JFrame {
         this.busca = "";
         this.id = 0;
         configurarTblCadastros();
-
         lblLogado.setText(funcLogado.getNome());
 
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -75,6 +73,8 @@ public class ApplicationView extends javax.swing.JFrame {
         btncadastro = new javax.swing.JButton();
         lblLogado = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        btnSair = new javax.swing.JButton();
+        btnLogs = new javax.swing.JButton();
         barralateral = new javax.swing.JLabel();
         pnlhome = new javax.swing.JPanel();
         pnlcadastros = new javax.swing.JPanel();
@@ -122,7 +122,7 @@ public class ApplicationView extends javax.swing.JFrame {
 
         lblLogado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblLogado.setText("logado");
-        pnlmenulateral.add(lblLogado, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 1020, 130, 30));
+        pnlmenulateral.add(lblLogado, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 970, 130, 30));
 
         jButton1.setBackground(new java.awt.Color(58, 203, 199));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/iconcadastro.png"))); // NOI18N
@@ -134,6 +134,22 @@ public class ApplicationView extends javax.swing.JFrame {
             }
         });
         pnlmenulateral.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 130, 40));
+
+        btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
+        pnlmenulateral.add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 1020, 130, 40));
+
+        btnLogs.setText("Logs");
+        btnLogs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogsActionPerformed(evt);
+            }
+        });
+        pnlmenulateral.add(btnLogs, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 380, 130, 50));
 
         barralateral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/barralateral.png"))); // NOI18N
         pnlmenulateral.add(barralateral, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -443,6 +459,21 @@ public class ApplicationView extends javax.swing.JFrame {
         tela.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        int i = JOptionPane.showConfirmDialog(null, "Tem certeza de que deseja sair?");
+        if (i == 0) {
+            funcLogado.setLogado(false);
+            new FuncionarioDao(sessionFactory).atualizar(funcLogado);
+
+            System.exit(0);
+        }
+    }//GEN-LAST:event_btnSairActionPerformed
+
+    private void btnLogsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogsActionPerformed
+        DlgLogs dlgLogs = new DlgLogs(null, true);
+        dlgLogs.setVisible(true);
+    }//GEN-LAST:event_btnLogsActionPerformed
+
     public void desativarTelas() {
         pnlhome.setVisible(false);
         pnlcadastros.setVisible(false);
@@ -471,6 +502,8 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JPanel background;
     private javax.swing.JLabel barralateral;
     private javax.swing.JButton btnAdicionar;
+    private javax.swing.JButton btnLogs;
+    private javax.swing.JButton btnSair;
     private javax.swing.JButton btncadastro;
     private javax.swing.JButton btnhome;
     private javax.swing.JComboBox<String> cmbescolher;
