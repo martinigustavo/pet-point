@@ -13,19 +13,19 @@ import javax.swing.JOptionPane;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.SessionFactory;
 import utils.Criptografar;
-import utils.HibernateUtil;
 import utils.VisualsConfig;
 
 @Log4j2
 public class LoginView extends javax.swing.JFrame {
 
-    /**
-     * Creates new form LoginGUI
-     */
-    public LoginView() {
+    private static SessionFactory sf;
+    
+    public LoginView(SessionFactory sf) {
         initComponents();
         VisualsConfig.setPropsToWindow(this, "Login", rootPane);
         lblerror.setVisible(false);
+        
+        this.sf = sf;
     }
 
     /**
@@ -138,8 +138,6 @@ public class LoginView extends javax.swing.JFrame {
                 return;
             }
 
-            SessionFactory sf = HibernateUtil.getSessionFactory();
-
             Optional<Funcionario> funcionario = new FuncionarioDao(sf).buscarPorUsuario(usuario);
 
             if (funcionario.isPresent()) {
@@ -230,7 +228,7 @@ public class LoginView extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoginView().setVisible(true);
+                new LoginView(sf).setVisible(true);
             }
         });
     }
