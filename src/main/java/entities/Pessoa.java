@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 public abstract class Pessoa {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String nome;
     private String sexo;
