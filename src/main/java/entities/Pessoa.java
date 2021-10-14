@@ -6,17 +6,12 @@
 package entities;
 
 import java.time.LocalDate;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,13 +39,4 @@ public abstract class Pessoa {
     private LocalDate data_cadastro;
     private String status;
     private String tipo;
-    
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "PESSOA_PERMISSAO",
-            joinColumns = @JoinColumn(name = "pessoa_id"),
-            inverseJoinColumns = @JoinColumn(name = "permissao_id")
-    )
-    private Set<Permissao> permissoes;
-    
 }
