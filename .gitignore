@@ -5,7 +5,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 logs/
-.mwb.bak
+*.mwb.bak
 
 ### STS ###
 .apt_generated
