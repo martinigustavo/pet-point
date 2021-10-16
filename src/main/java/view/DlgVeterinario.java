@@ -6,6 +6,7 @@
 package view;
 
 import dao.VeterinarioDao;
+import entities.Permissao;
 import entities.Veterinario;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -33,11 +34,12 @@ public class DlgVeterinario extends javax.swing.JDialog {
         this.sessionFactory = HibernateUtil.getSessionFactory();
     }
 
-    public DlgVeterinario(java.awt.Frame parent, boolean modal, Veterinario medico) {
+    public DlgVeterinario(java.awt.Frame parent, boolean modal, Veterinario medico, Permissao permissao) {
         super(parent, modal);
         initComponents();
         this.sessionFactory = HibernateUtil.getSessionFactory();
         this.vet = medico;
+        checkPermissoes(permissao);
         btnDeletar.setVisible(true);
         txfNome.setText(medico.getNome());
         txfUsuario.setText(medico.getUsuario());
@@ -94,7 +96,7 @@ public class DlgVeterinario extends javax.swing.JDialog {
         ftfData = new com.toedter.calendar.JDateChooser();
         txfRua = new javax.swing.JTextField();
         txfCidade = new javax.swing.JTextField();
-        btncadastrar = new javax.swing.JButton();
+        btnCadastrar = new javax.swing.JButton();
         background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -215,17 +217,17 @@ public class DlgVeterinario extends javax.swing.JDialog {
         txfCidade.setBorder(null);
         pnlcadastromedico.add(txfCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 610, 260, 20));
 
-        btncadastrar.setBackground(new java.awt.Color(58, 203, 199));
-        btncadastrar.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
-        btncadastrar.setForeground(new java.awt.Color(255, 255, 255));
-        btncadastrar.setText("Cadastrar");
-        btncadastrar.setBorder(null);
-        btncadastrar.addActionListener(new java.awt.event.ActionListener() {
+        btnCadastrar.setBackground(new java.awt.Color(58, 203, 199));
+        btnCadastrar.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        btnCadastrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCadastrar.setText("Cadastrar");
+        btnCadastrar.setBorder(null);
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btncadastrarActionPerformed(evt);
+                btnCadastrarActionPerformed(evt);
             }
         });
-        pnlcadastromedico.add(btncadastrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 640, 170, 40));
+        pnlcadastromedico.add(btnCadastrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 640, 170, 40));
 
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastromedico.png"))); // NOI18N
         background.setToolTipText("");
@@ -245,12 +247,33 @@ public class DlgVeterinario extends javax.swing.JDialog {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+     private void checkPermissoes(Permissao permissao){
+        if (permissao.getId() == 2 || permissao.getId() == 3){
+            txfNome.setEditable(false);
+            txfEmail.setEditable(false);
+            txfCrmv.setEditable(false);
+            txfCidade.setEditable(false);
+            txfEstado.setEditable(false);
+            txfRua.setEditable(false);
+            ftfNumero.setEditable(false);
+            txfBairro.setEditable(false);
+            cbxSexo.setEnabled(false);
+            cbxStatus.setEnabled(false);
+            ftfData.setEnabled(false);
+            ftfTelefone.setEditable(false);
+            ftfCpf.setEditable(false);
+            pwfSenha.setVisible(false);
+            txfUsuario.setEditable(false);
+            btnCadastrar.setEnabled(false);
+            btnDeletar.setEnabled(false);
+        }
+     }
+        
     private void lblFecharMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFecharMouseClicked
         this.dispose();
     }//GEN-LAST:event_lblFecharMouseClicked
 
-    private void btncadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastrarActionPerformed
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         try {
             VeterinarioDao vd = new VeterinarioDao(sessionFactory);
             String nome = txfNome.getText().trim();
@@ -299,7 +322,10 @@ public class DlgVeterinario extends javax.swing.JDialog {
             vet.setUsuario(usuario);
             vet.setSenha(Criptografar.encriptografar(senha));
             vet.setTipo("veterinario");
-            
+            Permissao permissao = new Permissao();
+            permissao.setId(2);
+            permissao.setDescricao("veterinario");
+            vet.setPermissao(permissao);        
             Optional<Veterinario> medico0 = Optional.empty();
 
             if (id == 0) {
@@ -322,7 +348,7 @@ public class DlgVeterinario extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Problema ao cadastrar veterinário.");
             this.dispose();
         }
-    }//GEN-LAST:event_btncadastrarActionPerformed
+    }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarActionPerformed
         try {
@@ -351,8 +377,8 @@ public class DlgVeterinario extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel background;
+    private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnDeletar;
-    private javax.swing.JButton btncadastrar;
     private javax.swing.JComboBox<String> cbxSexo;
     private javax.swing.JComboBox<String> cbxStatus;
     private javax.swing.JFormattedTextField ftfCpf;

@@ -7,6 +7,7 @@ package view;
 
 import dao.FuncionarioDao;
 import entities.Funcionario;
+import entities.Permissao;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -16,6 +17,8 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.SessionFactory;
+import utils.ComboItem;
+import utils.CombosDAO;
 import utils.Criptografar;
 import utils.HibernateUtil;
 
@@ -31,13 +34,15 @@ public class DlgFuncionario extends javax.swing.JDialog {
         initComponents();
         this.sessionFactory = HibernateUtil.getSessionFactory();
          btnDeletar.setVisible(false);
+         new CombosDAO().popularCombo("permissao", cbxPermissao);
     }
 
-    public DlgFuncionario(java.awt.Frame parent, boolean modal, Funcionario funcionario) {
+    public DlgFuncionario(java.awt.Frame parent, boolean modal, Funcionario funcionario, Permissao permissao) {
         super(parent, modal);
         initComponents();
         this.sessionFactory = HibernateUtil.getSessionFactory();
         this.funcionario = funcionario;
+        checkPermissoes(permissao);
         txfNome.setText(funcionario.getNome());
         txfUsuario.setText(funcionario.getUsuario());
         ftfCpf.setText(funcionario.getCpf());
@@ -78,9 +83,10 @@ public class DlgFuncionario extends javax.swing.JDialog {
 
         lblFechar = new javax.swing.JLabel();
         btnDeletar = new javax.swing.JButton();
-        btncadastrar = new javax.swing.JButton();
+        btnCadastrar = new javax.swing.JButton();
         txfBairro = new javax.swing.JTextField();
         pwfSenha = new javax.swing.JPasswordField();
+        cbxPermissao = new javax.swing.JComboBox<>();
         cbxStatus = new javax.swing.JComboBox<>();
         txfAtividade = new javax.swing.JTextField();
         txfEmail = new javax.swing.JTextField();
@@ -125,44 +131,48 @@ public class DlgFuncionario extends javax.swing.JDialog {
         });
         getContentPane().add(btnDeletar, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 640, 170, 40));
 
-        btncadastrar.setBackground(new java.awt.Color(58, 203, 199));
-        btncadastrar.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
-        btncadastrar.setForeground(new java.awt.Color(255, 255, 255));
-        btncadastrar.setText("Cadastrar");
-        btncadastrar.setBorder(null);
-        btncadastrar.addActionListener(new java.awt.event.ActionListener() {
+        btnCadastrar.setBackground(new java.awt.Color(58, 203, 199));
+        btnCadastrar.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        btnCadastrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCadastrar.setText("Cadastrar");
+        btnCadastrar.setBorder(null);
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btncadastrarActionPerformed(evt);
+                btnCadastrarActionPerformed(evt);
             }
         });
-        getContentPane().add(btncadastrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 640, 170, 40));
+        getContentPane().add(btnCadastrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 640, 170, 40));
 
         txfBairro.setBackground(new java.awt.Color(218, 218, 218));
         txfBairro.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         txfBairro.setToolTipText("");
         txfBairro.setBorder(null);
-        getContentPane().add(txfBairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 530, 270, 30));
+        getContentPane().add(txfBairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 510, 260, 30));
 
         pwfSenha.setBackground(new java.awt.Color(218, 218, 218));
         pwfSenha.setToolTipText("");
         pwfSenha.setBorder(null);
-        getContentPane().add(pwfSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 300, 270, 30));
+        getContentPane().add(pwfSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 300, 260, 30));
+
+        cbxPermissao.setBackground(new java.awt.Color(218, 218, 218));
+        cbxPermissao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Ativo", "Inativo" }));
+        getContentPane().add(cbxPermissao, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 290, 300, 40));
 
         cbxStatus.setBackground(new java.awt.Color(218, 218, 218));
         cbxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Ativo", "Inativo" }));
-        getContentPane().add(cbxStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 220, 310, 40));
+        getContentPane().add(cbxStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 220, 300, 40));
 
         txfAtividade.setBackground(new java.awt.Color(218, 218, 218));
         txfAtividade.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         txfAtividade.setToolTipText("");
         txfAtividade.setBorder(null);
-        getContentPane().add(txfAtividade, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 135, 250, 30));
+        getContentPane().add(txfAtividade, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 150, 250, 30));
 
         txfEmail.setBackground(new java.awt.Color(218, 218, 218));
         txfEmail.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         txfEmail.setToolTipText("");
         txfEmail.setBorder(null);
-        getContentPane().add(txfEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 360, 610, 30));
+        getContentPane().add(txfEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 360, 610, 30));
 
         ftfTelefone.setBackground(new java.awt.Color(218, 218, 218));
         ftfTelefone.setBorder(null);
@@ -171,11 +181,11 @@ public class DlgFuncionario extends javax.swing.JDialog {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        getContentPane().add(ftfTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 362, 240, 30));
+        getContentPane().add(ftfTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 360, 240, 30));
 
         cbxSexo.setBackground(new java.awt.Color(218, 218, 218));
         cbxSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Feminino", "Masculino" }));
-        getContentPane().add(cbxSexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 290, 290, 40));
+        getContentPane().add(cbxSexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 290, 290, 40));
 
         txfUsuario.setBackground(new java.awt.Color(218, 218, 218));
         txfUsuario.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -190,43 +200,43 @@ public class DlgFuncionario extends javax.swing.JDialog {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        getContentPane().add(ftfCpf, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 225, 280, 30));
+        getContentPane().add(ftfCpf, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 230, 260, 30));
 
         txfEstado.setBackground(new java.awt.Color(218, 218, 218));
         txfEstado.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         txfEstado.setToolTipText("");
         txfEstado.setBorder(null);
-        getContentPane().add(txfEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 530, 270, 30));
+        getContentPane().add(txfEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 510, 260, 30));
 
         ftfNumero.setBackground(new java.awt.Color(218, 218, 218));
         ftfNumero.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         ftfNumero.setToolTipText("");
         ftfNumero.setBorder(null);
-        getContentPane().add(ftfNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 530, 260, 30));
+        getContentPane().add(ftfNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 510, 250, 30));
 
         txfNome.setBackground(new java.awt.Color(218, 218, 218));
         txfNome.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         txfNome.setToolTipText("");
         txfNome.setBorder(null);
-        getContentPane().add(txfNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, 270, 30));
+        getContentPane().add(txfNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 140, 250, 30));
 
         ftfData.setBackground(new java.awt.Color(218, 218, 218));
         ftfData.setToolTipText("");
-        getContentPane().add(ftfData, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 130, 310, 30));
+        getContentPane().add(ftfData, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 140, 290, 30));
 
         txfRua.setBackground(new java.awt.Color(218, 218, 218));
         txfRua.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         txfRua.setToolTipText("");
         txfRua.setBorder(null);
-        getContentPane().add(txfRua, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 610, 270, 30));
+        getContentPane().add(txfRua, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 590, 270, 30));
 
         txfCidade.setBackground(new java.awt.Color(218, 218, 218));
         txfCidade.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         txfCidade.setToolTipText("");
         txfCidade.setBorder(null);
-        getContentPane().add(txfCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 620, 270, 30));
+        getContentPane().add(txfCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 590, 250, 30));
 
-        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/telafuncionario.png"))); // NOI18N
+        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastrofuncionario.png"))); // NOI18N
         getContentPane().add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1150, 690));
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1150, 690));
 
@@ -237,8 +247,29 @@ public class DlgFuncionario extends javax.swing.JDialog {
     private void lblFecharMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFecharMouseClicked
         this.dispose();
     }//GEN-LAST:event_lblFecharMouseClicked
-
-    private void btncadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastrarActionPerformed
+    private void checkPermissoes(Permissao permissao){
+        if (permissao.getId() == 2 || permissao.getId() == 3){
+            txfNome.setEditable(false);
+            txfEmail.setEditable(false);
+            txfAtividade.setEditable(false);
+            txfCidade.setEditable(false);
+            txfEstado.setEditable(false);
+            txfRua.setEditable(false);
+            ftfNumero.setEditable(false);
+            txfBairro.setEditable(false);
+            cbxSexo.setEnabled(false);
+            cbxStatus.setEnabled(false);
+            cbxPermissao.setEnabled(false);
+            ftfData.setEnabled(false);
+            ftfTelefone.setEditable(false);
+            ftfCpf.setEditable(false);
+            pwfSenha.setVisible(false);
+            txfUsuario.setEditable(false);
+            btnCadastrar.setEnabled(false);
+            btnDeletar.setEnabled(false);
+        }
+    }
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         try {
             FuncionarioDao fd = new FuncionarioDao(sessionFactory);
             String nome = txfNome.getText().trim();
@@ -286,6 +317,11 @@ public class DlgFuncionario extends javax.swing.JDialog {
             funcionario.setCpf(cpf);
             funcionario.setUsuario(usuario);
             funcionario.setSenha(Criptografar.encriptografar(senha));
+            ComboItem ci = (ComboItem) cbxPermissao.getSelectedItem();
+            Permissao perm = new Permissao();
+            perm.setId(ci.getCodigo());
+            perm.setDescricao(ci.getDescricao());
+            funcionario.setPermissao(perm);
             funcionario.setTipo("funcionario");
 
             Optional<Funcionario> funcionario0 = Optional.empty();
@@ -310,7 +346,7 @@ public class DlgFuncionario extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Erro ao cadastrar funcionário.");
             this.dispose();
         }
-    }//GEN-LAST:event_btncadastrarActionPerformed
+    }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarActionPerformed
          try {
@@ -340,8 +376,9 @@ public class DlgFuncionario extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel background;
+    private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnDeletar;
-    private javax.swing.JButton btncadastrar;
+    private javax.swing.JComboBox<String> cbxPermissao;
     private javax.swing.JComboBox<String> cbxSexo;
     private javax.swing.JComboBox<String> cbxStatus;
     private javax.swing.JFormattedTextField ftfCpf;

@@ -10,6 +10,7 @@ import dao.FuncionarioDao;
 import dao.VeterinarioDao;
 import entities.Cliente;
 import entities.Funcionario;
+import entities.Permissao;
 import entities.Veterinario;
 import java.awt.Color;
 import java.awt.Font;
@@ -35,6 +36,7 @@ public class ApplicationView extends javax.swing.JFrame {
     private final SessionFactory sessionFactory;
     private FuncionarioDao fd;
     private String busca;
+    private Permissao permissao;
     private int id;
 
     /**
@@ -53,6 +55,9 @@ public class ApplicationView extends javax.swing.JFrame {
         this.busca = "";
         this.id = 0;
         configurarTblCadastros();
+        permissao = funcLogado.getPermissao();
+        configurarPermissoes(permissao);
+        configurarPermissoesCadastros(permissao);
         lblLogado.setText(funcLogado.getNome());
 
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -72,7 +77,7 @@ public class ApplicationView extends javax.swing.JFrame {
         btnhome = new javax.swing.JButton();
         btncadastro = new javax.swing.JButton();
         lblLogado = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnCadastroProduto = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
         btnLogs = new javax.swing.JButton();
         barralateral = new javax.swing.JLabel();
@@ -106,7 +111,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnhomeActionPerformed(evt);
             }
         });
-        pnlmenulateral.add(btnhome, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 180, 140, 50));
+        pnlmenulateral.add(btnhome, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 180, 130, 50));
 
         btncadastro.setBackground(new java.awt.Color(58, 203, 199));
         btncadastro.setForeground(new java.awt.Color(58, 203, 199));
@@ -118,22 +123,22 @@ public class ApplicationView extends javax.swing.JFrame {
                 btncadastroActionPerformed(evt);
             }
         });
-        pnlmenulateral.add(btncadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 250, 140, 50));
+        pnlmenulateral.add(btncadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(24, 250, 130, 50));
 
         lblLogado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblLogado.setText("logado");
         pnlmenulateral.add(lblLogado, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 970, 130, 30));
 
-        jButton1.setBackground(new java.awt.Color(58, 203, 199));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/iconcadastro.png"))); // NOI18N
-        jButton1.setToolTipText("Cadastrar produto");
-        jButton1.setBorder(null);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCadastroProduto.setBackground(new java.awt.Color(58, 203, 199));
+        btnCadastroProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/iconproduto.png"))); // NOI18N
+        btnCadastroProduto.setToolTipText("Cadastrar produto");
+        btnCadastroProduto.setBorder(null);
+        btnCadastroProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCadastroProdutoActionPerformed(evt);
             }
         });
-        pnlmenulateral.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 130, 40));
+        pnlmenulateral.add(btnCadastroProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 130, 50));
 
         btnSair.setText("Sair");
         btnSair.addActionListener(new java.awt.event.ActionListener() {
@@ -143,7 +148,10 @@ public class ApplicationView extends javax.swing.JFrame {
         });
         pnlmenulateral.add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 1020, 130, 40));
 
-        btnLogs.setText("Logs");
+        btnLogs.setBackground(new java.awt.Color(58, 203, 199));
+        btnLogs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/iconlogs.png"))); // NOI18N
+        btnLogs.setToolTipText("");
+        btnLogs.setBorder(null);
         btnLogs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLogsActionPerformed(evt);
@@ -237,6 +245,11 @@ public class ApplicationView extends javax.swing.JFrame {
 
         cmbescolher.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         cmbescolher.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Funcionário", "Cliente", "Veterinário", " " }));
+        cmbescolher.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbescolherActionPerformed(evt);
+            }
+        });
         pnlcadastros.add(cmbescolher, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 990, 250, 40));
 
         fundobusca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cadastrolista.png"))); // NOI18N
@@ -257,7 +270,37 @@ public class ApplicationView extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    private void configurarPermissoes(Permissao permissao) {
 
+        if (permissao.getId() == 2) {
+            btnCadastroProduto.setVisible(false);
+            btnLogs.setVisible(false);
+        } else if (permissao.getId() == 3) {
+            btnLogs.setVisible(false);
+        }
+    }
+
+    private void configurarPermissoesCadastros(Permissao permissao) {
+        switch (cmbescolher.getSelectedIndex()) {
+            case 0:
+                if (permissao.getId() == 2 || permissao.getId() == 3) {
+                    btnAdicionar.setVisible(false);
+                } else {
+                    btnAdicionar.setVisible(true);
+                }
+                break;
+            case 1:
+                btnAdicionar.setVisible(true);
+                break;
+            case 2:
+                if (permissao.getId() == 2 || permissao.getId() == 3) {
+                    btnAdicionar.setVisible(false);
+                } else {
+                    btnAdicionar.setVisible(true);
+                }
+                break;
+        }
+    }
 
     private void btnhomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhomeActionPerformed
         desativarTelas();
@@ -274,6 +317,7 @@ public class ApplicationView extends javax.swing.JFrame {
             case 0:
                 DlgFuncionario tela = new DlgFuncionario(null, true);
                 tela.setVisible(true);
+
                 break;
             case 1:
                 DlgCliente tela2 = new DlgCliente(null, true);
@@ -302,7 +346,7 @@ public class ApplicationView extends javax.swing.JFrame {
                     case 0: {
                         Optional<Funcionario> func = new FuncionarioDao(sessionFactory).buscar(id);
                         Funcionario funcionario = func.get();
-                        DlgFuncionario funcionarioTela = new DlgFuncionario(null, true, funcionario);
+                        DlgFuncionario funcionarioTela = new DlgFuncionario(null, true, funcionario, permissao);
                         funcionarioTela.setVisible(true);
                         break;
                     }
@@ -316,7 +360,7 @@ public class ApplicationView extends javax.swing.JFrame {
                     case 2: {
                         Optional<Veterinario> vet = new VeterinarioDao(sessionFactory).buscar(id);
                         Veterinario veterinario = vet.get();
-                        DlgVeterinario veterinarioTela = new DlgVeterinario(null, true, veterinario);
+                        DlgVeterinario veterinarioTela = new DlgVeterinario(null, true, veterinario, permissao);
                         veterinarioTela.setVisible(true);
                         break;
                     }
@@ -454,10 +498,10 @@ public class ApplicationView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowClosing
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnCadastroProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastroProdutoActionPerformed
         DlgProduto tela = new DlgProduto(null, true);
         tela.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnCadastroProdutoActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         int i = JOptionPane.showConfirmDialog(null, "Tem certeza de que deseja sair?");
@@ -473,6 +517,10 @@ public class ApplicationView extends javax.swing.JFrame {
         DlgLogs dlgLogs = new DlgLogs(null, true);
         dlgLogs.setVisible(true);
     }//GEN-LAST:event_btnLogsActionPerformed
+
+    private void cmbescolherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbescolherActionPerformed
+        configurarPermissoesCadastros(permissao);
+    }//GEN-LAST:event_cmbescolherActionPerformed
 
     public void desativarTelas() {
         pnlhome.setVisible(false);
@@ -490,25 +538,25 @@ public class ApplicationView extends javax.swing.JFrame {
                 .atZone(ZoneId.systemDefault())
                 .toInstant());
     }
-    
+
     public void configurarTblCadastros() {
         tblgeral.getTableHeader().setFont(new Font("Poppins", Font.BOLD, 15));
         tblgeral.getTableHeader().setForeground(Color.WHITE);
         tblgeral.getTableHeader().setOpaque(false);
         tblgeral.getTableHeader().setBackground(new Color(2, 166, 166));
-    }  
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
     private javax.swing.JLabel barralateral;
     private javax.swing.JButton btnAdicionar;
+    private javax.swing.JButton btnCadastroProduto;
     private javax.swing.JButton btnLogs;
     private javax.swing.JButton btnSair;
     private javax.swing.JButton btncadastro;
     private javax.swing.JButton btnhome;
     private javax.swing.JComboBox<String> cmbescolher;
     private javax.swing.JLabel fundobusca;
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblLogado;
     private javax.swing.JPanel pnlcadastros;
