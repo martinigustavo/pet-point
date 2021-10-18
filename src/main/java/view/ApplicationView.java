@@ -61,6 +61,13 @@ public class ApplicationView extends javax.swing.JFrame {
         lblLogado.setText(funcLogado.getNome());
 
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+        try {
+            funcLogado.setLogado(true);
+            new FuncionarioDao(sessionFactory).atualizar(funcLogado);
+        } catch (Exception e) {
+
+        }
     }
 
     /**
