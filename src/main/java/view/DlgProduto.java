@@ -46,90 +46,60 @@ public class DlgProduto extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        tbpProduto = new javax.swing.JTabbedPane();
-        pnlCadastro = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        txfSKU = new javax.swing.JTextField();
+        pnlcadastros = new javax.swing.JPanel();
+        tbpCadastros = new javax.swing.JTabbedPane();
+        pnlprodutos = new javax.swing.JPanel();
         txfNome = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        txfSKU = new javax.swing.JTextField();
+        ftfEstoque = new javax.swing.JFormattedTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         txaDescricao = new javax.swing.JTextArea();
-        jLabel5 = new javax.swing.JLabel();
-        ftfEstoque = new javax.swing.JFormattedTextField();
-        jLabel6 = new javax.swing.JLabel();
         ftfCusto = new javax.swing.JFormattedTextField();
-        jLabel7 = new javax.swing.JLabel();
         ftfVenda = new javax.swing.JFormattedTextField();
-        jLabel8 = new javax.swing.JLabel();
         ftfDesconto = new javax.swing.JFormattedTextField();
-        jLabel9 = new javax.swing.JLabel();
         cbxCategoria = new javax.swing.JComboBox<>();
-        jLabel10 = new javax.swing.JLabel();
         cbxStatus = new javax.swing.JComboBox<>();
-        btnSair = new javax.swing.JButton();
-        btnSalvar = new javax.swing.JButton();
         btnNovo = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
+        btnSair = new javax.swing.JButton();
+        backgroundcadastro = new javax.swing.JLabel();
         pnlConsulta = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblProduto = new javax.swing.JTable();
         cbxBusca = new javax.swing.JComboBox<>();
         txfBusca = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblProduto = new javax.swing.JTable();
         btnVerProduto = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setText("Nome:");
-
-        jLabel2.setFont(new java.awt.Font("SF Pro Display", 0, 18)); // NOI18N
-        jLabel2.setText("INFORMAÇOES DO PRODUTO");
-
-        jLabel3.setText("SKU:");
-
-        jLabel4.setText("Descrição:");
+        pnlprodutos.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        pnlprodutos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnlprodutos.add(txfNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 250, 270, 30));
+        pnlprodutos.add(txfSKU, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 180, 270, 30));
+        pnlprodutos.add(ftfEstoque, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 330, 270, 30));
 
         txaDescricao.setColumns(20);
         txaDescricao.setRows(5);
         jScrollPane2.setViewportView(txaDescricao);
 
-        jLabel5.setText("Estoque:");
-
-        jLabel6.setText("Custo (R$):");
+        pnlprodutos.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 410, 270, 110));
 
         ftfCusto.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
-
-        jLabel7.setText("Venda (R$):");
+        pnlprodutos.add(ftfCusto, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 180, 270, 30));
 
         ftfVenda.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
-
-        jLabel8.setText("Desconto (%):");
+        pnlprodutos.add(ftfVenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 250, 270, 30));
 
         ftfDesconto.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
-
-        jLabel9.setText("Categoria:");
+        pnlprodutos.add(ftfDesconto, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 330, 270, 30));
 
         cbxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Alimentação", "Brinquedos", "Higiene", "Medicamentos", "Roupas" }));
-
-        jLabel10.setText("Status:");
+        pnlprodutos.add(cbxCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 400, 270, 30));
 
         cbxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ativo", "Inativo" }));
-
-        btnSair.setText("Sair");
-        btnSair.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSairActionPerformed(evt);
-            }
-        });
-
-        btnSalvar.setText("Salvar");
-        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalvarActionPerformed(evt);
-            }
-        });
+        pnlprodutos.add(cbxStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 480, 280, 30));
 
         btnNovo.setText("Novo");
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
@@ -137,98 +107,42 @@ public class DlgProduto extends javax.swing.JDialog {
                 btnNovoActionPerformed(evt);
             }
         });
+        pnlprodutos.add(btnNovo, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 660, -1, -1));
 
-        javax.swing.GroupLayout pnlCadastroLayout = new javax.swing.GroupLayout(pnlCadastro);
-        pnlCadastro.setLayout(pnlCadastroLayout);
-        pnlCadastroLayout.setHorizontalGroup(
-            pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlCadastroLayout.createSequentialGroup()
-                .addGap(109, 109, 109)
-                .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addGap(18, 18, 18)
-                .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(pnlCadastroLayout.createSequentialGroup()
-                            .addComponent(btnNovo)
-                            .addGap(18, 18, 18)
-                            .addComponent(btnSalvar)
-                            .addGap(18, 18, 18)
-                            .addComponent(btnSair))
-                        .addGroup(pnlCadastroLayout.createSequentialGroup()
-                            .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txfSKU)
-                                .addComponent(txfNome)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE))
-                            .addGap(100, 100, 100)
-                            .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
-                            .addGap(18, 18, 18)
-                            .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(cbxStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cbxCategoria, 0, 200, Short.MAX_VALUE)
-                                .addComponent(ftfCusto)
-                                .addComponent(ftfVenda)
-                                .addComponent(ftfDesconto, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(ftfEstoque)))))
-                .addContainerGap(147, Short.MAX_VALUE))
-        );
-        pnlCadastroLayout.setVerticalGroup(
-            pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlCadastroLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel2)
-                .addGap(29, 29, 29)
-                .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txfSKU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(ftfEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txfNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(ftfCusto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(pnlCadastroLayout.createSequentialGroup()
-                        .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addGroup(pnlCadastroLayout.createSequentialGroup()
-                                .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel7)
-                                    .addComponent(ftfVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel8)
-                                    .addComponent(ftfDesconto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel9)
-                                    .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(18, 18, 18)
-                        .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel10)
-                            .addComponent(cbxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
-                .addGroup(pnlCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSair)
-                    .addComponent(btnSalvar)
-                    .addComponent(btnNovo))
-                .addGap(32, 32, 32))
-        );
+        btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
+        pnlprodutos.add(btnSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 660, -1, -1));
 
-        tbpProduto.addTab("Cadastro", pnlCadastro);
+        btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
+        pnlprodutos.add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 660, -1, -1));
+
+        backgroundcadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/telacadastroproduto.png"))); // NOI18N
+        pnlprodutos.add(backgroundcadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        tbpCadastros.addTab("Produtos", null, pnlprodutos, "");
+
+        pnlConsulta.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        cbxBusca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SKU", "Nome", "Categoria" }));
+        pnlConsulta.add(cbxBusca, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 120, 30));
+        pnlConsulta.add(txfBusca, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 100, 560, 30));
+
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+        pnlConsulta.add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 100, 160, 30));
 
         tblProduto.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -247,20 +161,11 @@ public class DlgProduto extends javax.swing.JDialog {
             }
         });
         jScrollPane1.setViewportView(tblProduto);
-        if (tblProduto.getColumnModel().getColumnCount() > 0) {
-            tblProduto.getColumnModel().getColumn(0).setMinWidth(70);
-            tblProduto.getColumnModel().getColumn(0).setPreferredWidth(70);
-            tblProduto.getColumnModel().getColumn(0).setMaxWidth(70);
-        }
 
-        cbxBusca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SKU", "Nome", "Categoria" }));
+        pnlConsulta.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 160, 880, 430));
 
-        btnBuscar.setText("Buscar");
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
-            }
-        });
+        btnVerProduto.setText("Ver produto");
+        pnlConsulta.add(btnVerProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 640, -1, -1));
 
         btnEditar.setText("Editar registro");
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
@@ -268,66 +173,53 @@ public class DlgProduto extends javax.swing.JDialog {
                 btnEditarActionPerformed(evt);
             }
         });
+        pnlConsulta.add(btnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 640, -1, -1));
 
-        btnVerProduto.setText("Ver produto");
+        tbpCadastros.addTab("Busca produto", null, pnlConsulta, "");
 
-        javax.swing.GroupLayout pnlConsultaLayout = new javax.swing.GroupLayout(pnlConsulta);
-        pnlConsulta.setLayout(pnlConsultaLayout);
-        pnlConsultaLayout.setHorizontalGroup(
-            pnlConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlConsultaLayout.createSequentialGroup()
-                .addGap(79, 79, 79)
-                .addGroup(pnlConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlConsultaLayout.createSequentialGroup()
-                        .addComponent(btnVerProduto)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEditar))
-                    .addGroup(pnlConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 938, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(pnlConsultaLayout.createSequentialGroup()
-                            .addComponent(cbxBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(txfBusca)
-                            .addGap(18, 18, 18)
-                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(90, Short.MAX_VALUE))
+        javax.swing.GroupLayout pnlcadastrosLayout = new javax.swing.GroupLayout(pnlcadastros);
+        pnlcadastros.setLayout(pnlcadastrosLayout);
+        pnlcadastrosLayout.setHorizontalGroup(
+            pnlcadastrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(tbpCadastros)
         );
-        pnlConsultaLayout.setVerticalGroup(
-            pnlConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlConsultaLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(pnlConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbxBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txfBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(pnlConsultaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEditar)
-                    .addComponent(btnVerProduto))
-                .addGap(44, 44, 44))
+        pnlcadastrosLayout.setVerticalGroup(
+            pnlcadastrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(tbpCadastros)
         );
-
-        tbpProduto.addTab("Consulta", pnlConsulta);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tbpProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 1107, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(pnlcadastros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tbpProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(pnlcadastros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_btnSairActionPerformed
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        id = 0;
+        txfSKU.setText("");
+        txfNome.setText("");
+        txaDescricao.setText("");
+        ftfEstoque.setText("");
+        ftfCusto.setText("");
+        ftfVenda.setText("");
+        ftfDesconto.setText("");
+        cbxStatus.setSelectedIndex(0);
+        cbxCategoria.setSelectedIndex(0);
+    }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         try {
@@ -394,18 +286,9 @@ public class DlgProduto extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
-    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        id = 0;
-        txfSKU.setText("");
-        txfNome.setText("");
-        txaDescricao.setText("");
-        ftfEstoque.setText("");
-        ftfCusto.setText("");
-        ftfVenda.setText("");
-        ftfDesconto.setText("");
-        cbxStatus.setSelectedIndex(0);
-        cbxCategoria.setSelectedIndex(0);
-    }//GEN-LAST:event_btnNovoActionPerformed
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnSairActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         try {
@@ -495,78 +378,31 @@ public class DlgProduto extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Erro ao selecionar.");
         }
     }//GEN-LAST:event_btnEditarActionPerformed
+        private void carregarDadosProduto(Produto produto) {
+            txfSKU.setText(produto.getSKU());
+            txfNome.setText(produto.getNome());
+            txaDescricao.setText(produto.getDescricao());
+            ftfEstoque.setText(String.valueOf(produto.getEstoque()));
+            ftfCusto.setText(String.valueOf(produto.getPreco_custo()));
+            ftfVenda.setText(String.valueOf(produto.getPreco_venda()));
+            ftfDesconto.setText(String.valueOf(produto.getDesconto()));
 
-    private void carregarDadosProduto(Produto produto) {
-        txfSKU.setText(produto.getSKU());
-        txfNome.setText(produto.getNome());
-        txaDescricao.setText(produto.getDescricao());
-        ftfEstoque.setText(String.valueOf(produto.getEstoque()));
-        ftfCusto.setText(String.valueOf(produto.getPreco_custo()));
-        ftfVenda.setText(String.valueOf(produto.getPreco_venda()));
-        ftfDesconto.setText(String.valueOf(produto.getDesconto()));
-
-        if (produto.getStatus().equals("Ativo")) {
-            cbxStatus.setSelectedIndex(0);
-        } else {
-            cbxStatus.setSelectedIndex(1);
-        }
-
-        String categoria = produto.getCategoria();
-        int index = ((DefaultComboBoxModel) cbxCategoria.getModel()).getIndexOf(categoria);
-        cbxCategoria.setSelectedIndex(index);
-
-        tbpProduto.setSelectedIndex(0);
-        txfSKU.requestFocus();
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+            if (produto.getStatus().equals("Ativo")) {
+                cbxStatus.setSelectedIndex(0);
+            } else {
+                cbxStatus.setSelectedIndex(1);
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DlgProduto.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DlgProduto.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DlgProduto.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DlgProduto.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                DlgProduto dialog = new DlgProduto(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+            String categoria = produto.getCategoria();
+            int index = ((DefaultComboBoxModel) cbxCategoria.getModel()).getIndexOf(categoria);
+            cbxCategoria.setSelectedIndex(index);
+
+            tbpCadastros.setSelectedIndex(0);
+            txfSKU.requestFocus();
+        }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel backgroundcadastro;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnNovo;
@@ -580,22 +416,13 @@ public class DlgProduto extends javax.swing.JDialog {
     private javax.swing.JFormattedTextField ftfDesconto;
     private javax.swing.JFormattedTextField ftfEstoque;
     private javax.swing.JFormattedTextField ftfVenda;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JPanel pnlCadastro;
     private javax.swing.JPanel pnlConsulta;
+    private javax.swing.JPanel pnlcadastros;
+    private javax.swing.JPanel pnlprodutos;
     private javax.swing.JTable tblProduto;
-    private javax.swing.JTabbedPane tbpProduto;
+    private javax.swing.JTabbedPane tbpCadastros;
     private javax.swing.JTextArea txaDescricao;
     private javax.swing.JTextField txfBusca;
     private javax.swing.JTextField txfNome;

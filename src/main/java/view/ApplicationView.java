@@ -56,6 +56,7 @@ public class ApplicationView extends javax.swing.JFrame {
         this.id = 0;
         configurarTblCadastros();
         permissao = funcLogado.getPermissao();
+        this.carregarHomeByPermissao();
         configurarPermissoes(permissao);
         configurarPermissoesCadastros(permissao);
         lblLogado.setText(funcLogado.getNome());
@@ -86,9 +87,16 @@ public class ApplicationView extends javax.swing.JFrame {
         lblLogado = new javax.swing.JLabel();
         btnCadastroProduto = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
-        btnLogs = new javax.swing.JButton();
+        btnAdmin = new javax.swing.JButton();
         barralateral = new javax.swing.JLabel();
-        pnlhome = new javax.swing.JPanel();
+        pnlHomeAdmin = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        pnlHomePet = new javax.swing.JPanel();
+        btncadastros = new javax.swing.JButton();
+        fundoPet = new javax.swing.JLabel();
+        pnlHomeVet = new javax.swing.JPanel();
+        fundoVet = new javax.swing.JLabel();
         pnlcadastros = new javax.swing.JPanel();
         tfdbusca = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -134,7 +142,7 @@ public class ApplicationView extends javax.swing.JFrame {
 
         lblLogado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblLogado.setText("logado");
-        pnlmenulateral.add(lblLogado, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 970, 130, 30));
+        pnlmenulateral.add(lblLogado, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 960, 130, 40));
 
         btnCadastroProduto.setBackground(new java.awt.Color(58, 203, 199));
         btnCadastroProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/iconproduto.png"))); // NOI18N
@@ -155,34 +163,55 @@ public class ApplicationView extends javax.swing.JFrame {
         });
         pnlmenulateral.add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 1020, 130, 40));
 
-        btnLogs.setBackground(new java.awt.Color(58, 203, 199));
-        btnLogs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/iconlogs.png"))); // NOI18N
-        btnLogs.setToolTipText("");
-        btnLogs.setBorder(null);
-        btnLogs.addActionListener(new java.awt.event.ActionListener() {
+        btnAdmin.setBackground(new java.awt.Color(58, 203, 199));
+        btnAdmin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/iconlogs.png"))); // NOI18N
+        btnAdmin.setToolTipText("");
+        btnAdmin.setBorder(null);
+        btnAdmin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLogsActionPerformed(evt);
+                btnAdminActionPerformed(evt);
             }
         });
-        pnlmenulateral.add(btnLogs, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 380, 130, 50));
+        pnlmenulateral.add(btnAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 880, 130, 50));
 
         barralateral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/barralateral.png"))); // NOI18N
         pnlmenulateral.add(barralateral, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         background.add(pnlmenulateral, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, 1080));
 
-        javax.swing.GroupLayout pnlhomeLayout = new javax.swing.GroupLayout(pnlhome);
-        pnlhome.setLayout(pnlhomeLayout);
-        pnlhomeLayout.setHorizontalGroup(
-            pnlhomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1760, Short.MAX_VALUE)
-        );
-        pnlhomeLayout.setVerticalGroup(
-            pnlhomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1080, Short.MAX_VALUE)
-        );
+        pnlHomeAdmin.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        background.add(pnlhome, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1760, 1080));
+        jButton1.setText("BOTAO PRA ABRIR TELA VETERINARIA");
+        pnlHomeAdmin.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 350, 440, 190));
+
+        jButton2.setText("BOTAO PRA ABRIR TELA PETSHOP");
+        pnlHomeAdmin.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 350, 440, 190));
+
+        background.add(pnlHomeAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1760, 1080));
+
+        pnlHomePet.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btncadastros.setBackground(new java.awt.Color(236, 236, 236));
+        btncadastros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btncadastros.png"))); // NOI18N
+        btncadastros.setBorder(null);
+        btncadastros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncadastrosActionPerformed(evt);
+            }
+        });
+        pnlHomePet.add(btncadastros, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 150, 50));
+
+        fundoPet.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/telapetshop.png"))); // NOI18N
+        pnlHomePet.add(fundoPet, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1760, 1080));
+
+        background.add(pnlHomePet, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1760, 1080));
+
+        pnlHomeVet.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        fundoVet.setText("INSERIR IMAGEM DE FUNDO DO DASHBOARD DA VETERINARIA");
+        pnlHomeVet.add(fundoVet, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1760, 1080));
+
+        background.add(pnlHomeVet, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1760, 1080));
 
         pnlcadastros.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -284,10 +313,9 @@ public class ApplicationView extends javax.swing.JFrame {
     private void configurarPermissoes(Permissao permissao) {
 
         if (permissao.getId() == 2) {
-            btnCadastroProduto.setVisible(false);
-            btnLogs.setVisible(false);
+            btnAdmin.setVisible(false);
         } else if (permissao.getId() == 3) {
-            btnLogs.setVisible(false);
+            btnAdmin.setVisible(false);
         }
     }
 
@@ -314,9 +342,19 @@ public class ApplicationView extends javax.swing.JFrame {
     }
 
     private void btnhomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhomeActionPerformed
-        desativarTelas();
-        pnlmenulateral.setVisible(true);
+        this.carregarHomeByPermissao();
     }//GEN-LAST:event_btnhomeActionPerformed
+
+    private void carregarHomeByPermissao() {
+        this.desativarTelas();
+        pnlmenulateral.setVisible(true);
+
+        if (permissao.getId() == 2) {
+            pnlHomePet.setVisible(true);
+        } else if (permissao.getId() == 3) {
+            pnlHomeVet.setVisible(true);
+        }
+    }
 
     private void btncadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastroActionPerformed
         desativarTelas();
@@ -329,7 +367,6 @@ public class ApplicationView extends javax.swing.JFrame {
             case 0:
                 DlgFuncionario tela = new DlgFuncionario(null, true);
                 tela.setVisible(true);
-
                 break;
             case 1:
                 DlgCliente tela2 = new DlgCliente(null, true);
@@ -342,6 +379,8 @@ public class ApplicationView extends javax.swing.JFrame {
             default:
                 break;
         }
+
+        this.atualizarTabela();
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     private void tblgeralMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblgeralMouseClicked
@@ -351,7 +390,6 @@ public class ApplicationView extends javax.swing.JFrame {
 
             if (id < 0) {
                 System.out.println("Id menor que 0");
-                //lblmensagem.setVisible(true);
             } else {
                 System.out.println(cmbescolher.getSelectedIndex());
                 switch (cmbescolher.getSelectedIndex()) {
@@ -380,34 +418,6 @@ public class ApplicationView extends javax.swing.JFrame {
                         break;
                 }
             }
-
-            /*
-            if (func.isPresent()) {
-                txfNome.setText(func.get().getNome());
-                txfUsuario.setText(func.get().getUsuario());
-                ftfCpf.setText(func.get().getCpf());
-                ftfTelefone.setText(func.get().getTelefone());
-                txfAtividade.setText(func.get().getAtividade());
-                ftfData.setDate(convertToDateViaInstant(func.get().getData_nascimento()));
-                txfEstado.setText(func.get().getEstado());
-                txfCidade.setText(func.get().getCidade());
-                txfEmail.setText(func.get().getEmail());
-
-                if (func.get().getSexo().equals("Feminino")) {
-                    cbxSexo.setSelectedIndex(1);
-                } else {
-                    cbxSexo.setSelectedIndex(2);
-                }
-
-                if (func.get().getStatus().equals("Ativo")) {
-                    cbxStatus.setSelectedIndex(1);
-                } else {
-                    cbxStatus.setSelectedIndex(2);
-                }
-                
-                desativarTelas();
-                pnlcadastrarfunc.setVisible(true);
-             */
         } catch (Exception e) {
             log.error("Erro ao selecionar na tabela de cadastros "
                     + "(combobox selected_index: "
@@ -514,11 +524,6 @@ public class ApplicationView extends javax.swing.JFrame {
         }
     }
 
-    private void btnCadastroProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastroProdutoActionPerformed
-        DlgPetshop tela = new DlgPetshop(null, true);
-        tela.setVisible(true);
-    }//GEN-LAST:event_btnCadastroProdutoActionPerformed
-
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         int i = JOptionPane.showConfirmDialog(null, "Tem certeza de que deseja sair?");
         if (i == 0) {
@@ -529,10 +534,10 @@ public class ApplicationView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSairActionPerformed
 
-    private void btnLogsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogsActionPerformed
+    private void btnAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminActionPerformed
         DlgLogs dlgLogs = new DlgLogs(null, true);
         dlgLogs.setVisible(true);
-    }//GEN-LAST:event_btnLogsActionPerformed
+    }//GEN-LAST:event_btnAdminActionPerformed
 
     private void cmbescolherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbescolherActionPerformed
         configurarPermissoesCadastros(permissao);
@@ -542,8 +547,20 @@ public class ApplicationView extends javax.swing.JFrame {
         this.atualizarTabela();
     }//GEN-LAST:event_cmbescolherItemStateChanged
 
+    private void btncadastrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastrosActionPerformed
+        DlgProduto dlgProduto = new DlgProduto(null, true);
+        dlgProduto.setVisible(true);
+    }//GEN-LAST:event_btncadastrosActionPerformed
+
+    private void btnCadastroProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastroProdutoActionPerformed
+//        DlgProduto tela = new DlgProduto(null, true);
+//        tela.setVisible(true);
+    }//GEN-LAST:event_btnCadastroProdutoActionPerformed
+
     public void desativarTelas() {
-        pnlhome.setVisible(false);
+        pnlHomeAdmin.setVisible(false);
+        pnlHomePet.setVisible(false);
+        pnlHomeVet.setVisible(false);
         pnlcadastros.setVisible(false);
     }
 
@@ -570,17 +587,24 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JPanel background;
     private javax.swing.JLabel barralateral;
     private javax.swing.JButton btnAdicionar;
+    private javax.swing.JButton btnAdmin;
     private javax.swing.JButton btnCadastroProduto;
-    private javax.swing.JButton btnLogs;
     private javax.swing.JButton btnSair;
     private javax.swing.JButton btncadastro;
+    private javax.swing.JButton btncadastros;
     private javax.swing.JButton btnhome;
     private javax.swing.JComboBox<String> cmbescolher;
+    private javax.swing.JLabel fundoPet;
+    private javax.swing.JLabel fundoVet;
     private javax.swing.JLabel fundobusca;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblLogado;
+    private javax.swing.JPanel pnlHomeAdmin;
+    private javax.swing.JPanel pnlHomePet;
+    private javax.swing.JPanel pnlHomeVet;
     private javax.swing.JPanel pnlcadastros;
-    private javax.swing.JPanel pnlhome;
     private javax.swing.JPanel pnlmenulateral;
     private javax.swing.JTable tblgeral;
     private javax.swing.JTextField tfdbusca;
