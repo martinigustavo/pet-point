@@ -506,7 +506,7 @@ public class ApplicationView extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void btnCadastroProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastroProdutoActionPerformed
-        DlgProduto tela = new DlgProduto(null, true);
+        DlgPetshop tela = new DlgPetshop(null, true);
         tela.setVisible(true);
     }//GEN-LAST:event_btnCadastroProdutoActionPerformed
 
