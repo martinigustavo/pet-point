@@ -45,7 +45,7 @@ public class DlgVeterinario extends javax.swing.JDialog {
         txfUsuario.setText(medico.getUsuario());
         ftfCpf.setText(medico.getCpf());
         ftfTelefone.setText(medico.getTelefone());
-        txfCrmv.setText(medico.getAtividade());
+        txfCrmv.setText(medico.getCrmv());
         ftfData.setDate(convertToDateViaInstant(medico.getData_nascimento()));
         txfEstado.setText(medico.getEstado());
         txfCidade.setText(medico.getCidade());

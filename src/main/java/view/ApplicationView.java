@@ -224,7 +224,6 @@ public class ApplicationView extends javax.swing.JFrame {
         });
         tblgeral.setRowHeight(35);
         tblgeral.setSelectionBackground(new java.awt.Color(204, 204, 204));
-        tblgeral.setShowVerticalLines(false);
         tblgeral.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblgeralMouseClicked(evt);
@@ -251,7 +250,12 @@ public class ApplicationView extends javax.swing.JFrame {
         pnlcadastros.add(btnAdicionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1550, 980, 50, 50));
 
         cmbescolher.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
-        cmbescolher.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Funcionário", "Cliente", "Veterinário", " " }));
+        cmbescolher.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Funcionário", "Cliente", "Veterinário" }));
+        cmbescolher.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbescolherItemStateChanged(evt);
+            }
+        });
         cmbescolher.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbescolherActionPerformed(evt);
@@ -317,6 +321,7 @@ public class ApplicationView extends javax.swing.JFrame {
     private void btncadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastroActionPerformed
         desativarTelas();
         pnlcadastros.setVisible(true);
+        this.atualizarTabela();
     }//GEN-LAST:event_btncadastroActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
@@ -413,6 +418,20 @@ public class ApplicationView extends javax.swing.JFrame {
     }//GEN-LAST:event_tblgeralMouseClicked
 
     private void tfdbuscaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfdbuscaKeyReleased
+        this.atualizarTabela();
+    }//GEN-LAST:event_tfdbuscaKeyReleased
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        int i = JOptionPane.showConfirmDialog(null, "Tem certeza de que deseja sair?");
+        if (i == 0) {
+            funcLogado.setLogado(false);
+            new FuncionarioDao(sessionFactory).atualizar(funcLogado);
+
+            System.exit(0);
+        }
+    }//GEN-LAST:event_formWindowClosing
+
+    public void atualizarTabela() {
         try {
             busca = tfdbusca.getText();
 
@@ -493,17 +512,7 @@ public class ApplicationView extends javax.swing.JFrame {
                     + "): " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Erro ao buscar.");
         }
-    }//GEN-LAST:event_tfdbuscaKeyReleased
-
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        int i = JOptionPane.showConfirmDialog(null, "Tem certeza de que deseja sair?");
-        if (i == 0) {
-            funcLogado.setLogado(false);
-            new FuncionarioDao(sessionFactory).atualizar(funcLogado);
-
-            System.exit(0);
-        }
-    }//GEN-LAST:event_formWindowClosing
+    }
 
     private void btnCadastroProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastroProdutoActionPerformed
         DlgPetshop tela = new DlgPetshop(null, true);
@@ -528,6 +537,10 @@ public class ApplicationView extends javax.swing.JFrame {
     private void cmbescolherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbescolherActionPerformed
         configurarPermissoesCadastros(permissao);
     }//GEN-LAST:event_cmbescolherActionPerformed
+
+    private void cmbescolherItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbescolherItemStateChanged
+        this.atualizarTabela();
+    }//GEN-LAST:event_cmbescolherItemStateChanged
 
     public void desativarTelas() {
         pnlhome.setVisible(false);

@@ -22,7 +22,6 @@
         <mapping class="entities.Funcionario" />
         <mapping class="entities.Log" />
         <mapping class="entities.Permissao" />
-        <mapping class="entities.Pessoa" />
         <mapping class="entities.Pet" />
         <mapping class="entities.Produto" />
         <mapping class="entities.Raca" />

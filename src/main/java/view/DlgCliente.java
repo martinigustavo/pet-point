@@ -267,7 +267,7 @@ public class DlgCliente extends javax.swing.JDialog {
             cli.setStatus(status);
             cli.setTelefone(telefone);
             cli.setCpf(cpf);
-            cli.setTipo("cliente");
+//            cli.setTipo("cliente");
 
             Optional<Cliente> cliente0 = Optional.empty();
 

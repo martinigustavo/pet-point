@@ -28,7 +28,7 @@ public class ClienteDao extends AbstractGenericDao<Cliente> {
         List<Cliente> resultList = new LinkedList<>();
 
         try {
-            Query<Cliente> query = session.createQuery("SELECT c FROM Cliente c WHERE lower(c.nome) LIKE lower(:nome) AND c.tipo = 'cliente'")
+            Query<Cliente> query = session.createQuery("SELECT c FROM Cliente c WHERE lower(c.nome) LIKE lower(:nome)")
                     .setParameter("nome", "%" + nome + "%");
             resultList = query.list();
             transaction.commit();
