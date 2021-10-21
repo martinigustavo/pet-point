@@ -349,10 +349,12 @@ public class ApplicationView extends javax.swing.JFrame {
         this.desativarTelas();
         pnlmenulateral.setVisible(true);
 
-        if (permissao.getId() == 2) {
-            pnlHomePet.setVisible(true);
-        } else if (permissao.getId() == 3) {
+        if  (permissao.getId() == 1) {
+            pnlHomeAdmin.setVisible(true);
+        } else if (permissao.getId() == 2) {
             pnlHomeVet.setVisible(true);
+        } else if (permissao.getId() == 3) {
+            pnlHomePet.setVisible(true);
         }
     }
 

@@ -5,32 +5,26 @@
  */
 package view;
 
+import entities.Funcionario;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
+import utils.VisualsConfig;
 
-/**
- *
- * @author Gustavo Martini
- */
 public class DlgLogs extends javax.swing.JDialog {
 
-    /**
-     * Creates new form DlgLogs
-     */
+    private Funcionario funcionario;
+    
     public DlgLogs(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-
-        rbtApp.setSelected(true);
+        
+        VisualsConfig.setPropsToWindow(this, "Logs da aplicação", parent);
 
         try {
             BufferedReader in = new BufferedReader(new FileReader("logs/app.log"));
             String line = in.lines().collect(Collectors.joining(System.lineSeparator()));
-//            String line1 = in.readLine();
 
             txaLogs.setText(line);
         } catch (Exception e) {
@@ -48,19 +42,183 @@ public class DlgLogs extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        pnlLogs = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txaLogs = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        btnFiltrar = new javax.swing.JButton();
+        btnLimpar = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        txfFunc = new javax.swing.JTextField();
+        btnBuscarFunc = new javax.swing.JButton();
+        ftfDataIni = new javax.swing.JFormattedTextField();
+        ftfDataFim = new javax.swing.JFormattedTextField();
+        pnlAuditoria = new javax.swing.JPanel();
         btnSair = new javax.swing.JButton();
-        rbtApp = new javax.swing.JRadioButton();
-        rbtHibernate = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         txaLogs.setEditable(false);
         txaLogs.setColumns(20);
+        txaLogs.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         txaLogs.setRows(5);
         jScrollPane1.setViewportView(txaLogs);
 
+        jLabel1.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
+        jLabel1.setText("FILTROS");
+
+        jLabel2.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        jLabel2.setText("Data Início:");
+
+        jLabel3.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        jLabel3.setText("Data Final:");
+
+        jLabel4.setFont(new java.awt.Font("Poppins Medium", 0, 24)); // NOI18N
+        jLabel4.setText("Logs do Sistema");
+
+        btnFiltrar.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
+        btnFiltrar.setText("Filtrar");
+        btnFiltrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFiltrarActionPerformed(evt);
+            }
+        });
+
+        btnLimpar.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
+        btnLimpar.setText("Limpar");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        jLabel5.setText("Funcionário:");
+
+        txfFunc.setEditable(false);
+        txfFunc.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        txfFunc.setBorder(null);
+
+        btnBuscarFunc.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
+        btnBuscarFunc.setText("Buscar funcionário");
+        btnBuscarFunc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarFuncActionPerformed(evt);
+            }
+        });
+
+        try {
+            ftfDataIni.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        ftfDataIni.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+
+        try {
+            ftfDataFim.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        ftfDataFim.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+
+        javax.swing.GroupLayout pnlLogsLayout = new javax.swing.GroupLayout(pnlLogs);
+        pnlLogs.setLayout(pnlLogsLayout);
+        pnlLogsLayout.setHorizontalGroup(
+            pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLogsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlLogsLayout.createSequentialGroup()
+                        .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlLogsLayout.createSequentialGroup()
+                                .addGap(133, 133, 133)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(ftfDataFim, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1)
+                                .addGroup(pnlLogsLayout.createSequentialGroup()
+                                    .addComponent(jLabel2)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(ftfDataIni, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                        .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLogsLayout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(18, 18, 18)
+                                .addComponent(txfFunc, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnBuscarFunc, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLogsLayout.createSequentialGroup()
+                                .addComponent(btnLimpar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(56, 56, 56))
+                    .addGroup(pnlLogsLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(55, 55, 55))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLogsLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(422, 422, 422))
+        );
+        pnlLogsLayout.setVerticalGroup(
+            pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlLogsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlLogsLayout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ftfDataIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(ftfDataFim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(pnlLogsLayout.createSequentialGroup()
+                        .addGap(48, 48, 48)
+                        .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(txfFunc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnBuscarFunc)))
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnFiltrar)
+                    .addComponent(btnLimpar))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Logs", pnlLogs);
+
+        javax.swing.GroupLayout pnlAuditoriaLayout = new javax.swing.GroupLayout(pnlAuditoria);
+        pnlAuditoria.setLayout(pnlAuditoriaLayout);
+        pnlAuditoriaLayout.setHorizontalGroup(
+            pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1077, Short.MAX_VALUE)
+        );
+        pnlAuditoriaLayout.setVerticalGroup(
+            pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 687, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Auditoria", pnlAuditoria);
+
+        btnSair.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
         btnSair.setText("Sair");
         btnSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -68,52 +226,23 @@ public class DlgLogs extends javax.swing.JDialog {
             }
         });
 
-        rbtApp.setText("app.log");
-        rbtApp.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                rbtAppMouseClicked(evt);
-            }
-        });
-
-        rbtHibernate.setText("hibernate.log");
-        rbtHibernate.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                rbtHibernateMouseClicked(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(rbtApp)
-                        .addGap(59, 59, 59)
-                        .addComponent(rbtHibernate)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSair))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 921, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(70, Short.MAX_VALUE))
+            .addComponent(jTabbedPane1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSair)
+                .addGap(18, 18, 18))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSair)
-                        .addGap(18, 18, 18))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(rbtApp)
-                            .addComponent(rbtHibernate))
-                        .addContainerGap(39, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 720, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSair)
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         pack();
@@ -123,32 +252,20 @@ public class DlgLogs extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
-    private void rbtHibernateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbtHibernateMouseClicked
-        rbtApp.setSelected(false);
-        
-        try {
-            BufferedReader in = new BufferedReader(new FileReader("logs/hibernate.log"));
-            String line = in.lines().collect(Collectors.joining(System.lineSeparator()));
+    private void btnBuscarFuncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarFuncActionPerformed
+        DlgBuscaFuncionario dlgBuscaFunc = new DlgBuscaFuncionario(null, true);
+        dlgBuscaFunc.setVisible(true);
+    }//GEN-LAST:event_btnBuscarFuncActionPerformed
 
-            txaLogs.setText(line);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Problema ao carregar informações do arquivo /log/hibernate.log");
-        }
-        
-    }//GEN-LAST:event_rbtHibernateMouseClicked
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        ftfDataIni.setText("");
+        ftfDataFim.setText("");
+        txfFunc.setText("");
+    }//GEN-LAST:event_btnLimparActionPerformed
 
-    private void rbtAppMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbtAppMouseClicked
-        rbtHibernate.setSelected(false);
+    private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
         
-        try {
-            BufferedReader in = new BufferedReader(new FileReader("logs/app.log"));
-            String line = in.lines().collect(Collectors.joining(System.lineSeparator()));
-
-            txaLogs.setText(line);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Problema ao carregar informações do arquivo /log/app.log");
-        }
-    }//GEN-LAST:event_rbtAppMouseClicked
+    }//GEN-LAST:event_btnFiltrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -176,6 +293,7 @@ public class DlgLogs extends javax.swing.JDialog {
             java.util.logging.Logger.getLogger(DlgLogs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -193,10 +311,23 @@ public class DlgLogs extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscarFunc;
+    private javax.swing.JButton btnFiltrar;
+    private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnSair;
+    private javax.swing.JFormattedTextField ftfDataFim;
+    private javax.swing.JFormattedTextField ftfDataIni;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JRadioButton rbtApp;
-    private javax.swing.JRadioButton rbtHibernate;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPanel pnlAuditoria;
+    private javax.swing.JPanel pnlLogs;
     private javax.swing.JTextArea txaLogs;
+    private javax.swing.JTextField txfFunc;
     // End of variables declaration//GEN-END:variables
 }
