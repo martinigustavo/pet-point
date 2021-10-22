@@ -58,10 +58,15 @@ public class DlgLogs extends javax.swing.JDialog {
         btnBuscarFunc = new javax.swing.JButton();
         ftfDataIni = new javax.swing.JFormattedTextField();
         ftfDataFim = new javax.swing.JFormattedTextField();
+        lblFechar = new javax.swing.JLabel();
         pnlAuditoria = new javax.swing.JPanel();
         btnSair = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setUndecorated(true);
+        setResizable(false);
+
+        pnlLogs.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txaLogs.setEditable(false);
         txaLogs.setColumns(20);
@@ -69,17 +74,24 @@ public class DlgLogs extends javax.swing.JDialog {
         txaLogs.setRows(5);
         jScrollPane1.setViewportView(txaLogs);
 
+        pnlLogs.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(77, 274, 951, 407));
+
         jLabel1.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
         jLabel1.setText("FILTROS");
+        pnlLogs.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(143, 78, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel2.setText("Data Início:");
+        pnlLogs.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(143, 122, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel3.setText("Data Final:");
+        pnlLogs.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(143, 171, 88, -1));
 
         jLabel4.setFont(new java.awt.Font("Poppins Medium", 0, 24)); // NOI18N
         jLabel4.setText("Logs do Sistema");
+        pnlLogs.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(464, 19, -1, -1));
+        pnlLogs.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 66, 1018, 10));
 
         btnFiltrar.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
         btnFiltrar.setText("Filtrar");
@@ -88,6 +100,7 @@ public class DlgLogs extends javax.swing.JDialog {
                 btnFiltrarActionPerformed(evt);
             }
         });
+        pnlLogs.add(btnFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(894, 230, 78, -1));
 
         btnLimpar.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
         btnLimpar.setText("Limpar");
@@ -96,13 +109,16 @@ public class DlgLogs extends javax.swing.JDialog {
                 btnLimparActionPerformed(evt);
             }
         });
+        pnlLogs.add(btnLimpar, new org.netbeans.lib.awtextra.AbsoluteConstraints(787, 230, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel5.setText("Funcionário:");
+        pnlLogs.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(564, 124, -1, -1));
 
         txfFunc.setEditable(false);
         txfFunc.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         txfFunc.setBorder(null);
+        pnlLogs.add(txfFunc, new org.netbeans.lib.awtextra.AbsoluteConstraints(678, 124, 294, -1));
 
         btnBuscarFunc.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
         btnBuscarFunc.setText("Buscar funcionário");
@@ -111,6 +127,7 @@ public class DlgLogs extends javax.swing.JDialog {
                 btnBuscarFuncActionPerformed(evt);
             }
         });
+        pnlLogs.add(btnBuscarFunc, new org.netbeans.lib.awtextra.AbsoluteConstraints(789, 167, -1, -1));
 
         try {
             ftfDataIni.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -118,6 +135,7 @@ public class DlgLogs extends javax.swing.JDialog {
             ex.printStackTrace();
         }
         ftfDataIni.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        pnlLogs.add(ftfDataIni, new org.netbeans.lib.awtextra.AbsoluteConstraints(249, 119, 290, -1));
 
         try {
             ftfDataFim.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -125,83 +143,16 @@ public class DlgLogs extends javax.swing.JDialog {
             ex.printStackTrace();
         }
         ftfDataFim.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        pnlLogs.add(ftfDataFim, new org.netbeans.lib.awtextra.AbsoluteConstraints(249, 168, 290, -1));
 
-        javax.swing.GroupLayout pnlLogsLayout = new javax.swing.GroupLayout(pnlLogs);
-        pnlLogs.setLayout(pnlLogsLayout);
-        pnlLogsLayout.setHorizontalGroup(
-            pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLogsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlLogsLayout.createSequentialGroup()
-                        .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlLogsLayout.createSequentialGroup()
-                                .addGap(133, 133, 133)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(ftfDataFim, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel1)
-                                .addGroup(pnlLogsLayout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(ftfDataIni, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                        .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLogsLayout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
-                                .addComponent(txfFunc, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnBuscarFunc, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLogsLayout.createSequentialGroup()
-                                .addComponent(btnLimpar)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(56, 56, 56))
-                    .addGroup(pnlLogsLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(55, 55, 55))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLogsLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(422, 422, 422))
-        );
-        pnlLogsLayout.setVerticalGroup(
-            pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlLogsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlLogsLayout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ftfDataIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(ftfDataFim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(pnlLogsLayout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(txfFunc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBuscarFunc)))
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnFiltrar)
-                    .addComponent(btnLimpar))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        lblFechar.setFont(new java.awt.Font("Poppins", 1, 32)); // NOI18N
+        lblFechar.setText("X");
+        lblFechar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblFecharMouseClicked(evt);
+            }
+        });
+        pnlLogs.add(lblFechar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1158, 0, -1, -1));
 
         jTabbedPane1.addTab("Logs", pnlLogs);
 
@@ -209,7 +160,7 @@ public class DlgLogs extends javax.swing.JDialog {
         pnlAuditoria.setLayout(pnlAuditoriaLayout);
         pnlAuditoriaLayout.setHorizontalGroup(
             pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1077, Short.MAX_VALUE)
+            .addGap(0, 1189, Short.MAX_VALUE)
         );
         pnlAuditoriaLayout.setVerticalGroup(
             pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -242,10 +193,11 @@ public class DlgLogs extends javax.swing.JDialog {
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 720, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSair)
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
@@ -266,6 +218,10 @@ public class DlgLogs extends javax.swing.JDialog {
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
         
     }//GEN-LAST:event_btnFiltrarActionPerformed
+
+    private void lblFecharMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFecharMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_lblFecharMouseClicked
 
     /**
      * @param args the command line arguments
@@ -325,6 +281,7 @@ public class DlgLogs extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel lblFechar;
     private javax.swing.JPanel pnlAuditoria;
     private javax.swing.JPanel pnlLogs;
     private javax.swing.JTextArea txaLogs;

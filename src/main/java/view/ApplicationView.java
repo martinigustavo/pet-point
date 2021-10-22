@@ -60,6 +60,8 @@ public class ApplicationView extends javax.swing.JFrame {
         configurarPermissoes(permissao);
         configurarPermissoesCadastros(permissao);
         lblLogado.setText(funcLogado.getNome());
+        lblPetshop.setVisible(false);
+        lblVeterinaria.setVisible(false);
 
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
@@ -90,8 +92,11 @@ public class ApplicationView extends javax.swing.JFrame {
         btnAdmin = new javax.swing.JButton();
         barralateral = new javax.swing.JLabel();
         pnlHomeAdmin = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        lblVeterinaria = new javax.swing.JLabel();
+        lblPetshop = new javax.swing.JLabel();
+        btnVeterinaria = new javax.swing.JButton();
+        btnPetshop = new javax.swing.JButton();
+        backgroundadm = new javax.swing.JLabel();
         pnlHomePet = new javax.swing.JPanel();
         btncadastros = new javax.swing.JButton();
         fundoPet = new javax.swing.JLabel();
@@ -181,11 +186,49 @@ public class ApplicationView extends javax.swing.JFrame {
 
         pnlHomeAdmin.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton1.setText("BOTAO PRA ABRIR TELA VETERINARIA");
-        pnlHomeAdmin.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 350, 440, 190));
+        lblVeterinaria.setFont(new java.awt.Font("Grand Aventure Text", 0, 100)); // NOI18N
+        lblVeterinaria.setText("Veterinária");
+        pnlHomeAdmin.add(lblVeterinaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(1360, 930, -1, -1));
 
-        jButton2.setText("BOTAO PRA ABRIR TELA PETSHOP");
-        pnlHomeAdmin.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 350, 440, 190));
+        lblPetshop.setFont(new java.awt.Font("Grand Aventure Text", 0, 100)); // NOI18N
+        lblPetshop.setForeground(new java.awt.Color(255, 255, 255));
+        lblPetshop.setText("Petshop");
+        pnlHomeAdmin.add(lblPetshop, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 910, -1, -1));
+
+        btnVeterinaria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnvet.png"))); // NOI18N
+        btnVeterinaria.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnVeterinariaMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnVeterinariaMouseExited(evt);
+            }
+        });
+        btnVeterinaria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVeterinariaActionPerformed(evt);
+            }
+        });
+        pnlHomeAdmin.add(btnVeterinaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 0, 560, 1080));
+
+        btnPetshop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnpetshop.png"))); // NOI18N
+        btnPetshop.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnPetshopMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnPetshopMouseExited(evt);
+            }
+        });
+        btnPetshop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPetshopActionPerformed(evt);
+            }
+        });
+        pnlHomeAdmin.add(btnPetshop, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 0, 600, 1080));
+
+        backgroundadm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/telainicialadm.png"))); // NOI18N
+        pnlHomeAdmin.add(backgroundadm, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         background.add(pnlHomeAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1760, 1080));
 
@@ -208,7 +251,8 @@ public class ApplicationView extends javax.swing.JFrame {
 
         pnlHomeVet.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        fundoVet.setText("INSERIR IMAGEM DE FUNDO DO DASHBOARD DA VETERINARIA");
+        fundoVet.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/telaveterinaria.png"))); // NOI18N
+        fundoVet.setToolTipText("");
         pnlHomeVet.add(fundoVet, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1760, 1080));
 
         background.add(pnlHomeVet, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1760, 1080));
@@ -559,6 +603,34 @@ public class ApplicationView extends javax.swing.JFrame {
 //        tela.setVisible(true);
     }//GEN-LAST:event_btnCadastroProdutoActionPerformed
 
+    private void btnPetshopMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPetshopMouseEntered
+        lblPetshop.setVisible(true);
+    }//GEN-LAST:event_btnPetshopMouseEntered
+
+    private void btnPetshopMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPetshopMouseExited
+        lblPetshop.setVisible(false);
+    }//GEN-LAST:event_btnPetshopMouseExited
+
+    private void btnVeterinariaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVeterinariaMouseEntered
+        lblVeterinaria.setVisible(true);
+    }//GEN-LAST:event_btnVeterinariaMouseEntered
+
+    private void btnVeterinariaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVeterinariaMouseExited
+        lblVeterinaria.setVisible(false);
+    }//GEN-LAST:event_btnVeterinariaMouseExited
+
+    private void btnPetshopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPetshopActionPerformed
+        pnlHomeAdmin.setVisible(false);
+        pnlHomeVet.setVisible(false);
+        pnlHomePet.setVisible(true);
+    }//GEN-LAST:event_btnPetshopActionPerformed
+
+    private void btnVeterinariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVeterinariaActionPerformed
+        pnlHomeAdmin.setVisible(false);
+        pnlHomePet.setVisible(false);
+        pnlHomeVet.setVisible(true);
+    }//GEN-LAST:event_btnVeterinariaActionPerformed
+
     public void desativarTelas() {
         pnlHomeAdmin.setVisible(false);
         pnlHomePet.setVisible(false);
@@ -587,11 +659,14 @@ public class ApplicationView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
+    private javax.swing.JLabel backgroundadm;
     private javax.swing.JLabel barralateral;
     private javax.swing.JButton btnAdicionar;
     private javax.swing.JButton btnAdmin;
     private javax.swing.JButton btnCadastroProduto;
+    private javax.swing.JButton btnPetshop;
     private javax.swing.JButton btnSair;
+    private javax.swing.JButton btnVeterinaria;
     private javax.swing.JButton btncadastro;
     private javax.swing.JButton btncadastros;
     private javax.swing.JButton btnhome;
@@ -599,10 +674,10 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JLabel fundoPet;
     private javax.swing.JLabel fundoVet;
     private javax.swing.JLabel fundobusca;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblLogado;
+    private javax.swing.JLabel lblPetshop;
+    private javax.swing.JLabel lblVeterinaria;
     private javax.swing.JPanel pnlHomeAdmin;
     private javax.swing.JPanel pnlHomePet;
     private javax.swing.JPanel pnlHomeVet;

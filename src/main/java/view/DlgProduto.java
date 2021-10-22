@@ -49,6 +49,7 @@ public class DlgProduto extends javax.swing.JDialog {
         pnlcadastros = new javax.swing.JPanel();
         tbpCadastros = new javax.swing.JTabbedPane();
         pnlprodutos = new javax.swing.JPanel();
+        lblFechar = new javax.swing.JLabel();
         txfNome = new javax.swing.JTextField();
         txfSKU = new javax.swing.JTextField();
         ftfEstoque = new javax.swing.JFormattedTextField();
@@ -73,9 +74,20 @@ public class DlgProduto extends javax.swing.JDialog {
         btnEditar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setUndecorated(true);
+        setResizable(false);
 
         pnlprodutos.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
         pnlprodutos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblFechar.setFont(new java.awt.Font("Poppins", 1, 32)); // NOI18N
+        lblFechar.setText("X");
+        lblFechar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblFecharMouseClicked(evt);
+            }
+        });
+        pnlprodutos.add(lblFechar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1168, 0, -1, -1));
         pnlprodutos.add(txfNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 250, 270, 30));
         pnlprodutos.add(txfSKU, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 180, 270, 30));
         pnlprodutos.add(ftfEstoque, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 330, 270, 30));
@@ -206,6 +218,7 @@ public class DlgProduto extends javax.swing.JDialog {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
@@ -378,6 +391,10 @@ public class DlgProduto extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Erro ao selecionar.");
         }
     }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void lblFecharMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFecharMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_lblFecharMouseClicked
         private void carregarDadosProduto(Produto produto) {
             txfSKU.setText(produto.getSKU());
             txfNome.setText(produto.getNome());
@@ -418,6 +435,7 @@ public class DlgProduto extends javax.swing.JDialog {
     private javax.swing.JFormattedTextField ftfVenda;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblFechar;
     private javax.swing.JPanel pnlConsulta;
     private javax.swing.JPanel pnlcadastros;
     private javax.swing.JPanel pnlprodutos;
