@@ -6,6 +6,7 @@
 package view;
 
 import dao.FuncionarioDao;
+import dao.PermissaoDao;
 import entities.Funcionario;
 import entities.Permissao;
 import java.time.LocalDate;
@@ -34,7 +35,6 @@ public class DlgFuncionario extends javax.swing.JDialog {
         initComponents();
         this.sessionFactory = HibernateUtil.getSessionFactory();
          btnDeletar.setVisible(false);
-         new CombosDAO().popularCombo("permissao", cbxPermissao);
     }
 
     public DlgFuncionario(java.awt.Frame parent, boolean modal, Funcionario funcionario, Permissao permissao) {
@@ -68,6 +68,14 @@ public class DlgFuncionario extends javax.swing.JDialog {
             cbxStatus.setSelectedIndex(1);
         } else {
             cbxStatus.setSelectedIndex(2);
+        }
+        
+        if (funcionario.getPermissao().getId() == 1) {
+            cbxPermissao.setSelectedIndex(1);
+        } else if (funcionario.getPermissao().getId() == 2) {
+            cbxPermissao.setSelectedIndex(2);
+        } else if (funcionario.getPermissao().getId() == 3) {
+            cbxPermissao.setSelectedIndex(3);
         }
 
     }
@@ -155,7 +163,7 @@ public class DlgFuncionario extends javax.swing.JDialog {
         getContentPane().add(pwfSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 300, 260, 30));
 
         cbxPermissao.setBackground(new java.awt.Color(218, 218, 218));
-        cbxPermissao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Ativo", "Inativo" }));
+        cbxPermissao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Admin", "Veterinária", "Petshop" }));
         getContentPane().add(cbxPermissao, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 290, 300, 40));
 
         cbxStatus.setBackground(new java.awt.Color(218, 218, 218));
@@ -287,6 +295,8 @@ public class DlgFuncionario extends javax.swing.JDialog {
             LocalDate dataNasc = convertToLocalDate(ftfData.getDate());
             String sexo = cbxSexo.getSelectedItem().toString();
             String status = cbxStatus.getSelectedItem().toString();
+            String permissaoString = cbxPermissao.getSelectedItem().toString();
+            int permId = 0;
             String telefone = ftfTelefone.getText();
             String cpf = ftfCpf.getText();
             String usuario = txfUsuario.getText().trim();
@@ -301,7 +311,15 @@ public class DlgFuncionario extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
                 return;
             }
-
+            
+            if (cbxPermissao.getSelectedIndex() == 1) {
+                permId = 1;
+            } else if (cbxPermissao.getSelectedIndex() == 2) {
+                permId = 2;
+            } else if (cbxPermissao.getSelectedIndex() == 3) {
+                permId = 3;
+            }
+                    
             id = funcionario.getId();
             funcionario.setNome(nome);
             funcionario.setEmail(email);
@@ -317,10 +335,7 @@ public class DlgFuncionario extends javax.swing.JDialog {
             funcionario.setCpf(cpf);
             funcionario.setUsuario(usuario);
             funcionario.setSenha(Criptografar.encriptografar(senha));
-            ComboItem ci = (ComboItem) cbxPermissao.getSelectedItem();
-            Permissao perm = new Permissao();
-            perm.setId(ci.getCodigo());
-            perm.setDescricao(ci.getDescricao());
+            Permissao perm = new PermissaoDao(sessionFactory).buscar(permId).get();
             funcionario.setPermissao(perm);
             funcionario.setTipo("funcionario");
 

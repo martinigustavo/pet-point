@@ -7,11 +7,9 @@ package view;
 
 import dao.ClienteDao;
 import dao.FuncionarioDao;
-import dao.VeterinarioDao;
 import entities.Cliente;
 import entities.Funcionario;
 import entities.Permissao;
-import entities.Veterinario;
 import java.awt.Color;
 import java.awt.Font;
 import java.time.LocalDate;
@@ -33,7 +31,7 @@ import utils.VisualsConfig;
 public class ApplicationView extends javax.swing.JFrame {
 
     private final Funcionario funcLogado;
-    private final SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
     private FuncionarioDao fd;
     private String busca;
     private Permissao permissao;
@@ -67,9 +65,10 @@ public class ApplicationView extends javax.swing.JFrame {
 
         try {
             funcLogado.setLogado(true);
-            new FuncionarioDao(sessionFactory).atualizar(funcLogado);
+            fd.atualizar(funcLogado);
         } catch (Exception e) {
-
+            log.error("Erro ao alterar status de login do funcionário: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao alterar status de login do funcionário.");
         }
     }
 
@@ -389,7 +388,7 @@ public class ApplicationView extends javax.swing.JFrame {
         this.desativarTelas();
         pnlmenulateral.setVisible(true);
 
-        if  (permissao.getId() == 1) {
+        if (permissao.getId() == 1) {
             pnlHomeAdmin.setVisible(true);
         } else if (permissao.getId() == 2) {
             pnlHomeVet.setVisible(true);
@@ -450,8 +449,8 @@ public class ApplicationView extends javax.swing.JFrame {
                         break;
                     }
                     case 2: {
-                        Optional<Veterinario> vet = new VeterinarioDao(sessionFactory).buscar(id);
-                        Veterinario veterinario = vet.get();
+                        Optional<Funcionario> vet = new FuncionarioDao(sessionFactory).buscar(id);
+                        Funcionario veterinario = vet.get();
                         DlgVeterinario veterinarioTela = new DlgVeterinario(null, true, veterinario, permissao);
                         veterinarioTela.setVisible(true);
                         break;
@@ -477,7 +476,7 @@ public class ApplicationView extends javax.swing.JFrame {
         int i = JOptionPane.showConfirmDialog(null, "Tem certeza de que deseja sair?");
         if (i == 0) {
             funcLogado.setLogado(false);
-            new FuncionarioDao(sessionFactory).atualizar(funcLogado);
+            new FuncionarioDao(HibernateUtil.getSessionFactory()).atualizar(funcLogado);
 
             System.exit(0);
         }
@@ -518,7 +517,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 }
 
                 case 2: {
-                    List<Veterinario> veterinarios = new VeterinarioDao(sessionFactory).buscarPorNome(busca);
+                    List<Funcionario> veterinarios = new FuncionarioDao(sessionFactory).buscarVetPorNome(busca);
 
                     dadosTabela = new Object[veterinarios.size()][2];
                     if (veterinarios.size() > 0) {
@@ -568,9 +567,10 @@ public class ApplicationView extends javax.swing.JFrame {
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         int i = JOptionPane.showConfirmDialog(null, "Tem certeza de que deseja sair?");
+        
         if (i == 0) {
             funcLogado.setLogado(false);
-            new FuncionarioDao(sessionFactory).atualizar(funcLogado);
+            new FuncionarioDao(HibernateUtil.getSessionFactory()).atualizar(funcLogado);
 
             System.exit(0);
         }

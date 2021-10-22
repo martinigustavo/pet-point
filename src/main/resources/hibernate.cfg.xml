@@ -25,6 +25,5 @@
         <mapping class="entities.Pet" />
         <mapping class="entities.Produto" />
         <mapping class="entities.Raca" />
-        <mapping class="entities.Veterinario" />
     </session-factory>
 </hibernate-configuration>

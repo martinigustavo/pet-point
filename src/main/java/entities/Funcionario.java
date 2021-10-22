@@ -41,6 +41,7 @@ public class Funcionario {
     private String senha;
     private boolean logado;
     private String atividade;
+    private String crmv;
     
     @ManyToOne
     @JoinColumn(name = "permissao_id", nullable = false)

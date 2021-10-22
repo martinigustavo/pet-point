@@ -12,7 +12,6 @@ import entities.Log;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +45,7 @@ public class DlgLogs extends javax.swing.JDialog {
 
         this.logsLista = new ArrayList<>();
         this.auditoriaLista = new LogDao(sessionFactory).buscarTodos();
-
+        this.funcionarioAud = Optional.empty();
         this.atualizarTabela(auditoriaLista);
 
         this.carregarLog();
@@ -102,7 +101,9 @@ public class DlgLogs extends javax.swing.JDialog {
         txaLogs.setEditable(false);
         txaLogs.setColumns(20);
         txaLogs.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        txaLogs.setLineWrap(true);
         txaLogs.setRows(5);
+        txaLogs.setWrapStyleWord(true);
         jScrollPane1.setViewportView(txaLogs);
 
         jLabel1.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N

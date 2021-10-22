@@ -6,6 +6,7 @@
 package entities;
 
 import java.time.LocalDate;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,12 +27,13 @@ public class Log {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String tabela;
+    @Column(length = 1024)
     private String comando;
     private LocalDate data;
     private String valores_antigos;
     private String valores_novos;
 
     @ManyToOne()
-    @JoinColumn(name = "funcionario_id", nullable = false)
+    @JoinColumn(name = "funcionario_id")
     private Funcionario funcionario;
 }

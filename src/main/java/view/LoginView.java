@@ -147,9 +147,6 @@ public class LoginView extends javax.swing.JFrame {
                 }
 
                 if (funcionario.get().getSenha().equals(senhaCriptografada)) {
-//                    funcionario.get().setLogado(true);
-//                    new FuncionarioDao(sf).atualizar(funcionario.get());
-                    
                     this.dispose();
                     new ApplicationView(funcionario.get()).setVisible(true);
                 } else {

@@ -64,6 +64,27 @@ public class FuncionarioDao extends AbstractGenericDao<Funcionario> {
 
         return resultList;
     }
+    
+    public List<Funcionario> buscarVetPorNome(String nome) {
+        Session session = super.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+
+        List<Funcionario> resultList = new LinkedList<>();
+
+        try {
+            Query<Funcionario> query = session.createQuery("SELECT f FROM Funcionario f WHERE lower(f.nome) LIKE lower(:nome) AND f.tipo = 'veterinario'")
+                    .setParameter("nome", "%" + nome + "%");
+            resultList = query.list();
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar funcionários pelo nome: " + e.getMessage());
+            log.error("Erro ao buscar funcionários pelo nome: " + e.getMessage());
+        } finally {
+            session.close();
+        }
+
+        return resultList;
+    }
 
     public List<Funcionario> buscarPorNomeEPermissao(String nome, String permissao) {
         Session session = super.getSessionFactory().openSession();

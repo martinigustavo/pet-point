@@ -5,9 +5,9 @@
  */
 package view;
 
-import dao.VeterinarioDao;
+import dao.FuncionarioDao;
+import entities.Funcionario;
 import entities.Permissao;
-import entities.Veterinario;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -24,7 +24,7 @@ import utils.HibernateUtil;
 public class DlgVeterinario extends javax.swing.JDialog {
 
     private int id = 0;
-    private Veterinario vet = new Veterinario();
+    private Funcionario vet = new Funcionario();
     private final SessionFactory sessionFactory;
 
     public DlgVeterinario(java.awt.Frame parent, boolean modal) {
@@ -34,7 +34,7 @@ public class DlgVeterinario extends javax.swing.JDialog {
         this.sessionFactory = HibernateUtil.getSessionFactory();
     }
 
-    public DlgVeterinario(java.awt.Frame parent, boolean modal, Veterinario medico, Permissao permissao) {
+    public DlgVeterinario(java.awt.Frame parent, boolean modal, Funcionario medico, Permissao permissao) {
         super(parent, modal);
         initComponents();
         this.sessionFactory = HibernateUtil.getSessionFactory();
@@ -275,7 +275,7 @@ public class DlgVeterinario extends javax.swing.JDialog {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         try {
-            VeterinarioDao vd = new VeterinarioDao(sessionFactory);
+            FuncionarioDao vd = new FuncionarioDao(sessionFactory);
             String nome = txfNome.getText().trim();
             String email = txfEmail.getText().trim();
             String crmv = txfCrmv.getText().trim();
@@ -326,7 +326,7 @@ public class DlgVeterinario extends javax.swing.JDialog {
             permissao.setId(2);
             permissao.setDescricao("veterinario");
             vet.setPermissao(permissao);        
-            Optional<Veterinario> medico0 = Optional.empty();
+            Optional<Funcionario> medico0 = Optional.empty();
 
             if (id == 0) {
                 medico0 = vd.salvar(vet);
@@ -352,7 +352,7 @@ public class DlgVeterinario extends javax.swing.JDialog {
 
     private void btnDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarActionPerformed
         try {
-            VeterinarioDao vd = new VeterinarioDao(sessionFactory);
+            FuncionarioDao vd = new FuncionarioDao(sessionFactory);
             vd.excluir(vet);
             JOptionPane.showMessageDialog(null, "Veterinário deletado do sistema.");
             this.dispose();
