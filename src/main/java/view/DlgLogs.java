@@ -5,17 +5,14 @@
  */
 package view;
 
-import dao.ClienteDao;
 import dao.FuncionarioDao;
 import dao.LogDao;
-import dao.VeterinarioDao;
-import entities.Cliente;
 import entities.Funcionario;
 import entities.Log;
-import entities.Veterinario;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +34,7 @@ public class DlgLogs extends javax.swing.JDialog {
     private Optional<Funcionario> funcionarioAud;
     private final SessionFactory sessionFactory;
     private List<Log> auditoriaLista;
-    private List<Log> logsTabela;
+    private List<Log> logsLista;
 
     public DlgLogs(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -47,19 +44,12 @@ public class DlgLogs extends javax.swing.JDialog {
 
         this.sessionFactory = HibernateUtil.getSessionFactory();
 
-        this.logsTabela = new ArrayList<>();
+        this.logsLista = new ArrayList<>();
         this.auditoriaLista = new LogDao(sessionFactory).buscarTodos();
 
         this.atualizarTabela(auditoriaLista);
 
-//        try {
-//            BufferedReader in = new BufferedReader(new FileReader("logs/app.log"));
-//            String line = in.lines().collect(Collectors.joining(System.lineSeparator()));
-//
-//            txaLogs.setText(line);
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(null, "Problema ao carregar informações do arquivo /log/app.log");
-//        }
+        this.carregarLog();
     }
 
     /**
@@ -105,7 +95,6 @@ public class DlgLogs extends javax.swing.JDialog {
         cbxComando = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         cbxTabela = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -320,9 +309,6 @@ public class DlgLogs extends javax.swing.JDialog {
         cbxTabela.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         cbxTabela.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas", "Cliente", "Funcionário", "Produto", "Pet" }));
 
-        jButton1.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
-        jButton1.setText("Ver registro");
-
         javax.swing.GroupLayout pnlAuditoriaLayout = new javax.swing.GroupLayout(pnlAuditoria);
         pnlAuditoria.setLayout(pnlAuditoriaLayout);
         pnlAuditoriaLayout.setHorizontalGroup(
@@ -380,9 +366,7 @@ public class DlgLogs extends javax.swing.JDialog {
                         .addComponent(jLabel11)
                         .addGap(474, 474, 474))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAuditoriaLayout.createSequentialGroup()
-                        .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(66, 66, 66))))
         );
         pnlAuditoriaLayout.setVerticalGroup(
@@ -425,9 +409,7 @@ public class DlgLogs extends javax.swing.JDialog {
                     .addComponent(btnLimparAud))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addGap(43, 43, 43))
+                .addGap(92, 92, 92))
         );
 
         jTabbedPane1.addTab("Auditoria", pnlAuditoria);
@@ -480,7 +462,7 @@ public class DlgLogs extends javax.swing.JDialog {
 
     private void btnFiltrarAudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarAudActionPerformed
         try {
-            logsTabela = auditoriaLista;
+            logsLista = auditoriaLista;
 
             String dataAudString = ftfDataAud.getText();
 
@@ -489,25 +471,25 @@ public class DlgLogs extends javax.swing.JDialog {
                 LocalDate dataAud = LocalDate.of(Integer.parseInt(dataArray[2]),
                         Integer.parseInt(dataArray[1]),
                         Integer.parseInt(dataArray[0]));
-                logsTabela = logsTabela.stream().filter(registro -> registro.getData().equals(dataAud)).collect(Collectors.toList());
+                logsLista = logsLista.stream().filter(registro -> registro.getData().equals(dataAud)).collect(Collectors.toList());
             }
 
             if (cbxComando.getSelectedIndex() != 0) {
                 switch (cbxComando.getSelectedIndex()) {
                     case 1:
-                        logsTabela = logsTabela.stream().filter(
+                        logsLista = logsLista.stream().filter(
                                 registro -> registro.getComando().contains("insert"))
                                 .collect(Collectors.toList());
                         break;
 
                     case 2:
-                        logsTabela = logsTabela.stream().filter(
+                        logsLista = logsLista.stream().filter(
                                 registro -> registro.getComando().contains("update"))
                                 .collect(Collectors.toList());
                         break;
 
                     case 3:
-                        logsTabela = logsTabela.stream().filter(
+                        logsLista = logsLista.stream().filter(
                                 registro -> registro.getComando().contains("delete"))
                                 .collect(Collectors.toList());
                         break;
@@ -520,25 +502,25 @@ public class DlgLogs extends javax.swing.JDialog {
             if (cbxTabela.getSelectedIndex() != 0) {
                 switch (cbxTabela.getSelectedIndex()) {
                     case 1:
-                        logsTabela = logsTabela.stream().filter(
+                        logsLista = logsLista.stream().filter(
                                 registro -> registro.getTabela().equals("cliente"))
                                 .collect(Collectors.toList());
                         break;
 
                     case 2:
-                        logsTabela = logsTabela.stream().filter(
+                        logsLista = logsLista.stream().filter(
                                 registro -> registro.getTabela().equals("funcionario"))
                                 .collect(Collectors.toList());
                         break;
 
                     case 3:
-                        logsTabela = logsTabela.stream().filter(
+                        logsLista = logsLista.stream().filter(
                                 registro -> registro.getTabela().equals("produto"))
                                 .collect(Collectors.toList());
                         break;
 
                     case 4:
-                        logsTabela = logsTabela.stream().filter(
+                        logsLista = logsLista.stream().filter(
                                 registro -> registro.getTabela().equals("pet"))
                                 .collect(Collectors.toList());
                         break;
@@ -549,15 +531,15 @@ public class DlgLogs extends javax.swing.JDialog {
             }
 
             if (funcionarioAud.isPresent()) {
-                logsTabela = logsTabela.stream().filter(
+                logsLista = logsLista.stream().filter(
                         registro -> registro.getFuncionario().getId() == funcionarioAud.get().getId())
                         .collect(Collectors.toList());
             }
 
-//            if (logsTabela.isEmpty()) {
+//            if (logsLista.isEmpty()) {
 //                JOptionPane.showMessageDialog(null, "Nenhum registro encontrado!");
 //            } else {
-            atualizarTabela(logsTabela);
+            atualizarTabela(logsLista);
 //            }
 
         } catch (Exception e) {
@@ -623,10 +605,7 @@ public class DlgLogs extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnBuscarFuncActionPerformed
 
-    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
-        ftfDataIni.setText("");
-        ftfDataFim.setText("");
-
+    private void carregarLog() {
         try {
             BufferedReader in = new BufferedReader(new FileReader("logs/app.log"));
             String line = in.lines().collect(Collectors.joining(System.lineSeparator()));
@@ -635,45 +614,85 @@ public class DlgLogs extends javax.swing.JDialog {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Problema ao carregar informações do arquivo /log/app.log");
         }
+    }
+    
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        ftfDataIni.setText("");
+        ftfDataFim.setText("");
+
+        this.carregarLog();
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnFiltrarLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarLogActionPerformed
         try {
             String dataIniString = ftfDataIni.getText();
             String dataFimString = ftfDataFim.getText();
+            boolean dataIniIsBlank = dataIniString.equals("  /  /    ");
+            boolean dataFimIsBlank = dataFimString.equals("  /  /    ");
 
-            if (dataIniString.isBlank() || dataFimString.isBlank()) {
-                JOptionPane.showMessageDialog(null, "Informe a data inicial e final ou limpe os filtros.");
+            boolean apenasDataInicial = !dataIniIsBlank && dataFimIsBlank;
+            boolean apenasDataFinal = dataIniIsBlank && !dataFimIsBlank;
+            boolean dataInicialEFinal = !dataIniIsBlank && !dataFimIsBlank;
+
+            String linesToPrint = "";
+            BufferedReader br = new BufferedReader(new FileReader("logs/app.log"));
+            List<String> lines = br.lines().collect(Collectors.toList());
+
+            if (dataIniIsBlank && dataFimIsBlank) {
+                this.carregarLog();
                 return;
             }
 
-            LocalDate dataIni = LocalDate.parse(dataIniString);
-            LocalDate dataFim = LocalDate.parse(dataFimString);
+            for (String line : lines) {
+                String[] infosDoErro = line.split(" ");
+                LocalDate dataDoErro = LocalDate.parse(infosDoErro[0]);
+                LocalDate dataIni = null;
+                LocalDate dataFim = null;
 
-            if (dataFim.isBefore(dataIni)) {
-                JOptionPane.showMessageDialog(null, "A data final deve ser posterior a data inicial.");
-                return;
-            }
+                String[] dataIniSplit = dataIniString.split("/");
+                String[] dataFimSplit = dataFimString.split("/");
 
-            BufferedReader in = new BufferedReader(new FileReader("logs/app.log"));
-            List<String> lines = in.lines().collect(Collectors.toList());
+                if (apenasDataInicial) {
+                    dataIni = LocalDate.of(Integer.parseInt(dataIniSplit[2]),
+                            Integer.parseInt(dataIniSplit[1]),
+                            Integer.parseInt(dataIniSplit[0]));
 
-            String linesToShow = "";
-
-            if (!dataIniString.isBlank() && !dataFimString.isBlank()) {
-
-                for (String line : lines) {
-                    String[] errorDate = line.split(" ");
-                    LocalDate lineDate = LocalDate.parse(errorDate[0]);
-                    if (lineDate.isBefore(dataFim) && lineDate.isAfter(dataIni)) {
-                        linesToShow += line + "\n";
+                    if (dataDoErro.isAfter(dataIni)) {
+                        linesToPrint += line + "\n";
                     }
 
                 }
 
+                if (apenasDataFinal) {
+                    dataFim = LocalDate.of(Integer.parseInt(dataFimSplit[2]),
+                            Integer.parseInt(dataFimSplit[1]),
+                            Integer.parseInt(dataFimSplit[0]));
+
+                    if (dataDoErro.isBefore(dataFim)) {
+                        linesToPrint += line + "\n";
+                    }
+                }
+
+                if (dataInicialEFinal) {
+                    dataIni = LocalDate.of(Integer.parseInt(dataIniSplit[2]),
+                            Integer.parseInt(dataIniSplit[1]),
+                            Integer.parseInt(dataIniSplit[0]));
+                    dataFim = LocalDate.of(Integer.parseInt(dataFimSplit[2]),
+                            Integer.parseInt(dataFimSplit[1]),
+                            Integer.parseInt(dataFimSplit[0]));
+
+                    if (dataFim.isBefore(dataIni)) {
+                        JOptionPane.showMessageDialog(null, "A data final deve ser posterior a data inicial.");
+                        return;
+                    }
+
+                    if (dataDoErro.isAfter(dataIni) && dataDoErro.isBefore(dataFim)) {
+                        linesToPrint += line + "\n";
+                    }
+                }
             }
 
-            txaLogs.setText(linesToShow);
+            txaLogs.setText(linesToPrint);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Problema ao carregar informações do arquivo /log/app.log");
         }
@@ -744,7 +763,6 @@ public class DlgLogs extends javax.swing.JDialog {
     private javax.swing.JFormattedTextField ftfDataAud;
     private javax.swing.JFormattedTextField ftfDataFim;
     private javax.swing.JFormattedTextField ftfDataIni;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;

@@ -14,7 +14,7 @@
         
         <File name="LogAppToFile" fileName="logs/app.log">
             <PatternLayout>
-                <Pattern>%d{yyyy-MMM-dd HH:mm:ss a} %p %c{1.} [%t] %m%n</Pattern>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss a} %p %c{1.} [%t] %m%n</Pattern>
             </PatternLayout>
         </File>
      
@@ -38,7 +38,7 @@
             <AppenderRef ref="LogHibernateToFile" />
         </Logger>
  
-        <Root level="trace">
+        <Root level="error">
             <AppenderRef ref="LogToConsole" />
             <AppenderRef ref="LogAppToFile" />
         </Root>
