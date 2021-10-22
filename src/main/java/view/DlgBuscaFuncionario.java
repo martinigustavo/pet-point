@@ -5,34 +5,31 @@
  */
 package view;
 
-import dao.ClienteDao;
 import dao.FuncionarioDao;
-import dao.VeterinarioDao;
-import entities.Cliente;
 import entities.Funcionario;
-import entities.Veterinario;
-import java.util.Collections;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import lombok.extern.log4j.Log4j2;
 import org.hibernate.SessionFactory;
 import utils.HibernateUtil;
 import utils.VisualsConfig;
 
+@Log4j2
 public class DlgBuscaFuncionario extends javax.swing.JDialog {
 
     private final SessionFactory sessionFactory;
-    private Funcionario func;
     private FuncionarioDao funcDAO;
     private List<Funcionario> funcionarios;
+    int id = 0;
 
     /**
      * Creates new form DlgBuscaAutor
      */
-    public DlgBuscaFuncionario(java.awt.Frame parent, boolean modal) {
+    public DlgBuscaFuncionario(java.awt.Frame parent, boolean modal, SessionFactory sf) {
         super(parent, modal);
         initComponents();
 
@@ -170,7 +167,7 @@ public class DlgBuscaFuncionario extends javax.swing.JDialog {
 
             switch (cbxPermissao.getSelectedIndex()) {
                 case 0: {
-                    funcionarios = new FuncionarioDao(sessionFactory).buscarPorNomeEPermissao(busca, "todas");
+                    funcionarios = funcDAO.buscarPorNomeEPermissao(busca, "todas");
 
                     dadosTabela = new Object[funcionarios.size()][3];
                     if (funcionarios.size() > 0) {
@@ -184,7 +181,7 @@ public class DlgBuscaFuncionario extends javax.swing.JDialog {
                 }
 
                 case 1: {
-                    funcionarios = new FuncionarioDao(sessionFactory).buscarPorNomeEPermissao(busca, "admin");
+                    funcionarios = funcDAO.buscarPorNomeEPermissao(busca, "admin");
 
                     dadosTabela = new Object[funcionarios.size()][3];
                     if (funcionarios.size() > 0) {
@@ -198,7 +195,7 @@ public class DlgBuscaFuncionario extends javax.swing.JDialog {
                 }
 
                 case 2: {
-                    funcionarios = new FuncionarioDao(sessionFactory).buscarPorNomeEPermissao(busca, "vet");
+                    funcionarios = funcDAO.buscarPorNomeEPermissao(busca, "vet");
 
                     dadosTabela = new Object[funcionarios.size()][3];
                     if (funcionarios.size() > 0) {
@@ -212,7 +209,7 @@ public class DlgBuscaFuncionario extends javax.swing.JDialog {
                 }
 
                 case 3: {
-                    funcionarios = new FuncionarioDao(sessionFactory).buscarPorNomeEPermissao(busca, "pet");
+                    funcionarios = funcDAO.buscarPorNomeEPermissao(busca, "pet");
 
                     dadosTabela = new Object[funcionarios.size()][3];
                     if (funcionarios.size() > 0) {
@@ -253,25 +250,25 @@ public class DlgBuscaFuncionario extends javax.swing.JDialog {
             column.setMaxWidth(70);
             column.setMinWidth(70);
         } catch (Exception e) {
-//            log.error("Erro ao buscar na tabela de cadastros "
-//                    + "(combobox selected_item: "
-//                    + cmbescolher.getSelectedItem().toString()
-//                    + "): " + e.getMessage());
-            JOptionPane.showMessageDialog(null, "Erro ao buscar.");
+            log.error("Erro ao buscar funcionarios "
+                    + "(combobox selected_item: "
+                    + cbxPermissao.getSelectedItem().toString()
+                    + "): " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao buscar funcionário(s).");
         }
     }
 
     private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
-//        try {
-//            String idString = String.valueOf(tblFuncionario.getValueAt(tblFuncionario.getSelectedRow(), 0));
-//
-//            cod_funcionario = Integer.parseInt(idString);
-//
-//            this.dispose();
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(null, "Nenhum funcionário selecionado.");
-//            System.out.println("Erro: " + e.toString());
-//        }
+        try {
+            String idString = String.valueOf(tblFuncionario.getValueAt(tblFuncionario.getSelectedRow(), 0));
+
+            id = Integer.parseInt(idString);
+
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Nenhum funcionário selecionado.");
+            System.out.println("Erro: " + e.toString());
+        }
     }//GEN-LAST:event_btnSelecionarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
@@ -311,11 +308,35 @@ public class DlgBuscaFuncionario extends javax.swing.JDialog {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DlgBuscaFuncionario dialog = new DlgBuscaFuncionario(new javax.swing.JFrame(), true);
+                DlgBuscaFuncionario dialog = new DlgBuscaFuncionario(new javax.swing.JFrame(), true, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

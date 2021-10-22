@@ -183,13 +183,13 @@ public class ApplicationView extends javax.swing.JFrame {
         pnlHomeAdmin.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblVeterinaria.setFont(new java.awt.Font("Grand Aventure Text", 0, 100)); // NOI18N
-        lblVeterinaria.setText("Veterinária");
+        lblVeterinaria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/letreiro-veterinaria.png"))); // NOI18N
         pnlHomeAdmin.add(lblVeterinaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(1360, 930, -1, -1));
 
         lblPetshop.setFont(new java.awt.Font("Grand Aventure Text", 0, 100)); // NOI18N
         lblPetshop.setForeground(new java.awt.Color(255, 255, 255));
-        lblPetshop.setText("Petshop");
-        pnlHomeAdmin.add(lblPetshop, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 910, -1, -1));
+        lblPetshop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/letreiro-petshop.png"))); // NOI18N
+        pnlHomeAdmin.add(lblPetshop, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 940, -1, -1));
 
         btnVeterinaria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnvet.png"))); // NOI18N
         btnVeterinaria.addMouseListener(new java.awt.event.MouseAdapter() {

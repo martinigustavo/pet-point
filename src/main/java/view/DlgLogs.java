@@ -5,32 +5,61 @@
  */
 package view;
 
+import dao.ClienteDao;
+import dao.FuncionarioDao;
+import dao.LogDao;
+import dao.VeterinarioDao;
+import entities.Cliente;
 import entities.Funcionario;
+import entities.Log;
+import entities.Veterinario;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import lombok.extern.log4j.Log4j2;
+import org.hibernate.SessionFactory;
+import utils.HibernateUtil;
 import utils.VisualsConfig;
 
+@Log4j2
 public class DlgLogs extends javax.swing.JDialog {
 
-    private Funcionario funcionario;
-    
+    private Optional<Funcionario> funcionarioLog;
+    private Optional<Funcionario> funcionarioAud;
+    private final SessionFactory sessionFactory;
+    private List<Log> auditoriaLista;
+    private List<Log> logsTabela;
+
     public DlgLogs(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
         VisualsConfig.setPropsToWindow(this, "Logs da aplicação", parent);
 
-        try {
-            BufferedReader in = new BufferedReader(new FileReader("logs/app.log"));
-            String line = in.lines().collect(Collectors.joining(System.lineSeparator()));
+        this.sessionFactory = HibernateUtil.getSessionFactory();
 
-            txaLogs.setText(line);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Problema ao carregar informações do arquivo /log/app.log");
-        }
+        this.logsTabela = new ArrayList<>();
+        this.auditoriaLista = new LogDao(sessionFactory).buscarTodos();
 
+        this.atualizarTabela(auditoriaLista);
+
+//        try {
+//            BufferedReader in = new BufferedReader(new FileReader("logs/app.log"));
+//            String line = in.lines().collect(Collectors.joining(System.lineSeparator()));
+//
+//            txaLogs.setText(line);
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(null, "Problema ao carregar informações do arquivo /log/app.log");
+//        }
     }
 
     /**
@@ -51,22 +80,35 @@ public class DlgLogs extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        btnFiltrar = new javax.swing.JButton();
+        btnFiltrarLog = new javax.swing.JButton();
         btnLimpar = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        txfFunc = new javax.swing.JTextField();
-        btnBuscarFunc = new javax.swing.JButton();
         ftfDataIni = new javax.swing.JFormattedTextField();
         ftfDataFim = new javax.swing.JFormattedTextField();
-        lblFechar = new javax.swing.JLabel();
         pnlAuditoria = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        btnFiltrarAud = new javax.swing.JButton();
+        btnLimparAud = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
+        txfID = new javax.swing.JTextField();
+        btnBuscarFunc = new javax.swing.JButton();
+        ftfDataAud = new javax.swing.JFormattedTextField();
+        jLabel13 = new javax.swing.JLabel();
+        txfNome = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        txfPermissao = new javax.swing.JTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblAuditoria = new javax.swing.JTable();
+        jLabel5 = new javax.swing.JLabel();
+        cbxComando = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
+        cbxTabela = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setUndecorated(true);
-        setResizable(false);
-
-        pnlLogs.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txaLogs.setEditable(false);
         txaLogs.setColumns(20);
@@ -74,33 +116,25 @@ public class DlgLogs extends javax.swing.JDialog {
         txaLogs.setRows(5);
         jScrollPane1.setViewportView(txaLogs);
 
-        pnlLogs.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(77, 274, 951, 407));
-
         jLabel1.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
         jLabel1.setText("FILTROS");
-        pnlLogs.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(143, 78, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel2.setText("Data Início:");
-        pnlLogs.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(143, 122, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         jLabel3.setText("Data Final:");
-        pnlLogs.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(143, 171, 88, -1));
 
         jLabel4.setFont(new java.awt.Font("Poppins Medium", 0, 24)); // NOI18N
         jLabel4.setText("Logs do Sistema");
-        pnlLogs.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(464, 19, -1, -1));
-        pnlLogs.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 66, 1018, 10));
 
-        btnFiltrar.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
-        btnFiltrar.setText("Filtrar");
-        btnFiltrar.addActionListener(new java.awt.event.ActionListener() {
+        btnFiltrarLog.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
+        btnFiltrarLog.setText("Filtrar");
+        btnFiltrarLog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFiltrarActionPerformed(evt);
+                btnFiltrarLogActionPerformed(evt);
             }
         });
-        pnlLogs.add(btnFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(894, 230, 78, -1));
 
         btnLimpar.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
         btnLimpar.setText("Limpar");
@@ -109,16 +143,117 @@ public class DlgLogs extends javax.swing.JDialog {
                 btnLimparActionPerformed(evt);
             }
         });
-        pnlLogs.add(btnLimpar, new org.netbeans.lib.awtextra.AbsoluteConstraints(787, 230, -1, -1));
 
-        jLabel5.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
-        jLabel5.setText("Funcionário:");
-        pnlLogs.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(564, 124, -1, -1));
+        try {
+            ftfDataIni.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        ftfDataIni.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
 
-        txfFunc.setEditable(false);
-        txfFunc.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
-        txfFunc.setBorder(null);
-        pnlLogs.add(txfFunc, new org.netbeans.lib.awtextra.AbsoluteConstraints(678, 124, 294, -1));
+        try {
+            ftfDataFim.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        ftfDataFim.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+
+        javax.swing.GroupLayout pnlLogsLayout = new javax.swing.GroupLayout(pnlLogs);
+        pnlLogs.setLayout(pnlLogsLayout);
+        pnlLogsLayout.setHorizontalGroup(
+            pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlLogsLayout.createSequentialGroup()
+                .addGap(323, 323, 323)
+                .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLogsLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(ftfDataIni, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLogsLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(111, 111, 111))
+                    .addGroup(pnlLogsLayout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLogsLayout.createSequentialGroup()
+                                .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnFiltrarLog, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(ftfDataFim, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(383, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLogsLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLogsLayout.createSequentialGroup()
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(110, 110, 110))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLogsLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(422, 422, 422))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLogsLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(73, 73, 73))))
+        );
+        pnlLogsLayout.setVerticalGroup(
+            pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlLogsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ftfDataIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(ftfDataFim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 49, Short.MAX_VALUE)
+                .addGroup(pnlLogsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnFiltrarLog)
+                    .addComponent(btnLimpar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12))
+        );
+
+        jTabbedPane1.addTab("Logs", pnlLogs);
+
+        jLabel8.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
+        jLabel8.setText("FILTROS");
+
+        jLabel9.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        jLabel9.setText("Data");
+
+        jLabel11.setFont(new java.awt.Font("Poppins Medium", 0, 24)); // NOI18N
+        jLabel11.setText("Auditoria");
+
+        btnFiltrarAud.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
+        btnFiltrarAud.setText("Filtrar");
+        btnFiltrarAud.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFiltrarAudActionPerformed(evt);
+            }
+        });
+
+        btnLimparAud.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
+        btnLimparAud.setText("Limpar");
+        btnLimparAud.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparAudActionPerformed(evt);
+            }
+        });
+
+        jLabel12.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        jLabel12.setText("ID:");
+
+        txfID.setEditable(false);
+        txfID.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        txfID.setBorder(null);
 
         btnBuscarFunc.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
         btnBuscarFunc.setText("Buscar funcionário");
@@ -127,44 +262,172 @@ public class DlgLogs extends javax.swing.JDialog {
                 btnBuscarFuncActionPerformed(evt);
             }
         });
-        pnlLogs.add(btnBuscarFunc, new org.netbeans.lib.awtextra.AbsoluteConstraints(789, 167, -1, -1));
 
         try {
-            ftfDataIni.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+            ftfDataAud.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        ftfDataIni.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
-        pnlLogs.add(ftfDataIni, new org.netbeans.lib.awtextra.AbsoluteConstraints(249, 119, 290, -1));
+        ftfDataAud.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
 
-        try {
-            ftfDataFim.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        ftfDataFim.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
-        pnlLogs.add(ftfDataFim, new org.netbeans.lib.awtextra.AbsoluteConstraints(249, 168, 290, -1));
+        jLabel13.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        jLabel13.setText("Nome:");
 
-        lblFechar.setFont(new java.awt.Font("Poppins", 1, 32)); // NOI18N
-        lblFechar.setText("X");
-        lblFechar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblFecharMouseClicked(evt);
+        txfNome.setEditable(false);
+        txfNome.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        txfNome.setBorder(null);
+
+        jLabel14.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        jLabel14.setText("Permissão:");
+
+        txfPermissao.setEditable(false);
+        txfPermissao.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        txfPermissao.setBorder(null);
+
+        tblAuditoria.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        tblAuditoria.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Cód.", "Comando", "Data", "Tabela", "Antes", "Depois", "Funcionário"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
             }
         });
-        pnlLogs.add(lblFechar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1158, 0, -1, -1));
+        jScrollPane3.setViewportView(tblAuditoria);
+        if (tblAuditoria.getColumnModel().getColumnCount() > 0) {
+            tblAuditoria.getColumnModel().getColumn(0).setMinWidth(70);
+            tblAuditoria.getColumnModel().getColumn(0).setPreferredWidth(70);
+            tblAuditoria.getColumnModel().getColumn(0).setMaxWidth(70);
+        }
 
-        jTabbedPane1.addTab("Logs", pnlLogs);
+        jLabel5.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        jLabel5.setText("Comando");
+
+        cbxComando.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        cbxComando.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "INSERT", "UPDATE", "DELETE" }));
+
+        jLabel6.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        jLabel6.setText("Tabela");
+
+        cbxTabela.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
+        cbxTabela.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas", "Cliente", "Funcionário", "Produto", "Pet" }));
+
+        jButton1.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
+        jButton1.setText("Ver registro");
 
         javax.swing.GroupLayout pnlAuditoriaLayout = new javax.swing.GroupLayout(pnlAuditoria);
         pnlAuditoria.setLayout(pnlAuditoriaLayout);
         pnlAuditoriaLayout.setHorizontalGroup(
             pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1189, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAuditoriaLayout.createSequentialGroup()
+                .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlAuditoriaLayout.createSequentialGroup()
+                        .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(pnlAuditoriaLayout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel8)
+                                .addGap(347, 347, 347))
+                            .addGroup(pnlAuditoriaLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(pnlAuditoriaLayout.createSequentialGroup()
+                                        .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel9)
+                                            .addComponent(jLabel5)
+                                            .addComponent(jLabel6))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(ftfDataAud)
+                                            .addComponent(cbxComando, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(cbxTabela, 0, 250, Short.MAX_VALUE))
+                                        .addGap(79, 79, 79)
+                                        .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(pnlAuditoriaLayout.createSequentialGroup()
+                                                .addComponent(jLabel14)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(txfPermissao, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE))
+                                            .addGroup(pnlAuditoriaLayout.createSequentialGroup()
+                                                .addGap(35, 35, 35)
+                                                .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(jLabel12)
+                                                    .addComponent(jLabel13))
+                                                .addGap(18, 18, 18)
+                                                .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(txfID)
+                                                    .addComponent(txfNome)))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAuditoriaLayout.createSequentialGroup()
+                                                .addComponent(btnLimparAud)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(btnFiltrarAud, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(btnBuscarFunc))))
+                        .addGap(91, 91, 91))
+                    .addGroup(pnlAuditoriaLayout.createSequentialGroup()
+                        .addContainerGap(96, Short.MAX_VALUE)
+                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(55, 55, 55))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAuditoriaLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAuditoriaLayout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addGap(474, 474, 474))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAuditoriaLayout.createSequentialGroup()
+                        .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton1)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(66, 66, 66))))
         );
         pnlAuditoriaLayout.setVerticalGroup(
             pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 687, Short.MAX_VALUE)
+            .addGroup(pnlAuditoriaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel11)
+                .addGap(5, 5, 5)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlAuditoriaLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ftfDataAud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9)))
+                    .addGroup(pnlAuditoriaLayout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12)
+                            .addComponent(txfID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13)
+                            .addComponent(txfNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5)
+                            .addComponent(cbxComando, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel14)
+                            .addComponent(txfPermissao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6)
+                            .addComponent(cbxTabela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnBuscarFunc)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnFiltrarAud)
+                    .addComponent(btnLimparAud))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addGap(43, 43, 43))
         );
 
         jTabbedPane1.addTab("Auditoria", pnlAuditoria);
@@ -185,7 +448,7 @@ public class DlgLogs extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnSair)
-                .addGap(18, 18, 18))
+                .addGap(67, 67, 67))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,35 +456,228 @@ public class DlgLogs extends javax.swing.JDialog {
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 720, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSair)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
+    private void btnLimparAudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparAudActionPerformed
+        ftfDataAud.setText("");
+        cbxComando.setSelectedIndex(0);
+        cbxTabela.setSelectedIndex(0);
+        txfID.setText("");
+        txfNome.setText("");
+        txfPermissao.setText("");
+        funcionarioAud = Optional.empty();
+
+        this.atualizarTabela(auditoriaLista);
+    }//GEN-LAST:event_btnLimparAudActionPerformed
+
+    private void btnFiltrarAudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarAudActionPerformed
+        try {
+            logsTabela = auditoriaLista;
+
+            String dataAudString = ftfDataAud.getText();
+
+            if (!dataAudString.equals("  /  /    ")) {
+                String[] dataArray = dataAudString.split("/");
+                LocalDate dataAud = LocalDate.of(Integer.parseInt(dataArray[2]),
+                        Integer.parseInt(dataArray[1]),
+                        Integer.parseInt(dataArray[0]));
+                logsTabela = logsTabela.stream().filter(registro -> registro.getData().equals(dataAud)).collect(Collectors.toList());
+            }
+
+            if (cbxComando.getSelectedIndex() != 0) {
+                switch (cbxComando.getSelectedIndex()) {
+                    case 1:
+                        logsTabela = logsTabela.stream().filter(
+                                registro -> registro.getComando().contains("insert"))
+                                .collect(Collectors.toList());
+                        break;
+
+                    case 2:
+                        logsTabela = logsTabela.stream().filter(
+                                registro -> registro.getComando().contains("update"))
+                                .collect(Collectors.toList());
+                        break;
+
+                    case 3:
+                        logsTabela = logsTabela.stream().filter(
+                                registro -> registro.getComando().contains("delete"))
+                                .collect(Collectors.toList());
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            if (cbxTabela.getSelectedIndex() != 0) {
+                switch (cbxTabela.getSelectedIndex()) {
+                    case 1:
+                        logsTabela = logsTabela.stream().filter(
+                                registro -> registro.getTabela().equals("cliente"))
+                                .collect(Collectors.toList());
+                        break;
+
+                    case 2:
+                        logsTabela = logsTabela.stream().filter(
+                                registro -> registro.getTabela().equals("funcionario"))
+                                .collect(Collectors.toList());
+                        break;
+
+                    case 3:
+                        logsTabela = logsTabela.stream().filter(
+                                registro -> registro.getTabela().equals("produto"))
+                                .collect(Collectors.toList());
+                        break;
+
+                    case 4:
+                        logsTabela = logsTabela.stream().filter(
+                                registro -> registro.getTabela().equals("pet"))
+                                .collect(Collectors.toList());
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            if (funcionarioAud.isPresent()) {
+                logsTabela = logsTabela.stream().filter(
+                        registro -> registro.getFuncionario().getId() == funcionarioAud.get().getId())
+                        .collect(Collectors.toList());
+            }
+
+//            if (logsTabela.isEmpty()) {
+//                JOptionPane.showMessageDialog(null, "Nenhum registro encontrado!");
+//            } else {
+            atualizarTabela(logsTabela);
+//            }
+
+        } catch (Exception e) {
+            log.error("Erro ao buscar na tabela de auditoria: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao buscar na tabela de auditoria: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnFiltrarAudActionPerformed
+
+    public void atualizarTabela(List<Log> lista) {
+        try {
+            Object[] cabecalho = {"id", "Comando", "Data", "Tabela", "Antes", "Depois", "Funcionário"};
+            Object[][] dadosTabela = new Object[lista.size()][7];
+            if (lista.size() > 0) {
+                for (int i = 0; i < lista.size(); i++) {
+                    dadosTabela[i][0] = lista.get(i).getId();
+                    dadosTabela[i][1] = lista.get(i).getComando();
+                    dadosTabela[i][2] = lista.get(i).getData();
+                    dadosTabela[i][3] = lista.get(i).getTabela();
+                    dadosTabela[i][4] = lista.get(i).getValores_antigos();
+                    dadosTabela[i][5] = lista.get(i).getValores_novos();
+                    dadosTabela[i][6] = lista.get(i).getFuncionario().getNome();
+                }
+            }
+
+            tblAuditoria.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+
+            });
+
+            tblAuditoria.setSelectionMode(0);
+
+            // redimensiona as colunas de uma tabela
+            TableColumn column = null;
+            for (int i = 0; i < tblAuditoria.getColumnCount(); i++) {
+                column = tblAuditoria.getColumnModel().getColumn(i);
+                DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+                centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+                column.setCellRenderer(centerRenderer);
+            }
+
+            column = tblAuditoria.getColumnModel().getColumn(0);
+            column.setPreferredWidth(70);
+            column.setMaxWidth(70);
+            column.setMinWidth(70);
+        } catch (Exception e) {
+            log.error("Erro ao buscar na tabela de auditoria: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao buscar na tabela de auditoria: " + e.getMessage());
+        }
+    }
+
     private void btnBuscarFuncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarFuncActionPerformed
-        DlgBuscaFuncionario dlgBuscaFunc = new DlgBuscaFuncionario(null, true);
-        dlgBuscaFunc.setVisible(true);
+        DlgBuscaFuncionario buscaFuncionario = new DlgBuscaFuncionario(null, true, sessionFactory);
+        buscaFuncionario.setVisible(true);
+
+        funcionarioAud = new FuncionarioDao(sessionFactory).buscar(buscaFuncionario.id);
+        if (funcionarioAud.isPresent()) {
+            txfID.setText(String.valueOf(funcionarioAud.get().getId()));
+            txfNome.setText(funcionarioAud.get().getNome());
+            txfPermissao.setText(funcionarioAud.get().getPermissao().getDescricao());
+        }
     }//GEN-LAST:event_btnBuscarFuncActionPerformed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         ftfDataIni.setText("");
         ftfDataFim.setText("");
-        txfFunc.setText("");
+
+        try {
+            BufferedReader in = new BufferedReader(new FileReader("logs/app.log"));
+            String line = in.lines().collect(Collectors.joining(System.lineSeparator()));
+
+            txaLogs.setText(line);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Problema ao carregar informações do arquivo /log/app.log");
+        }
     }//GEN-LAST:event_btnLimparActionPerformed
 
-    private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        
-    }//GEN-LAST:event_btnFiltrarActionPerformed
+    private void btnFiltrarLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarLogActionPerformed
+        try {
+            String dataIniString = ftfDataIni.getText();
+            String dataFimString = ftfDataFim.getText();
 
-    private void lblFecharMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFecharMouseClicked
-        this.dispose();
-    }//GEN-LAST:event_lblFecharMouseClicked
+            if (dataIniString.isBlank() || dataFimString.isBlank()) {
+                JOptionPane.showMessageDialog(null, "Informe a data inicial e final ou limpe os filtros.");
+                return;
+            }
+
+            LocalDate dataIni = LocalDate.parse(dataIniString);
+            LocalDate dataFim = LocalDate.parse(dataFimString);
+
+            if (dataFim.isBefore(dataIni)) {
+                JOptionPane.showMessageDialog(null, "A data final deve ser posterior a data inicial.");
+                return;
+            }
+
+            BufferedReader in = new BufferedReader(new FileReader("logs/app.log"));
+            List<String> lines = in.lines().collect(Collectors.toList());
+
+            String linesToShow = "";
+
+            if (!dataIniString.isBlank() && !dataFimString.isBlank()) {
+
+                for (String line : lines) {
+                    String[] errorDate = line.split(" ");
+                    LocalDate lineDate = LocalDate.parse(errorDate[0]);
+                    if (lineDate.isBefore(dataFim) && lineDate.isAfter(dataIni)) {
+                        linesToShow += line + "\n";
+                    }
+
+                }
+
+            }
+
+            txaLogs.setText(linesToShow);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Problema ao carregar informações do arquivo /log/app.log");
+        }
+    }//GEN-LAST:event_btnFiltrarLogActionPerformed
 
     /**
      * @param args the command line arguments
@@ -240,14 +696,24 @@ public class DlgLogs extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DlgLogs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DlgLogs.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DlgLogs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DlgLogs.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DlgLogs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DlgLogs.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DlgLogs.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DlgLogs.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -268,23 +734,40 @@ public class DlgLogs extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscarFunc;
-    private javax.swing.JButton btnFiltrar;
+    private javax.swing.JButton btnFiltrarAud;
+    private javax.swing.JButton btnFiltrarLog;
     private javax.swing.JButton btnLimpar;
+    private javax.swing.JButton btnLimparAud;
     private javax.swing.JButton btnSair;
+    private javax.swing.JComboBox<String> cbxComando;
+    private javax.swing.JComboBox<String> cbxTabela;
+    private javax.swing.JFormattedTextField ftfDataAud;
     private javax.swing.JFormattedTextField ftfDataFim;
     private javax.swing.JFormattedTextField ftfDataIni;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JLabel lblFechar;
     private javax.swing.JPanel pnlAuditoria;
     private javax.swing.JPanel pnlLogs;
+    private javax.swing.JTable tblAuditoria;
     private javax.swing.JTextArea txaLogs;
-    private javax.swing.JTextField txfFunc;
+    private javax.swing.JTextField txfID;
+    private javax.swing.JTextField txfNome;
+    private javax.swing.JTextField txfPermissao;
     // End of variables declaration//GEN-END:variables
 }
