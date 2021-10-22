@@ -84,10 +84,10 @@ public class ApplicationView extends javax.swing.JFrame {
 
         background = new javax.swing.JPanel();
         pnlmenulateral = new javax.swing.JPanel();
+        userimg = new javax.swing.JLabel();
         btnhome = new javax.swing.JButton();
         btncadastro = new javax.swing.JButton();
         lblLogado = new javax.swing.JLabel();
-        btnCadastroProduto = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
         btnAdmin = new javax.swing.JButton();
         barralateral = new javax.swing.JLabel();
@@ -121,6 +121,9 @@ public class ApplicationView extends javax.swing.JFrame {
 
         pnlmenulateral.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        userimg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user.png"))); // NOI18N
+        pnlmenulateral.add(userimg, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 60, -1, -1));
+
         btnhome.setBackground(new java.awt.Color(58, 203, 199));
         btnhome.setForeground(new java.awt.Color(58, 203, 199));
         btnhome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home.png"))); // NOI18N
@@ -131,7 +134,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnhomeActionPerformed(evt);
             }
         });
-        pnlmenulateral.add(btnhome, new org.netbeans.lib.awtextra.AbsoluteConstraints(23, 180, 130, 50));
+        pnlmenulateral.add(btnhome, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 130, 50));
 
         btncadastro.setBackground(new java.awt.Color(58, 203, 199));
         btncadastro.setForeground(new java.awt.Color(58, 203, 199));
@@ -143,30 +146,23 @@ public class ApplicationView extends javax.swing.JFrame {
                 btncadastroActionPerformed(evt);
             }
         });
-        pnlmenulateral.add(btncadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(24, 250, 130, 50));
+        pnlmenulateral.add(btncadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, 130, 50));
 
+        lblLogado.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        lblLogado.setForeground(new java.awt.Color(255, 255, 255));
         lblLogado.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblLogado.setText("logado");
-        pnlmenulateral.add(lblLogado, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 960, 130, 40));
+        pnlmenulateral.add(lblLogado, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 130, 40));
 
-        btnCadastroProduto.setBackground(new java.awt.Color(58, 203, 199));
-        btnCadastroProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/iconproduto.png"))); // NOI18N
-        btnCadastroProduto.setToolTipText("Cadastrar produto");
-        btnCadastroProduto.setBorder(null);
-        btnCadastroProduto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCadastroProdutoActionPerformed(evt);
-            }
-        });
-        pnlmenulateral.add(btnCadastroProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 130, 50));
-
-        btnSair.setText("Sair");
+        btnSair.setBackground(new java.awt.Color(58, 203, 199));
+        btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnlogout.png"))); // NOI18N
+        btnSair.setBorder(null);
         btnSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSairActionPerformed(evt);
             }
         });
-        pnlmenulateral.add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 1020, 130, 40));
+        pnlmenulateral.add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 1010, 130, 40));
 
         btnAdmin.setBackground(new java.awt.Color(58, 203, 199));
         btnAdmin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/iconlogs.png"))); // NOI18N
@@ -177,7 +173,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnAdminActionPerformed(evt);
             }
         });
-        pnlmenulateral.add(btnAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 880, 130, 50));
+        pnlmenulateral.add(btnAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 130, 50));
 
         barralateral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/barralateral.png"))); // NOI18N
         pnlmenulateral.add(barralateral, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -598,11 +594,6 @@ public class ApplicationView extends javax.swing.JFrame {
         dlgProduto.setVisible(true);
     }//GEN-LAST:event_btncadastrosActionPerformed
 
-    private void btnCadastroProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastroProdutoActionPerformed
-//        DlgProduto tela = new DlgProduto(null, true);
-//        tela.setVisible(true);
-    }//GEN-LAST:event_btnCadastroProdutoActionPerformed
-
     private void btnPetshopMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPetshopMouseEntered
         lblPetshop.setVisible(true);
     }//GEN-LAST:event_btnPetshopMouseEntered
@@ -663,7 +654,6 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JLabel barralateral;
     private javax.swing.JButton btnAdicionar;
     private javax.swing.JButton btnAdmin;
-    private javax.swing.JButton btnCadastroProduto;
     private javax.swing.JButton btnPetshop;
     private javax.swing.JButton btnSair;
     private javax.swing.JButton btnVeterinaria;
@@ -685,5 +675,6 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JPanel pnlmenulateral;
     private javax.swing.JTable tblgeral;
     private javax.swing.JTextField tfdbusca;
+    private javax.swing.JLabel userimg;
     // End of variables declaration//GEN-END:variables
 }
