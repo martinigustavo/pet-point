@@ -17,13 +17,20 @@
         <property name="hibernate.format_sql">true</property>
         
         <!--Mapeamento das classes utilizadas no projeto-->
+        <mapping class="entities.Agenda" />
+        <mapping class="entities.Atendimento" />
+        <mapping class="entities.Caixa" />
         <mapping class="entities.Cliente" />
+        <mapping class="entities.Consulta" />
         <mapping class="entities.Especie" />
         <mapping class="entities.Funcionario" />
         <mapping class="entities.Log" />
         <mapping class="entities.Permissao" />
+        <mapping class="entities.Peso" />
         <mapping class="entities.Pet" />
         <mapping class="entities.Produto" />
         <mapping class="entities.Raca" />
+        <mapping class="entities.Servico" />
+        <mapping class="entities.Venda" />
     </session-factory>
 </hibernate-configuration>

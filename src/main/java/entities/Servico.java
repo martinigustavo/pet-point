@@ -5,7 +5,6 @@
  */
 package entities;
 
-import java.time.LocalDate;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,34 +20,27 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "PET")
-public class Pet {
+@Table(name = "SERVICO")
+public class Servico {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String nome;
-    private String sexo;
-    private boolean esterilizado;
-    private String porte;
-    private LocalDate data_nascimento;
-    private LocalDate data_cadastro;
+    private String descricao;
+    private double valor;
     
-    @ManyToOne
-    @JoinColumn(name = "raca_id", nullable = false)
-    private Raca raca;
+    @ManyToOne()
+    @JoinColumn(name = "consulta_id")
+    private Consulta consulta;
     
-    @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
     
-    @OneToMany(mappedBy = "pet")
-    private Set<Atendimento> atendimentos;
-    
-    @OneToMany(mappedBy = "pet")
-    private Set<Consulta> consultas;
-    
-    @OneToMany(mappedBy = "pet")
-    private Set<Peso> pesos;
-    
+    @ManyToOne()
+    @JoinColumn(name = "atendimento_id")
+    private Atendimento atendimento;
+
+    @OneToMany(mappedBy = "servico")
+    private Set<Caixa> caixas;
 }

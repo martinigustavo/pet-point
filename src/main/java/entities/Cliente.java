@@ -37,4 +37,7 @@ public class Cliente {
     
     @OneToMany(mappedBy = "cliente")
     private Set<Pet> pets;
+    
+    @OneToMany(mappedBy = "cliente")
+    private Set<Servico> servicos;
 }

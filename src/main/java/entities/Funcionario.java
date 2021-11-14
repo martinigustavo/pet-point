@@ -6,20 +6,23 @@
 package entities;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @Entity
+@Table(name = "FUNCIONARIO")
 public class Funcionario {
     
     @Id
@@ -43,11 +46,17 @@ public class Funcionario {
     private String atividade;
     private String crmv;
     
-    @ManyToOne
-    @JoinColumn(name = "permissao_id", nullable = false)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "permissao_id", referencedColumnName = "id")
     private Permissao permissao;
     
     @OneToMany(mappedBy = "funcionario")
-    private List<Log> logs;
+    private Set<Log> logs;
+    
+    @OneToMany(mappedBy = "funcionario")
+    private Set<Caixa> caixas;
+    
+    @OneToMany(mappedBy = "funcionario")
+    private Set<Agenda> agendas;
 }
 
