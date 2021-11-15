@@ -36,6 +36,7 @@ public class DlgProduto extends javax.swing.JDialog {
 
         VisualsConfig.setPropsToWindow(this, "Cadastrar produto", parent);
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

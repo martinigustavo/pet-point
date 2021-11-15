@@ -97,6 +97,7 @@ public class ApplicationView extends javax.swing.JFrame {
         btnPetshop = new javax.swing.JButton();
         backgroundadm = new javax.swing.JLabel();
         pnlHomePet = new javax.swing.JPanel();
+        btncadastros1 = new javax.swing.JButton();
         btncadastros = new javax.swing.JButton();
         fundoPet = new javax.swing.JLabel();
         pnlHomeVet = new javax.swing.JPanel();
@@ -229,6 +230,16 @@ public class ApplicationView extends javax.swing.JFrame {
 
         pnlHomePet.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        btncadastros1.setBackground(new java.awt.Color(236, 236, 236));
+        btncadastros1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnvendas.png"))); // NOI18N
+        btncadastros1.setBorder(null);
+        btncadastros1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncadastros1ActionPerformed(evt);
+            }
+        });
+        pnlHomePet.add(btncadastros1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 30, 140, 50));
+
         btncadastros.setBackground(new java.awt.Color(236, 236, 236));
         btncadastros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btncadastros.png"))); // NOI18N
         btncadastros.setBorder(null);
@@ -237,7 +248,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 btncadastrosActionPerformed(evt);
             }
         });
-        pnlHomePet.add(btncadastros, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 150, 50));
+        pnlHomePet.add(btncadastros, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 150, 50));
 
         fundoPet.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/telapetshop.png"))); // NOI18N
         pnlHomePet.add(fundoPet, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1760, 1080));
@@ -622,6 +633,10 @@ public class ApplicationView extends javax.swing.JFrame {
         pnlHomeVet.setVisible(true);
     }//GEN-LAST:event_btnVeterinariaActionPerformed
 
+    private void btncadastros1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastros1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btncadastros1ActionPerformed
+
     public void desativarTelas() {
         pnlHomeAdmin.setVisible(false);
         pnlHomePet.setVisible(false);
@@ -659,6 +674,7 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JButton btnVeterinaria;
     private javax.swing.JButton btncadastro;
     private javax.swing.JButton btncadastros;
+    private javax.swing.JButton btncadastros1;
     private javax.swing.JButton btnhome;
     private javax.swing.JComboBox<String> cmbescolher;
     private javax.swing.JLabel fundoPet;
