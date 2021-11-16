@@ -31,6 +31,7 @@ import utils.VisualsConfig;
 public class ApplicationView extends javax.swing.JFrame {
 
     private final Funcionario funcLogado;
+    private boolean isAdmin;
     private SessionFactory sessionFactory;
     private FuncionarioDao fd;
     private String busca;
@@ -60,6 +61,8 @@ public class ApplicationView extends javax.swing.JFrame {
         lblLogado.setText(funcLogado.getNome());
         lblPetshop.setVisible(false);
         lblVeterinaria.setVisible(false);
+        
+        this.isAdmin = this.funcLogado.getPermissao().getDescricao().equals("admin");
 
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
@@ -89,6 +92,7 @@ public class ApplicationView extends javax.swing.JFrame {
         lblLogado = new javax.swing.JLabel();
         btnSair = new javax.swing.JButton();
         btnAdmin = new javax.swing.JButton();
+        btnAgenda = new javax.swing.JButton();
         barralateral = new javax.swing.JLabel();
         pnlHomeAdmin = new javax.swing.JPanel();
         lblVeterinaria = new javax.swing.JLabel();
@@ -173,7 +177,15 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnAdminActionPerformed(evt);
             }
         });
-        pnlmenulateral.add(btnAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 130, 50));
+        pnlmenulateral.add(btnAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, 130, 50));
+
+        btnAgenda.setText("Agenda");
+        btnAgenda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgendaActionPerformed(evt);
+            }
+        });
+        pnlmenulateral.add(btnAgenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 370, -1, -1));
 
         barralateral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/barralateral.png"))); // NOI18N
         pnlmenulateral.add(barralateral, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -637,6 +649,11 @@ public class ApplicationView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btncadastros1ActionPerformed
 
+    private void btnAgendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgendaActionPerformed
+        DlgAgenda dlgAgenda = new DlgAgenda(this, rootPaneCheckingEnabled, isAdmin, funcLogado);
+        dlgAgenda.setVisible(true);
+    }//GEN-LAST:event_btnAgendaActionPerformed
+
     public void desativarTelas() {
         pnlHomeAdmin.setVisible(false);
         pnlHomePet.setVisible(false);
@@ -669,6 +686,7 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JLabel barralateral;
     private javax.swing.JButton btnAdicionar;
     private javax.swing.JButton btnAdmin;
+    private javax.swing.JButton btnAgenda;
     private javax.swing.JButton btnPetshop;
     private javax.swing.JButton btnSair;
     private javax.swing.JButton btnVeterinaria;

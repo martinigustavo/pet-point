@@ -29,8 +29,8 @@ public class Agenda {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private LocalDate data;
-    private LocalTime horario;
-    private String status;
+    private LocalTime horario_inicio;
+    private LocalTime horario_final;
     
     @ManyToOne()
     @JoinColumn(name = "funcionario_id")
