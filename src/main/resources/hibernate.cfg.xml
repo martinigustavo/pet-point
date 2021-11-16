@@ -32,5 +32,6 @@
         <mapping class="entities.Raca" />
         <mapping class="entities.Servico" />
         <mapping class="entities.Venda" />
+        <mapping class="entities.VendaProduto" />
     </session-factory>
 </hibernate-configuration>

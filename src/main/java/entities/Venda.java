@@ -22,16 +22,16 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "VENDA")
 public class Venda {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private LocalDate data_venda;
     private double valor_total;
-    
+
     @OneToOne(mappedBy = "venda")
     private Caixa caixa;
-    
+
     @OneToMany(mappedBy = "venda")
     private Set<VendaProduto> vendaProdutos;
 }

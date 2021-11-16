@@ -6,6 +6,7 @@
 package entities;
 
 
+
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
