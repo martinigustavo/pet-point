@@ -4,14 +4,25 @@
  * and open the template in the editor.
  */
 package view;
+import dao.CaixaDao;
 import dao.ProdutoDao;
 import dao.VendaDao;
+import dao.VendaProdutoDao;
+import entities.Caixa;
+import entities.Funcionario;
 import entities.Produto;
 import entities.Venda;
+import entities.VendaProduto;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.List;
 import java.util.Optional;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import org.hibernate.SessionFactory;
 import utils.HibernateUtil;
 
@@ -25,11 +36,13 @@ public class DlgVenda extends javax.swing.JDialog {
     private final SessionFactory sessionFactory;
     private Produto produto = new Produto();
     String preco;
+    Funcionario funcionario;
+    Venda venda;
     
-    public DlgVenda(java.awt.Frame parent, boolean modal) {
+    public DlgVenda(java.awt.Frame parent, boolean modal, Funcionario funcionario) {
         super(parent, modal);
         initComponents();
-        
+        this.funcionario = funcionario;
          this.sessionFactory = HibernateUtil.getSessionFactory();
     }
     
@@ -51,11 +64,13 @@ public class DlgVenda extends javax.swing.JDialog {
         tfdnome = new javax.swing.JTextField();
         tfdCodigo = new javax.swing.JTextField();
         tfdPagar = new javax.swing.JTextField();
+        btnadicionar = new javax.swing.JButton();
+        btndescartar = new javax.swing.JButton();
         tfdTotal = new javax.swing.JLabel();
+        lblFechar = new javax.swing.JLabel();
         lblIdVenda = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tabelaVenda = new javax.swing.JTable();
-        btnadicionar = new javax.swing.JButton();
         btnbuscacodigo = new javax.swing.JButton();
         tfdProduto = new javax.swing.JTextField();
         tfdValorUnitario = new javax.swing.JTextField();
@@ -66,11 +81,13 @@ public class DlgVenda extends javax.swing.JDialog {
         fundo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setUndecorated(true);
+        setResizable(false);
 
         pnlvendas.setBackground(new java.awt.Color(15, 112, 112));
         pnlvendas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        chkCartao.setBackground(new java.awt.Color(32, 32, 32));
+        chkCartao.setBackground(new java.awt.Color(255, 255, 255));
         chkCartao.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
         chkCartao.setText("    Cartão");
         chkCartao.setToolTipText("");
@@ -128,9 +145,41 @@ public class DlgVenda extends javax.swing.JDialog {
         tfdPagar.setBorder(null);
         pnlvendas.add(tfdPagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 290, 140, 40));
 
+        btnadicionar.setBackground(new java.awt.Color(255, 255, 255));
+        btnadicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/adicionar.png"))); // NOI18N
+        btnadicionar.setBorder(null);
+        btnadicionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnadicionarActionPerformed(evt);
+            }
+        });
+        pnlvendas.add(btnadicionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 140, 80, 40));
+
+        btndescartar.setBackground(new java.awt.Color(255, 255, 255));
+        btndescartar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/descartar.png"))); // NOI18N
+        btndescartar.setBorder(null);
+        btndescartar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btndescartarActionPerformed(evt);
+            }
+        });
+        pnlvendas.add(btndescartar, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 140, 80, 40));
+
         tfdTotal.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
         tfdTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        pnlvendas.add(tfdTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 580, 120, 30));
+        pnlvendas.add(tfdTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 580, 220, 30));
+
+        lblFechar.setBackground(new java.awt.Color(58, 203, 199));
+        lblFechar.setFont(new java.awt.Font("Poppins", 1, 24)); // NOI18N
+        lblFechar.setForeground(new java.awt.Color(58, 203, 199));
+        lblFechar.setText("X");
+        lblFechar.setToolTipText("");
+        lblFechar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblFecharMouseClicked(evt);
+            }
+        });
+        pnlvendas.add(lblFechar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1220, 5, -1, -1));
 
         lblIdVenda.setFont(new java.awt.Font("Poppins", 1, 24)); // NOI18N
         lblIdVenda.setForeground(new java.awt.Color(2, 166, 166));
@@ -155,15 +204,6 @@ public class DlgVenda extends javax.swing.JDialog {
 
         pnlvendas.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 230, 810, 450));
 
-        btnadicionar.setBackground(new java.awt.Color(255, 255, 255));
-        btnadicionar.setBorder(null);
-        btnadicionar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnadicionarActionPerformed(evt);
-            }
-        });
-        pnlvendas.add(btnadicionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 140, 80, 40));
-
         btnbuscacodigo.setBackground(new java.awt.Color(2, 166, 166));
         btnbuscacodigo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pesquisa.png"))); // NOI18N
         btnbuscacodigo.setBorder(null);
@@ -181,11 +221,13 @@ public class DlgVenda extends javax.swing.JDialog {
         pnlvendas.add(tfdProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 80, 380, 30));
 
         tfdValorUnitario.setBackground(new java.awt.Color(229, 233, 233));
+        tfdValorUnitario.setFont(new java.awt.Font("Poppins", 0, 15)); // NOI18N
         tfdValorUnitario.setToolTipText("");
         tfdValorUnitario.setBorder(null);
         pnlvendas.add(tfdValorUnitario, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, 110, 30));
 
         tfdValorTotal.setBackground(new java.awt.Color(229, 233, 233));
+        tfdValorTotal.setFont(new java.awt.Font("Poppins", 0, 15)); // NOI18N
         tfdValorTotal.setToolTipText("");
         tfdValorTotal.setBorder(null);
         pnlvendas.add(tfdValorTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 150, 110, 30));
@@ -233,6 +275,7 @@ public class DlgVenda extends javax.swing.JDialog {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void chkCartaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCartaoActionPerformed
@@ -258,16 +301,19 @@ public class DlgVenda extends javax.swing.JDialog {
                 "Você deve adicionar itens para venda!",
                 "Atencão",
                 JOptionPane.ERROR_MESSAGE);
+            
         } else if (!chkDinheiro.isSelected() && !chkCartao.isSelected()) {
             JOptionPane.showMessageDialog(rootPane,
                 "Você precisa selecionar uma forma de pagamento!",
                 "Atencão",
                 JOptionPane.ERROR_MESSAGE);
+            
         } else if (tfdPagar.getText().isEmpty()) {
             JOptionPane.showMessageDialog(rootPane,
                 "Você precisa informar o valor a ser pago!",
                 "Atencão",
                 JOptionPane.ERROR_MESSAGE);
+            
         } else { 
             Double valorPagar = Double.parseDouble(tfdPagar.getText().replaceAll(",", "."));
             Double totalc = Double.parseDouble(tfdTotal.getText().replaceAll(",", "."));
@@ -276,25 +322,36 @@ public class DlgVenda extends javax.swing.JDialog {
                     "O valor a ser pago está incorreto!",
                     "Atencão",
                     JOptionPane.ERROR_MESSAGE);
+                
             } else {
                 
-                Venda venda = new Venda();
-                VendaDao dao = new VendaDao(sessionFactory);
+                VendaDao vendaDao = new VendaDao(sessionFactory);
+                Optional <Venda> p = new VendaDao(sessionFactory).buscar(Integer.parseInt(lblIdVenda.getText()));
+                this.venda = p.get();
+
+                Caixa caixa = new Caixa();
+                CaixaDao caixaDao = new CaixaDao(sessionFactory);
+                
                 Double total = Double.valueOf(tfdTotal.getText().replaceAll(",", ".")).doubleValue();
                 java.util.Date dataUtil = new java.util.Date();
                 java.sql.Date dataSql = new java.sql.Date(dataUtil.getTime());
+                LocalDate data = dataSql.toInstant().atZone( ZoneId.systemDefault() ).toLocalDate();
 
-                int idVenda = Integer.parseInt(lblIdVenda.getText());
+                      
+                venda.setData_venda(data);
+                venda.setValor_total(total);             
+               
+//                caixa.setServico(servico);
+                caixa.setFuncionario(funcionario);
+                caixa.setValor_total(total);
+                caixa.setVenda(venda);
+                venda.setCaixa(caixa);
 
-//                venda.setId(idVenda);
-//                venda.setData_venda(dataSql);
-//                venda.setFuncionario_id(id);
-//                venda.setForma_pagamento(formapagamento);
-//                venda.setValor_pagamento(total);
-//                dao.salvar(venda);
+                vendaDao.salvar(venda);
+                caixaDao.salvar(caixa);
 
                 if (valorPagar > total) {
-                    Double troco = valorPagar - total;
+                    Double troco = (valorPagar - total);
                     JOptionPane.showMessageDialog(rootPane,
                         "Venda concluída com sucesso!\n"
                         + "Troco: R$"+troco,
@@ -315,94 +372,179 @@ public class DlgVenda extends javax.swing.JDialog {
         }
 
     }//GEN-LAST:event_btnfinalizarActionPerformed
-
-    private void btnadicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnadicionarActionPerformed
-
-//        int quantidade = (Integer) spnQuantidade.getValue();
-//
-//        if (tfdCodigo.getText().isEmpty() || tfdCodigo.getText().equals("0")) {
-//            JOptionPane.showMessageDialog(rootPane,
-//                "Você deve inserir o código do produto!",
-//                "Atencão",
-//                JOptionPane.ERROR_MESSAGE);
-//
-//        } else if (quantidade == 0) {
-//            JOptionPane.showMessageDialog(rootPane,
-//                "A quantidade de itens não pode ser zero!",
-//                "Atencão",
-//                JOptionPane.ERROR_MESSAGE);
-//
-//        } else {
-//
-//            //-----------------------------------------------------------------------------------//
-//            int qtd;
-//            int retirado;
-//            int total;
-//            int verificar;
-//            ProdutoDao daoProduto = new ProdutoDao(sessionFactory);
-//            Produto produto = new Produto();
-//            produto = daoProduto.consultarId(Integer.parseInt(tfdCodigo.getText()));
-//            verificar = produto.getQuantidade();
-//
-//            if (verificar < quantidade) {
-//                JOptionPane.showMessageDialog(rootPane,
-//                    "A quantidade não está disponível em estoque!",
-//                    "Atencão",
-//                    JOptionPane.ERROR_MESSAGE);
-//
-//            } else {
-//
-//                ItemVendaDao dao = new ItemVendaDao(sessionFactory);
-//                ItemVenda item = new ItemVenda();
-//                item.setIdProduto(Integer.parseInt(tfdCodigo.getText()));
-//                item.setIdVenda(Integer.parseInt(lblIdVenda.getText()));
-//                item.setNomeProduto(tfdProduto.getText());
-//                item.setQuantidade(quantidade);
-//                item.setSubtotal(Double.parseDouble(tfdValorTotal.getText().replaceAll(",", ".")));
-//                item.setValor_item(Double.parseDouble(tfdValorUnitario.getText().replaceAll(",", ".")));
-//                dao.salvar(item);
-//
-//                int ultimaVenda = atualizaIndiceVenda();
-//                dao.popularTabela(tabelaVenda, ultimaVenda);
-//
-//                retirado = quantidade;
-//                qtd = produto.getQuantidade();
-//                total = qtd - retirado;
-//                produto.setQuantidade(total);
-//                daoProduto.atualizar(produto);
-//                idproduto = Integer.parseInt(tfdCodigo.getText());
-//
-//                atualizaSubtotal();
-//
-//            }
-//        }
-//        tfdProduto.setText("");
-//        tfdValorUnitario.setText("0");
-//        tfdValorTotal.setText("0");
-//        spnQuantidade.setValue(0);
-//        tfdCodigo.setText("0");
-    }//GEN-LAST:event_btnadicionarActionPerformed
-
+    
     private void btnbuscacodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscacodigoActionPerformed
         int id = Integer.parseInt(tfdCodigo.getText());
-        Optional <Produto> produto = new ProdutoDao(sessionFactory).buscar(id);
-//        String venda = priceToString(produto.getValor_venda());
-//        tfdValorUnitario.setText(venda);
-//        tfdValorTotal.setText(venda);
-//        preco = venda;
-//        spnQuantidade.setValue(1);
-//        tfdProduto.setText(produto.getTitulo());
+        Optional <Produto> p = new ProdutoDao(sessionFactory).buscar(id);
+        Produto produto = p.get();
+        String venda = priceToString(produto.getPreco_venda());
+        tfdValorUnitario.setText(venda);
+        tfdValorTotal.setText(venda);
+        preco = venda;
+        spnQuantidade.setValue(1);
+        tfdProduto.setText(produto.getNome());
     }//GEN-LAST:event_btnbuscacodigoActionPerformed
 
     private void spnQuantidadeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnQuantidadeStateChanged
-
         int qtd = (Integer) spnQuantidade.getValue();
         double venda = Double.parseDouble(preco.replaceAll(",", "."));
         double total = (qtd * venda);
         String total2 = priceToString(total);
         tfdValorTotal.setText(total2);
-
     }//GEN-LAST:event_spnQuantidadeStateChanged
+
+    private void lblFecharMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFecharMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_lblFecharMouseClicked
+
+    private void btnadicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnadicionarActionPerformed
+
+        int quantidade = (Integer) spnQuantidade.getValue();
+
+        if (tfdCodigo.getText().isEmpty() || tfdCodigo.getText().equals("0")) {
+            JOptionPane.showMessageDialog(rootPane,
+                "Você deve inserir o código do produto!",
+                "Atencão",
+                JOptionPane.ERROR_MESSAGE);
+
+        } else if (quantidade == 0) {
+            JOptionPane.showMessageDialog(rootPane,
+                "A quantidade de itens não pode ser zero!",
+                "Atencão",
+                JOptionPane.ERROR_MESSAGE);
+
+        } else {
+
+            //-----------------------------------------------------------------------------------//
+            int qtd;
+            int retirado;
+            int total;
+            int verificar;
+            ProdutoDao produtoDao = new ProdutoDao(sessionFactory);
+            int codigo = Integer.parseInt(tfdCodigo.getText());
+            Optional <Produto> p = new ProdutoDao(sessionFactory).buscar(codigo);
+            Produto produto = p.get();
+            verificar = produto.getEstoque();
+
+            if (verificar < quantidade) {
+                JOptionPane.showMessageDialog(rootPane,
+                    "A quantidade não está disponível em estoque!",
+                    "Atencão",
+                    JOptionPane.ERROR_MESSAGE);
+
+            } else {
+                VendaProdutoDao dao = new VendaProdutoDao(sessionFactory);
+                VendaProduto item = new VendaProduto();
+                
+                item.setProduto(produto);
+                item.setVenda(venda);
+                item.setQtde_item(quantidade);
+                item.setValor_item(Double.parseDouble(tfdValorUnitario.getText().replaceAll(",", ".")));
+                dao.salvar(item);
+                
+                Object[] cabecalho = {"id", "Nome", "Preço", "Quantidade"};
+                Object[][] dadosTabela = new Object[0][4];
+                
+                 List<VendaProduto> itens = new VendaProdutoDao(sessionFactory).buscarTodos();
+                 
+                    dadosTabela = new Object[itens.size()][4];
+                    if (itens.size() > 0) {
+                        for (int i = 0; i < itens.size(); i++) {
+                            dadosTabela[i][0] = itens.get(i).getId();
+                            dadosTabela[i][1] = itens.get(i).getProduto().getNome();
+                            dadosTabela[i][2] = itens.get(i).getValor_item();
+                            dadosTabela[i][3] = itens.get(i).getQtde_item();
+                        }
+                    }
+                    
+                    tabelaVenda.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }            
+            });
+
+            tabelaVenda.setSelectionMode(0);
+
+            // redimensiona as colunas de uma tabela
+            TableColumn column = null;
+            for (int i = 0; i < tabelaVenda.getColumnCount(); i++) {
+                column = tabelaVenda.getColumnModel().getColumn(i);
+                DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+                centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+                column.setCellRenderer(centerRenderer);
+            }
+
+            column = tabelaVenda.getColumnModel().getColumn(0);
+            column.setPreferredWidth(70);
+            column.setMaxWidth(70);
+            column.setMinWidth(70);
+
+                retirado = quantidade;
+                qtd = produto.getEstoque();
+                total = qtd - retirado;
+                produto.setEstoque(total);
+                produtoDao.atualizar(produto);
+
+                atualizaSubtotal();
+                limparCampos();
+            }
+        }      
+    }//GEN-LAST:event_btnadicionarActionPerformed
+    
+     public void atualizaSubtotal() {
+
+        double subtotal = 0f;
+        //faz cálculo de subtotal da compra
+        DefaultTableModel tabela = (DefaultTableModel) tabelaVenda.getModel();
+        for (int i = 1; i <= tabela.getRowCount(); i++) {
+            subtotal += (Double) tabelaVenda.getValueAt(i - 1, 4);
+        }
+        //insere valor subtotal da compra na label
+        tfdTotal.setText(String.valueOf(subtotal));
+    }
+     
+     public void limparCampos (){
+        tfdProduto.setText("");
+        tfdValorUnitario.setText("0");
+        tfdValorTotal.setText("0");
+        spnQuantidade.setValue(0);
+        tfdCodigo.setText("0");
+     }
+     
+    private void btndescartarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndescartarActionPerformed
+        if (tabelaVenda.getSelectedRow() != -1) {
+            
+            ProdutoDao produtoDao = new ProdutoDao(sessionFactory);
+            int codigo = Integer.parseInt(tfdCodigo.getText());
+            Optional <Produto> p = new ProdutoDao(sessionFactory).buscar(codigo);
+            Produto produto = p.get();
+
+            int row = tabelaVenda.getSelectedRow();
+            int column = 0;
+            String value = tabelaVenda.getModel().getValueAt(row, column).toString();
+            String qtdString = tabelaVenda.getModel().getValueAt(row, 3).toString();
+            int retirado = Integer.parseInt(qtdString);
+
+            DefaultTableModel dtmProdutos = (DefaultTableModel) tabelaVenda.getModel();
+            dtmProdutos.removeRow(tabelaVenda.getSelectedRow());
+            
+            VendaProdutoDao itemDao = new VendaProdutoDao(sessionFactory);
+            VendaProduto item = new VendaProduto();
+            itemDao.excluir(item);
+
+            int total;
+            int quantidade;  
+            quantidade = produto.getEstoque();
+            total = quantidade + retirado;
+            produto.setEstoque(total);
+            produtoDao.atualizar(produto);
+
+            atualizaSubtotal();
+            double valor = Double.parseDouble(preco);
+            total -= valor;
+        }
+    }//GEN-LAST:event_btndescartarActionPerformed
         
       public static String priceWithDecimal(Double price) {
         DecimalFormat formatter = new DecimalFormat("###,###,###.00");
@@ -426,6 +568,7 @@ public class DlgVenda extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnadicionar;
     private javax.swing.JButton btnbuscacodigo;
+    private javax.swing.JButton btndescartar;
     private javax.swing.JButton btnfinalizar;
     private javax.swing.JCheckBox chkCartao;
     private javax.swing.JCheckBox chkDinheiro;
@@ -433,6 +576,7 @@ public class DlgVenda extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblFechar;
     private javax.swing.JLabel lblIdVenda;
     private javax.swing.JLabel lblPagar;
     private javax.swing.JPanel pnlvendas;
