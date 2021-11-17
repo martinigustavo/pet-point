@@ -31,6 +31,7 @@ public class Agenda {
     private LocalDate data;
     private LocalTime horario_inicio;
     private LocalTime horario_final;
+    private String status;
     
     @ManyToOne()
     @JoinColumn(name = "funcionario_id")

@@ -30,6 +30,7 @@ public class Atendimento {
     private int id;
     private LocalDate data;
     private LocalTime hora;
+    private String status;
     
     @ManyToOne()
     @JoinColumn(name = "pet_id")

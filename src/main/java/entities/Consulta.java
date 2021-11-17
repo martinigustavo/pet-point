@@ -35,6 +35,7 @@ public class Consulta {
     private String observacoes;
     @Column(length = 1024)
     private String medicamentos;
+    private String status;
     
     @ManyToOne()
     @JoinColumn(name = "pet_id")
