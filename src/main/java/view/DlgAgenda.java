@@ -35,6 +35,7 @@ public class DlgAgenda extends javax.swing.JDialog {
     private Agenda agenda;
     private AgendaDao agendaDao;
     private int id;
+    private boolean isAdmin;
 
     /**
      * Creates new form DlgAgenda
@@ -51,6 +52,7 @@ public class DlgAgenda extends javax.swing.JDialog {
         this.agenda = new Agenda();
         this.agendaDao = new AgendaDao(sessionFactory);
         this.agendasComFiltroLista = new ArrayList<>();
+        this.isAdmin = isAdmin;
 
         if (!isAdmin) {
             this.funcionario = Optional.of(func);
@@ -72,11 +74,11 @@ public class DlgAgenda extends javax.swing.JDialog {
             this.agendasSemFiltroLista = agendaDao.buscarTodos();
             this.funcionario = Optional.empty();
         }
-        
+
         atualizarTabela(agendasSemFiltroLista);
 
         LocalDate dataAtual = LocalDate.now();
-        ftfDataAgenda.setText(dataAtual.getDayOfMonth() + "/"
+        ftfDataAgendaCriar.setText(dataAtual.getDayOfMonth() + "/"
                 + dataAtual.getMonthValue() + "/"
                 + dataAtual.getYear());
     }
@@ -104,18 +106,18 @@ public class DlgAgenda extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         txfID = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        ftfDataFiltro = new javax.swing.JFormattedTextField();
+        ftfDataAgendaFiltro = new javax.swing.JFormattedTextField();
         btnFiltrarAgenda = new javax.swing.JButton();
         btnLimpar = new javax.swing.JButton();
         pnlCadastroAgenda = new javax.swing.JPanel();
         btnCriarAgenda = new javax.swing.JButton();
-        ftfDataAgenda = new javax.swing.JFormattedTextField();
+        ftfDataAgendaCriar = new javax.swing.JFormattedTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        ftfHoraIni = new javax.swing.JFormattedTextField();
+        ftfHoraIniAgenda = new javax.swing.JFormattedTextField();
         jLabel6 = new javax.swing.JLabel();
-        ftfHoraFim = new javax.swing.JFormattedTextField();
-        btnEditar = new javax.swing.JButton();
+        ftfHoraFimAgenda = new javax.swing.JFormattedTextField();
+        btnEditarAgenda = new javax.swing.JButton();
         pnlAtendimento = new javax.swing.JPanel();
         pnlCadastroAtend = new javax.swing.JPanel();
         btnCriarAtendimento = new javax.swing.JButton();
@@ -247,7 +249,7 @@ public class DlgAgenda extends javax.swing.JDialog {
         jLabel8.setText("Filtrar por data:");
 
         try {
-            ftfDataFiltro.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+            ftfDataAgendaFiltro.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
@@ -255,7 +257,7 @@ public class DlgAgenda extends javax.swing.JDialog {
         btnFiltrarAgenda.setText("Filtrar");
         btnFiltrarAgenda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFiltrarAgendaActionPerformed(evt);
+                btnFiltrarAgendaAgendaActionPerformed(evt);
             }
         });
 
@@ -271,12 +273,12 @@ public class DlgAgenda extends javax.swing.JDialog {
         btnCriarAgenda.setText("Criar");
         btnCriarAgenda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCriarAgendaActionPerformed(evt);
+                btnCriarAgendaAgendaActionPerformed(evt);
             }
         });
 
         try {
-            ftfDataAgenda.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+            ftfDataAgendaCriar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
@@ -285,11 +287,19 @@ public class DlgAgenda extends javax.swing.JDialog {
 
         jLabel5.setText("Horário início:");
 
-        ftfHoraIni.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getTimeInstance())));
+        try {
+            ftfHoraIniAgenda.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         jLabel6.setText("Horário fim:");
 
-        ftfHoraFim.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getTimeInstance())));
+        try {
+            ftfHoraFimAgenda.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         javax.swing.GroupLayout pnlCadastroAgendaLayout = new javax.swing.GroupLayout(pnlCadastroAgenda);
         pnlCadastroAgenda.setLayout(pnlCadastroAgendaLayout);
@@ -306,9 +316,9 @@ public class DlgAgenda extends javax.swing.JDialog {
                             .addComponent(jLabel6))
                         .addGap(18, 18, 18)
                         .addGroup(pnlCadastroAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(ftfDataAgenda, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                            .addComponent(ftfHoraIni)
-                            .addComponent(ftfHoraFim))))
+                            .addComponent(ftfDataAgendaCriar, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(ftfHoraIniAgenda)
+                            .addComponent(ftfHoraFimAgenda))))
                 .addContainerGap(68, Short.MAX_VALUE))
         );
         pnlCadastroAgendaLayout.setVerticalGroup(
@@ -316,22 +326,27 @@ public class DlgAgenda extends javax.swing.JDialog {
             .addGroup(pnlCadastroAgendaLayout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(pnlCadastroAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ftfDataAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ftfDataAgendaCriar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(pnlCadastroAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(ftfHoraIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ftfHoraIniAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnlCadastroAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(ftfHoraFim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ftfHoraFimAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnCriarAgenda)
                 .addContainerGap(32, Short.MAX_VALUE))
         );
 
-        btnEditar.setText("Editar");
+        btnEditarAgenda.setText("Editar");
+        btnEditarAgenda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarAgendaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlAgendaLayout = new javax.swing.GroupLayout(pnlAgenda);
         pnlAgenda.setLayout(pnlAgendaLayout);
@@ -347,7 +362,7 @@ public class DlgAgenda extends javax.swing.JDialog {
                         .addGap(59, 59, 59)
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
-                        .addComponent(ftfDataFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ftfDataAgendaFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(208, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAgendaLayout.createSequentialGroup()
                         .addGroup(pnlAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -361,8 +376,8 @@ public class DlgAgenda extends javax.swing.JDialog {
                                         .addComponent(btnFiltrarAgenda))))
                             .addGroup(pnlAgendaLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnEditar)))
-                        .addContainerGap(39, Short.MAX_VALUE))))
+                                .addComponent(btnEditarAgenda)))
+                        .addContainerGap(28, Short.MAX_VALUE))))
         );
         pnlAgendaLayout.setVerticalGroup(
             pnlAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -371,7 +386,7 @@ public class DlgAgenda extends javax.swing.JDialog {
                 .addGroup(pnlAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlAgendaLayout.createSequentialGroup()
                         .addGroup(pnlAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ftfDataFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ftfDataAgendaFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8))
                         .addGap(46, 46, 46)
                         .addGroup(pnlAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -380,7 +395,7 @@ public class DlgAgenda extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEditar)
+                        .addComponent(btnEditarAgenda)
                         .addGap(50, 50, 50))
                     .addGroup(pnlAgendaLayout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -503,7 +518,7 @@ public class DlgAgenda extends javax.swing.JDialog {
         btnDataAtualAtend.setText("Data atual");
         btnDataAtualAtend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDataAtualAtendActionPerformed(evt);
+                btnDataAtualAtendAtendActionPerformed(evt);
             }
         });
 
@@ -823,6 +838,29 @@ public class DlgAgenda extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void limparAgenda() {
+        if (isAdmin) {
+            txfID.setText("");
+            txfNome.setText("");
+            txfAtividade.setText("");
+            this.funcionario = Optional.empty();
+        }
+
+        this.id = 0;
+        this.agenda = new Agenda();
+        LocalDate dataAtual = LocalDate.now();
+        ftfDataAgendaCriar.setText(dataAtual.getDayOfMonth() + "/"
+                + dataAtual.getMonthValue() + "/"
+                + dataAtual.getYear());
+        ftfHoraIniAgenda.setText("");
+        ftfHoraFimAgenda.setText("");
+        ftfDataAgendaFiltro.setText("");
+
+        this.agendasSemFiltroLista = agendaDao.buscarTodos();
+
+        atualizarTabela(agendasSemFiltroLista);
+    }
+
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnSairActionPerformed
@@ -836,139 +874,106 @@ public class DlgAgenda extends javax.swing.JDialog {
             txfID.setText(String.valueOf(funcionario.get().getId()));
             txfNome.setText(funcionario.get().getNome());
             txfAtividade.setText(funcionario.get().getAtividade());
+            this.id = funcionario.get().getId();
         }
+
     }//GEN-LAST:event_btnBuscarFuncActionPerformed
 
-    private void btnFiltrarAgendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarAgendaActionPerformed
+    private void btnFiltrarAgendaAgendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarAgendaAgendaActionPerformed
         try {
             agendasComFiltroLista = agendasSemFiltroLista;
 
-//            String dataAudString = ftfDataAud.getText();
-//
-//            if (!dataAudString.equals("  /  /    ")) {
-//                String[] dataArray = dataAudString.split("/");
-//                LocalDate dataAud = LocalDate.of(Integer.parseInt(dataArray[2]),
-//                        Integer.parseInt(dataArray[1]),
-//                        Integer.parseInt(dataArray[0]));
-//                logsLista = logsLista.stream().filter(registro -> registro.getData().equals(dataAud)).collect(Collectors.toList());
-//            }
-//
-//            if (cbxComando.getSelectedIndex() != 0) {
-//                switch (cbxComando.getSelectedIndex()) {
-//                    case 1:
-//                        logsLista = logsLista.stream().filter(
-//                                registro -> registro.getComando().contains("insert"))
-//                                .collect(Collectors.toList());
-//                        break;
-//
-//                    case 2:
-//                        logsLista = logsLista.stream().filter(
-//                                registro -> registro.getComando().contains("update"))
-//                                .collect(Collectors.toList());
-//                        break;
-//
-//                    case 3:
-//                        logsLista = logsLista.stream().filter(
-//                                registro -> registro.getComando().contains("delete"))
-//                                .collect(Collectors.toList());
-//                        break;
-//
-//                    default:
-//                        break;
-//                }
-//            }
-//
-//            if (cbxTabela.getSelectedIndex() != 0) {
-//                switch (cbxTabela.getSelectedIndex()) {
-//                    case 1:
-//                        logsLista = logsLista.stream().filter(
-//                                registro -> registro.getTabela().equals("cliente"))
-//                                .collect(Collectors.toList());
-//                        break;
-//
-//                    case 2:
-//                        logsLista = logsLista.stream().filter(
-//                                registro -> registro.getTabela().equals("funcionario"))
-//                                .collect(Collectors.toList());
-//                        break;
-//
-//                    case 3:
-//                        logsLista = logsLista.stream().filter(
-//                                registro -> registro.getTabela().equals("produto"))
-//                                .collect(Collectors.toList());
-//                        break;
-//
-//                    case 4:
-//                        logsLista = logsLista.stream().filter(
-//                                registro -> registro.getTabela().equals("pet"))
-//                                .collect(Collectors.toList());
-//                        break;
-//
-//                    default:
-//                        break;
-//                }
-//            }
-//
-//            if (funcionarioAud.isPresent()) {
-//                logsLista = logsLista.stream().filter(
-//                        registro -> registro.getFuncionario().getId() == funcionarioAud.get().getId())
-//                        .collect(Collectors.toList());
-//            }
-//
-////            if (logsLista.isEmpty()) {
-////                JOptionPane.showMessageDialog(null, "Nenhum registro encontrado!");
-////            } else {
-//            atualizarTabela(logsLista);
-////            }
+            String dataString = ftfDataAgendaFiltro.getText();
+
+            if (!dataString.equals("  /  /    ")) {
+                String[] dataArray = dataString.split("/");
+                LocalDate dataAud = LocalDate.of(Integer.parseInt(dataArray[2]),
+                        Integer.parseInt(dataArray[1]),
+                        Integer.parseInt(dataArray[0]));
+                agendasComFiltroLista = agendasComFiltroLista.stream()
+                        .filter(registro -> registro.getData().equals(dataAud)).collect(Collectors.toList());
+            }
+
+            if (isAdmin && funcionario.isPresent()) {
+                agendasComFiltroLista = agendasComFiltroLista.stream().filter(
+                        registro -> registro.getFuncionario().getId() == funcionario.get().getId())
+                        .collect(Collectors.toList());
+            }
+
+            if (agendasComFiltroLista.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Nenhum registro encontrado!");
+            } else {
+                atualizarTabela(agendasComFiltroLista);
+            }
         } catch (Exception e) {
             log.error("Erro ao buscar na tabela de auditoria: " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Erro ao buscar na tabela de auditoria: " + e.getMessage());
         }
-    }//GEN-LAST:event_btnFiltrarAgendaActionPerformed
+    }//GEN-LAST:event_btnFiltrarAgendaAgendaActionPerformed
 
-    private void btnCriarAgendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCriarAgendaActionPerformed
+    private void btnCriarAgendaAgendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCriarAgendaAgendaActionPerformed
         try {
             if (funcionario.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Selecione um funcionário.");
                 return;
             }
 
-            if (ftfDataAgenda.equals("  /  /    ")) {
+            if (ftfDataAgendaCriar.getText().equals("  /  /    ")) {
                 JOptionPane.showMessageDialog(null, "Preencha o campo data.");
                 return;
             }
 
-            if (ftfHoraIni.getText().isBlank() || ftfHoraFim.getText().isBlank()) {
+            if (ftfHoraIniAgenda.getText().equals("  :  ") || ftfHoraFimAgenda.getText().equals("  :  ")) {
                 JOptionPane.showMessageDialog(null, "Preencha o horário de início e o horário final da agenda!");
                 return;
             }
 
-            String dataString = ftfDataAgenda.getText();
+            // data nova agenda
+            String dataString = ftfDataAgendaCriar.getText();
             String[] dataArray = dataString.split("/");
-            LocalDate dataParse = LocalDate.of(Integer.parseInt(dataArray[2]),
+            LocalDate dataParse = LocalDate.of(
+                    Integer.parseInt(dataArray[2]),
                     Integer.parseInt(dataArray[1]),
-                    Integer.parseInt(dataArray[0]));
+                    Integer.parseInt(dataArray[0])
+            );
 
-            String horaIni = ftfHoraIni.getText();
-            String HoraFim = ftfHoraFim.getText();
+            // hora inicio nova agenda
+            String horaIniString = ftfHoraIniAgenda.getText();
+            String[] horaIniArray = horaIniString.split(":");
+            LocalTime horaIniParse = LocalTime.of(
+                    Integer.parseInt(horaIniArray[0]),
+                    Integer.parseInt(horaIniArray[1])
+            );
 
-            if (LocalTime.parse(horaIni).isAfter(LocalTime.parse(HoraFim))) {
+            // hora final nova agenda
+            String horaFimString = ftfHoraFimAgenda.getText();
+            String[] horaFimArray = horaFimString.split(":");
+            LocalTime horaFimParse = LocalTime.of(
+                    Integer.parseInt(horaFimArray[0]),
+                    Integer.parseInt(horaFimArray[1])
+            );
+
+            if (horaIniParse.isAfter(horaFimParse)) {
                 JOptionPane.showMessageDialog(null, "O horário inicial deve ser menor que o horário final!");
                 return;
             }
 
-            LocalTime horaIniParse = LocalTime.parse(horaIni);
-            LocalTime horaFimParse = LocalTime.parse(HoraFim);
-
-            for (Agenda agd : agendasSemFiltroLista) {
-                if (agd.getData().equals(dataParse)
-                        && agd.getHorario_final().equals(horaFimParse)
-                        && agd.getHorario_inicio().equals(horaIniParse)
-                        && agd.getFuncionario().equals(funcionario.get())) {
-                    JOptionPane.showMessageDialog(null, "Esta agenda já existe para o funcionário selecionado."
-                            + "\nAltere a data e/ou os horários informados!");
-                    return;
+            boolean agendaExiste = false;
+            if (id == 0) {
+                for (Agenda agd : agendasSemFiltroLista) {
+                    if (agd.getData().equals(dataParse)
+                            && agd.getHorario_final().equals(horaFimParse)
+                            && agd.getHorario_inicio().equals(horaIniParse)
+                            && agd.getFuncionario().getId() == funcionario.get().getId()) {
+                        agendaExiste = true;
+                    }
                 }
+            }
+
+            if (agendaExiste) {
+                JOptionPane.showMessageDialog(null, "Esta agenda já existe para o funcionário selecionado."
+                        + "\nAltere a data e/ou os horários informados!");
+                return;
             }
 
             id = agenda.getId();
@@ -982,6 +987,7 @@ public class DlgAgenda extends javax.swing.JDialog {
 
             if (id == 0) {
                 agenda0 = agendaDao.salvar(agenda);
+                agendasSemFiltroLista.add(agenda);
             } else {
                 agenda0 = agendaDao.atualizar(agenda);
             }
@@ -994,25 +1000,24 @@ public class DlgAgenda extends javax.swing.JDialog {
                 }
             }
 
-            agendasSemFiltroLista.add(agenda);
-            atualizarTabela(agendasSemFiltroLista);
+            this.limparAgenda();
         } catch (Exception e) {
             log.error("Erro ao cadastrar agenda: " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Erro ao cadastrar agenda.");
         }
-    }//GEN-LAST:event_btnCriarAgendaActionPerformed
+    }//GEN-LAST:event_btnCriarAgendaAgendaActionPerformed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
-        // TODO add your handling code here:
+        this.limparAgenda();
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnCriarAtendimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCriarAtendimentoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCriarAtendimentoActionPerformed
 
-    private void btnDataAtualAtendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDataAtualAtendActionPerformed
+    private void btnDataAtualAtendAtendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDataAtualAtendAtendActionPerformed
 
-    }//GEN-LAST:event_btnDataAtualAtendActionPerformed
+    }//GEN-LAST:event_btnDataAtualAtendAtendActionPerformed
 
     private void btnLimparAtendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparAtendActionPerformed
         // TODO add your handling code here:
@@ -1038,26 +1043,77 @@ public class DlgAgenda extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLimparAtend1ActionPerformed
 
-    public void atualizarTabela(List<Agenda> lista) {
+    private void btnEditarAgendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarAgendaActionPerformed
         try {
-            Object[] cabecalho = {"ID", "Data", "Início", "Fim"};
-            Object[][] dadosTabela = new Object[lista.size()][4];
-            if (lista.size() > 0) {
-                for (int i = 0; i < lista.size(); i++) {
-                    dadosTabela[i][0] = lista.get(i).getId();
-                    dadosTabela[i][1] = lista.get(i).getData();
-                    dadosTabela[i][2] = lista.get(i).getHorario_inicio();
-                    dadosTabela[i][3] = lista.get(i).getHorario_final();
-                }
+            String idString = String.valueOf(tblAgenda.getValueAt(tblAgenda.getSelectedRow(), 0));
+            id = Integer.parseInt(idString);
+            Optional<Agenda> agenda0 = agendaDao.buscar(id);
+            this.agenda = agenda0.get();
+            this.id = this.agenda.getId();
+
+            if (isAdmin) {
+                idString = String.valueOf(tblAgenda.getValueAt(tblAgenda.getSelectedRow(), 4));
+                int funcId = Integer.parseInt(idString);
+                funcionario = new FuncionarioDao(sessionFactory).buscar(funcId);
+                txfID.setText(String.valueOf(funcionario.get().getId()));
+                txfNome.setText(funcionario.get().getNome());
+                txfAtividade.setText(funcionario.get().getAtividade());
             }
 
-            tblAgenda.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    return false;
+            String[] dataArray = agenda.getData().toString().split("-");
+
+            ftfDataAgendaCriar.setText(dataArray[2] + "/" + dataArray[1] + "/" + dataArray[0]);
+            ftfHoraIniAgenda.setText(String.valueOf(agenda.getHorario_inicio()));
+            ftfHoraFimAgenda.setText(String.valueOf(agenda.getHorario_final()));
+
+        } catch (Exception e) {
+            log.error("Erro ao selecionar na tabela agenda: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao selecionar na tabela agenda.");
+        }
+    }//GEN-LAST:event_btnEditarAgendaActionPerformed
+
+    public void atualizarTabela(List<Agenda> lista) {
+        try {
+            if (isAdmin) {
+                Object[] cabecalho = {"ID", "Data", "Começa", "Termina", "FuncID"};
+                Object[][] dadosTabela = new Object[lista.size()][5];
+                if (lista.size() > 0) {
+                    for (int i = 0; i < lista.size(); i++) {
+                        dadosTabela[i][0] = lista.get(i).getId();
+                        dadosTabela[i][1] = lista.get(i).getData();
+                        dadosTabela[i][2] = lista.get(i).getHorario_inicio();
+                        dadosTabela[i][3] = lista.get(i).getHorario_final();
+                        dadosTabela[i][4] = lista.get(i).getFuncionario().getId();
+                    }
                 }
 
-            });
+                tblAgenda.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+
+                });
+            } else {
+                Object[] cabecalho = {"ID", "Data", "Começa", "Termina"};
+                Object[][] dadosTabela = new Object[lista.size()][4];
+                if (lista.size() > 0) {
+                    for (int i = 0; i < lista.size(); i++) {
+                        dadosTabela[i][0] = lista.get(i).getId();
+                        dadosTabela[i][1] = lista.get(i).getData();
+                        dadosTabela[i][2] = lista.get(i).getHorario_inicio();
+                        dadosTabela[i][3] = lista.get(i).getHorario_final();
+                    }
+                }
+
+                tblAgenda.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+
+                });
+            }
 
             tblAgenda.setSelectionMode(0);
 
@@ -1132,7 +1188,7 @@ public class DlgAgenda extends javax.swing.JDialog {
     private javax.swing.JButton btnCriarAtendimento1;
     private javax.swing.JButton btnDataAtualAtend;
     private javax.swing.JButton btnDataAtualAtend1;
-    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnEditarAgenda;
     private javax.swing.JButton btnEditarAtend;
     private javax.swing.JButton btnEditarAtend1;
     private javax.swing.JButton btnExcluirAtend;
@@ -1150,14 +1206,14 @@ public class DlgAgenda extends javax.swing.JDialog {
     private javax.swing.JButton btnSelecionarAtend1;
     private javax.swing.JComboBox<String> cbxHorario;
     private javax.swing.JComboBox<String> cbxHorario1;
-    private javax.swing.JFormattedTextField ftfDataAgenda;
+    private javax.swing.JFormattedTextField ftfDataAgendaCriar;
+    private javax.swing.JFormattedTextField ftfDataAgendaFiltro;
     private javax.swing.JFormattedTextField ftfDataBusca;
     private javax.swing.JFormattedTextField ftfDataBusca1;
     private javax.swing.JFormattedTextField ftfDataCriar;
     private javax.swing.JFormattedTextField ftfDataCriar1;
-    private javax.swing.JFormattedTextField ftfDataFiltro;
-    private javax.swing.JFormattedTextField ftfHoraFim;
-    private javax.swing.JFormattedTextField ftfHoraIni;
+    private javax.swing.JFormattedTextField ftfHoraFimAgenda;
+    private javax.swing.JFormattedTextField ftfHoraIniAgenda;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
