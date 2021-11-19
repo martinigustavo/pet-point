@@ -63,10 +63,11 @@ public class DlgAgenda extends javax.swing.JDialog {
         this.idAtendimento = 0;
         this.idFunc = 0;
         this.agenda = new Agenda();
+        this.atendimento = new Atendimento();
         this.agendaDao = new AgendaDao(sessionFactory);
         this.agendasComFiltroLista = new ArrayList<>();
         this.isAdmin = isAdmin;
-        
+
         this.pet = Optional.empty();
 
         if (!isAdmin) {
@@ -143,7 +144,6 @@ public class DlgAgenda extends javax.swing.JDialog {
         btnCriarAtendimento = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        cbxHorario = new javax.swing.JComboBox<>();
         ftfDataAtendCriar = new javax.swing.JFormattedTextField();
         jLabel10 = new javax.swing.JLabel();
         btnBuscarPetAtend = new javax.swing.JButton();
@@ -151,15 +151,15 @@ public class DlgAgenda extends javax.swing.JDialog {
         jLabel12 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         txaObserv = new javax.swing.JTextArea();
+        ftfHorarioAtend = new javax.swing.JFormattedTextField();
         pnlBuscaAtend = new javax.swing.JPanel();
         btnEditarAtend = new javax.swing.JButton();
         btnExcluirAtend = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         btnFiltrarAtendimento = new javax.swing.JButton();
-        ftfDataBusca = new javax.swing.JFormattedTextField();
+        ftfDataAtendFiltro = new javax.swing.JFormattedTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        btnDataAtualAtend = new javax.swing.JButton();
+        tblAtend = new javax.swing.JTable();
         btnVerInfos = new javax.swing.JButton();
         btnLimparAtend = new javax.swing.JButton();
 
@@ -366,25 +366,23 @@ public class DlgAgenda extends javax.swing.JDialog {
                     .addComponent(pnlCadastroAgenda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(pnlAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlAgendaLayout.createSequentialGroup()
-                        .addGap(59, 59, 59)
-                        .addComponent(jLabel8)
-                        .addGap(18, 18, 18)
-                        .addComponent(ftfDataAgendaFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(208, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAgendaLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                         .addGroup(pnlAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(pnlAgendaLayout.createSequentialGroup()
                                 .addComponent(btnNovoAtend)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnEditarAgenda))
-                            .addGroup(pnlAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAgendaLayout.createSequentialGroup()
-                                    .addComponent(btnLimpar)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(btnFiltrarAgenda))))
-                        .addContainerGap(25, Short.MAX_VALUE))))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(pnlAgendaLayout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addComponent(jLabel8)
+                        .addGap(18, 18, 18)
+                        .addComponent(ftfDataAgendaFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(pnlAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnLimpar, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                            .addComponent(btnFiltrarAgenda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         pnlAgendaLayout.setVerticalGroup(
             pnlAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -394,12 +392,11 @@ public class DlgAgenda extends javax.swing.JDialog {
                     .addGroup(pnlAgendaLayout.createSequentialGroup()
                         .addGroup(pnlAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(ftfDataAgendaFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8))
-                        .addGap(46, 46, 46)
-                        .addGroup(pnlAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnFiltrarAgenda)
-                            .addComponent(btnLimpar))
+                            .addComponent(jLabel8)
+                            .addComponent(btnFiltrarAgenda))
                         .addGap(18, 18, 18)
+                        .addComponent(btnLimpar)
+                        .addGap(46, 46, 46)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -428,8 +425,6 @@ public class DlgAgenda extends javax.swing.JDialog {
 
         jLabel9.setText("Data:");
 
-        cbxHorario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         try {
             ftfDataAtendCriar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
@@ -453,6 +448,12 @@ public class DlgAgenda extends javax.swing.JDialog {
         txaObserv.setRows(5);
         jScrollPane3.setViewportView(txaObserv);
 
+        try {
+            ftfHorarioAtend.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
         javax.swing.GroupLayout pnlCadastroAtendLayout = new javax.swing.GroupLayout(pnlCadastroAtend);
         pnlCadastroAtend.setLayout(pnlCadastroAtendLayout);
         pnlCadastroAtendLayout.setHorizontalGroup(
@@ -472,10 +473,10 @@ public class DlgAgenda extends javax.swing.JDialog {
                             .addComponent(jLabel2))
                         .addGap(18, 18, 18)
                         .addGroup(pnlCadastroAtendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cbxHorario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(ftfDataAtendCriar)
-                            .addComponent(btnBuscarPetAtend, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                            .addComponent(txfPet)))
+                            .addComponent(btnBuscarPetAtend, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                            .addComponent(txfPet)
+                            .addComponent(ftfHorarioAtend)))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(29, Short.MAX_VALUE))
         );
@@ -489,7 +490,7 @@ public class DlgAgenda extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(pnlCadastroAtendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(cbxHorario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ftfHorarioAtend, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnlCadastroAtendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
@@ -500,7 +501,7 @@ public class DlgAgenda extends javax.swing.JDialog {
                 .addComponent(jLabel12)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addComponent(btnCriarAtendimento)
                 .addGap(18, 18, 18))
         );
@@ -514,34 +515,34 @@ public class DlgAgenda extends javax.swing.JDialog {
         jLabel11.setText("Filtrar por data:");
 
         btnFiltrarAtendimento.setText("Filtrar");
+        btnFiltrarAtendimento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFiltrarAtendimentoActionPerformed(evt);
+            }
+        });
 
         try {
-            ftfDataBusca.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+            ftfDataAtendFiltro.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
 
         jScrollPane2.setPreferredSize(new java.awt.Dimension(250, 250));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblAtend.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "ID", "Horário", "Data", "Pet ID"
+                "ID", "Horário", "Data", "Pet"
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
-
-        btnDataAtualAtend.setText("Data atual");
-        btnDataAtualAtend.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDataAtualAtendAtendActionPerformed(evt);
-            }
-        });
+        jScrollPane2.setViewportView(tblAtend);
+        if (tblAtend.getColumnModel().getColumnCount() > 0) {
+            tblAtend.getColumnModel().getColumn(0).setMinWidth(50);
+            tblAtend.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tblAtend.getColumnModel().getColumn(0).setMaxWidth(50);
+        }
 
         btnVerInfos.setText("Ver infos");
 
@@ -565,7 +566,7 @@ public class DlgAgenda extends javax.swing.JDialog {
                             .addGroup(pnlBuscaAtendLayout.createSequentialGroup()
                                 .addComponent(jLabel11)
                                 .addGap(18, 18, 18)
-                                .addComponent(ftfDataBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ftfDataAtendFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnFiltrarAtendimento, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBuscaAtendLayout.createSequentialGroup()
@@ -577,7 +578,6 @@ public class DlgAgenda extends javax.swing.JDialog {
                                 .addComponent(btnEditarAtend)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnExcluirAtend))
-                            .addComponent(btnDataAtualAtend, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnLimparAtend, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(6, 6, 6))
         );
@@ -588,12 +588,10 @@ public class DlgAgenda extends javax.swing.JDialog {
                 .addGroup(pnlBuscaAtendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(btnFiltrarAtendimento)
-                    .addComponent(ftfDataBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btnDataAtualAtend)
+                    .addComponent(ftfDataAtendFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnLimparAtend)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(pnlBuscaAtendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -677,19 +675,21 @@ public class DlgAgenda extends javax.swing.JDialog {
 
         atualizarTabelaAgenda(agendasSemFiltroLista);
     }
-    
+
     private void limparAtendimento() {
         this.idAtendimento = 0;
         this.atendimento = new Atendimento();
+        this.pet = Optional.empty();
         LocalDate dataAtual = LocalDate.now();
-        ftfDataAgendaCriar.setText(dataAtual.getDayOfMonth() + "/"
+        ftfDataAtendCriar.setText(dataAtual.getDayOfMonth() + "/"
                 + dataAtual.getMonthValue() + "/"
                 + dataAtual.getYear());
-        ftfHoraIniAgenda.setText("");
-        ftfHoraFimAgenda.setText("");
-        ftfDataAgendaFiltro.setText("");
+        ftfHorarioAtend.setText("");
+        txfPet.setText("");
+        txaObserv.setText("");
+        ftfHorarioAtend.setToolTipText("");
 
-        this.agendasSemFiltroLista = agendaDao.buscarTodos();
+        this.atendimentosSemFiltroLista = atendimentoDao.buscarTodos();
 
         atualizarTabelaAtendimento(atendimentosSemFiltroLista);
     }
@@ -699,12 +699,8 @@ public class DlgAgenda extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void btnLimparAtendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparAtendActionPerformed
-        // TODO add your handling code here:
+        this.limparAtendimento();
     }//GEN-LAST:event_btnLimparAtendActionPerformed
-
-    private void btnDataAtualAtendAtendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDataAtualAtendAtendActionPerformed
-
-    }//GEN-LAST:event_btnDataAtualAtendAtendActionPerformed
 
     private void btnBuscarPetAtendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarPetAtendActionPerformed
         DlgBuscaPet buscaPet = new DlgBuscaPet(null, true, sessionFactory);
@@ -717,7 +713,91 @@ public class DlgAgenda extends javax.swing.JDialog {
     }//GEN-LAST:event_btnBuscarPetAtendActionPerformed
 
     private void btnCriarAtendimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCriarAtendimentoActionPerformed
-        // TODO add your handling code here:
+        try {
+            if (agenda == null) {
+                JOptionPane.showMessageDialog(null, "Selecione uma agenda.");
+                return;
+            }
+
+            if (ftfDataAtendCriar.getText().equals("  /  /    ")) {
+                JOptionPane.showMessageDialog(null, "Preencha o campo data.");
+                return;
+            }
+
+            if (ftfHorarioAtend.getText().equals("  :  ")) {
+                JOptionPane.showMessageDialog(null, "Preencha o horário do atendimento!");
+                return;
+            }
+
+            // data nova agenda
+            String dataString = ftfDataAgendaCriar.getText();
+            String[] dataArray = dataString.split("/");
+            LocalDate dataParse = LocalDate.of(
+                    Integer.parseInt(dataArray[2]),
+                    Integer.parseInt(dataArray[1]),
+                    Integer.parseInt(dataArray[0])
+            );
+
+            // horario atend
+            String horarioString = ftfHorarioAtend.getText();
+            String[] horarioArray = horarioString.split(":");
+            LocalTime horarioParse = LocalTime.of(
+                    Integer.parseInt(horarioArray[0]),
+                    Integer.parseInt(horarioArray[1])
+            );
+
+            if (horarioParse.isAfter(agenda.getHorario_final()) || horarioParse.isBefore(agenda.getHorario_inicio())) {
+                JOptionPane.showMessageDialog(null, "O horário do atendimento deve ser entre "
+                        + agenda.getHorario_inicio().toString() + "h e " + agenda.getHorario_final() + "h.");
+                return;
+            }
+
+            boolean atendimentoExiste = false;
+            if (idAtendimento == 0) {
+                for (Atendimento atd : atendimentosSemFiltroLista) {
+                    if (atd.getData().equals(dataParse)
+                            && atd.getHora().equals(horarioParse)
+                            && atd.getAgenda().getId() == agenda.getId()) {
+                        atendimentoExiste = true;
+                    }
+                }
+            }
+
+            if (atendimentoExiste) {
+                JOptionPane.showMessageDialog(null, "Um atendimento já está marcado neste horário!");
+                return;
+            }
+
+            idAtendimento = atendimento.getId();
+            atendimento.setAgenda(agenda);
+            atendimento.setData(dataParse);
+            atendimento.setHora(horarioParse);
+            atendimento.setObservacoes(txaObserv.getText());
+            atendimento.setPet(pet.get());
+            atendimento.setStatus("ativo");
+
+            Optional<Atendimento> atendimento0 = Optional.empty();
+
+            if (idAtendimento == 0) {
+                atendimento0 = atendimentoDao.salvar(atendimento);
+                atendimentosSemFiltroLista.add(atendimento);
+            } else {
+                atendimento0 = atendimentoDao.atualizar(atendimento);
+            }
+
+            if (atendimento0.isPresent()) {
+                if (idAtendimento == 0) {
+                    JOptionPane.showMessageDialog(null, "Atendimento cadastrado com sucesso!");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Atendimento atualizado com sucesso!");
+                }
+            }
+
+            this.limparAtendimento();
+        } catch (Exception e) {
+            log.error("Erro ao cadastrar atendimento: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar atendimento.");
+        }
     }//GEN-LAST:event_btnCriarAtendimentoActionPerformed
 
     private void btnEditarAgendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarAgendaActionPerformed
@@ -838,6 +918,7 @@ public class DlgAgenda extends javax.swing.JDialog {
             }
 
             this.limparAgenda();
+            this.limparAtendimento();
         } catch (Exception e) {
             log.error("Erro ao cadastrar agenda: " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Erro ao cadastrar agenda.");
@@ -899,20 +980,49 @@ public class DlgAgenda extends javax.swing.JDialog {
             idAgenda = Integer.parseInt(idString);
             Optional<Agenda> agenda0 = agendaDao.buscar(idAgenda);
             this.agenda = agenda0.get();
-            
+
             // colocar os horarios da agenda selecionada fracionado de 10 em 10 mins
             String[] dataArray = agenda.getData().toString().split("-");
 
-            ftfDataAtendCriar.setText(dataArray[2] + "/" + dataArray[1] + "/" + dataArray[0]);            
+            ftfDataAtendCriar.setText(dataArray[2] + "/" + dataArray[1] + "/" + dataArray[0]);
 
+            ftfHorarioAtend.setToolTipText("O horário do atendimento deve ser entre "
+                        + agenda.getHorario_inicio().toString() + "h e " + agenda.getHorario_final() + "h.");
+            
             tbpAgenda.setSelectedIndex(1);
-
+            
 
         } catch (Exception e) {
             log.error("Erro ao selecionar na tabela agenda: " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Erro ao selecionar na tabela agenda.");
         }
     }//GEN-LAST:event_btnNovoAtendActionPerformed
+
+    private void btnFiltrarAtendimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarAtendimentoActionPerformed
+        try {
+            atendimentosComFiltroLista = atendimentosSemFiltroLista;
+
+            String dataString = ftfDataAtendFiltro.getText();
+
+            if (!dataString.equals("  /  /    ")) {
+                String[] dataArray = dataString.split("/");
+                LocalDate dataAud = LocalDate.of(Integer.parseInt(dataArray[2]),
+                        Integer.parseInt(dataArray[1]),
+                        Integer.parseInt(dataArray[0]));
+                atendimentosComFiltroLista = atendimentosComFiltroLista.stream()
+                        .filter(registro -> registro.getData().equals(dataAud)).collect(Collectors.toList());
+            }
+
+            if (atendimentosComFiltroLista.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Nenhum registro encontrado!");
+            } else {
+                atualizarTabelaAtendimento(atendimentosComFiltroLista);
+            }
+        } catch (Exception e) {
+            log.error("Erro ao buscar na tabela de atendimentos: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao buscar na tabela de atendimentos: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnFiltrarAtendimentoActionPerformed
 
     public void atualizarTabelaAgenda(List<Agenda> lista) {
         try {
@@ -973,74 +1083,53 @@ public class DlgAgenda extends javax.swing.JDialog {
             column.setMaxWidth(50);
             column.setMinWidth(50);
         } catch (Exception e) {
-            log.error("Erro ao buscar na tabela de auditoria: " + e.getMessage());
-            JOptionPane.showMessageDialog(null, "Erro ao buscar na tabela de auditoria: " + e.getMessage());
+            log.error("Erro ao buscar na tabela de agendas: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao buscar na tabela de agendas: " + e.getMessage());
         }
     }
 
     public void atualizarTabelaAtendimento(List<Atendimento> lista) {
-//        try {
-//            if (isAdmin) {
-//                Object[] cabecalho = {"ID", "Data", "Começa", "Termina", "FuncID"};
-//                Object[][] dadosTabela = new Object[lista.size()][5];
-//                if (lista.size() > 0) {
-//                    for (int i = 0; i < lista.size(); i++) {
-//                        dadosTabela[i][0] = lista.get(i).getId();
-//                        dadosTabela[i][1] = lista.get(i).getData();
-//                        dadosTabela[i][2] = lista.get(i).getHorario_inicio();
-//                        dadosTabela[i][3] = lista.get(i).getHorario_final();
-//                        dadosTabela[i][4] = lista.get(i).getFuncionario().getId();
-//                    }
-//                }
-//
-//                tblAgenda.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
-//                    @Override
-//                    public boolean isCellEditable(int row, int column) {
-//                        return false;
-//                    }
-//
-//                });
-//            } else {
-//                Object[] cabecalho = {"ID", "Data", "Começa", "Termina"};
-//                Object[][] dadosTabela = new Object[lista.size()][4];
-//                if (lista.size() > 0) {
-//                    for (int i = 0; i < lista.size(); i++) {
-//                        dadosTabela[i][0] = lista.get(i).getId();
-//                        dadosTabela[i][1] = lista.get(i).getData();
-//                        dadosTabela[i][2] = lista.get(i).getHorario_inicio();
-//                        dadosTabela[i][3] = lista.get(i).getHorario_final();
-//                    }
-//                }
-//
-//                tblAgenda.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
-//                    @Override
-//                    public boolean isCellEditable(int row, int column) {
-//                        return false;
-//                    }
-//
-//                });
-//            }
-//
-//            tblAgenda.setSelectionMode(0);
-//
-//            // redimensiona as colunas de uma tabela
-//            TableColumn column = null;
-//            for (int i = 0; i < tblAgenda.getColumnCount(); i++) {
-//                column = tblAgenda.getColumnModel().getColumn(i);
-//                DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-//                centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-//                column.setCellRenderer(centerRenderer);
-//            }
-//
-//            column = tblAgenda.getColumnModel().getColumn(0);
-//            column.setPreferredWidth(50);
-//            column.setMaxWidth(50);
-//            column.setMinWidth(50);
-//        } catch (Exception e) {
-//            log.error("Erro ao buscar na tabela de auditoria: " + e.getMessage());
-//            JOptionPane.showMessageDialog(null, "Erro ao buscar na tabela de auditoria: " + e.getMessage());
-//        }
+        try {
+            Object[] cabecalho = {"ID", "Data", "Horário", "Pet"};
+            Object[][] dadosTabela = new Object[lista.size()][4];
+            if (lista.size() > 0) {
+                for (int i = 0; i < lista.size(); i++) {
+                    dadosTabela[i][0] = lista.get(i).getId();
+                    dadosTabela[i][1] = lista.get(i).getData();
+                    dadosTabela[i][2] = lista.get(i).getHora();
+                    dadosTabela[i][3] = lista.get(i).getPet().getNome();
+                }
+            }
+
+            tblAgenda.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+
+            });
+
+            tblAgenda.setSelectionMode(0);
+
+            // redimensiona as colunas de uma tabela
+            TableColumn column = null;
+            for (int i = 0; i < tblAgenda.getColumnCount(); i++) {
+                column = tblAgenda.getColumnModel().getColumn(i);
+                DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+                centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+                column.setCellRenderer(centerRenderer);
+            }
+
+            column = tblAgenda.getColumnModel().getColumn(0);
+            column.setPreferredWidth(50);
+            column.setMaxWidth(50);
+            column.setMinWidth(50);
+        } catch (Exception e) {
+            log.error("Erro ao buscar na tabela de atendimentos: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao buscar na tabela de atendimentos: " + e.getMessage());
+        }
     }
+
     /**
      * @param args the command line arguments
      */
@@ -1089,7 +1178,6 @@ public class DlgAgenda extends javax.swing.JDialog {
     private javax.swing.JButton btnBuscarPetAtend;
     private javax.swing.JButton btnCriarAgenda;
     private javax.swing.JButton btnCriarAtendimento;
-    private javax.swing.JButton btnDataAtualAtend;
     private javax.swing.JButton btnEditarAgenda;
     private javax.swing.JButton btnEditarAtend;
     private javax.swing.JButton btnExcluirAtend;
@@ -1100,13 +1188,13 @@ public class DlgAgenda extends javax.swing.JDialog {
     private javax.swing.JButton btnNovoAtend;
     private javax.swing.JButton btnSair;
     private javax.swing.JButton btnVerInfos;
-    private javax.swing.JComboBox<String> cbxHorario;
     private javax.swing.JFormattedTextField ftfDataAgendaCriar;
     private javax.swing.JFormattedTextField ftfDataAgendaFiltro;
     private javax.swing.JFormattedTextField ftfDataAtendCriar;
-    private javax.swing.JFormattedTextField ftfDataBusca;
+    private javax.swing.JFormattedTextField ftfDataAtendFiltro;
     private javax.swing.JFormattedTextField ftfHoraFimAgenda;
     private javax.swing.JFormattedTextField ftfHoraIniAgenda;
+    private javax.swing.JFormattedTextField ftfHorarioAtend;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1123,13 +1211,13 @@ public class DlgAgenda extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JPanel pnlAgenda;
     private javax.swing.JPanel pnlAtendimento;
     private javax.swing.JPanel pnlBuscaAtend;
     private javax.swing.JPanel pnlCadastroAgenda;
     private javax.swing.JPanel pnlCadastroAtend;
     private javax.swing.JTable tblAgenda;
+    private javax.swing.JTable tblAtend;
     private javax.swing.JTabbedPane tbpAgenda;
     private javax.swing.JTextArea txaObserv;
     private javax.swing.JTextField txfAtividade;
