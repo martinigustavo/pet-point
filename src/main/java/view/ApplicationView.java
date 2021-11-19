@@ -25,6 +25,7 @@ import javax.swing.table.TableColumn;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.SessionFactory;
 import utils.HibernateUtil;
+import utils.ReportsGenerator;
 import utils.VisualsConfig;
 
 @Log4j2
@@ -61,7 +62,7 @@ public class ApplicationView extends javax.swing.JFrame {
         lblLogado.setText(funcLogado.getNome());
         lblPetshop.setVisible(false);
         lblVeterinaria.setVisible(false);
-        
+
         this.isAdmin = this.funcLogado.getPermissao().getDescricao().equals("admin");
 
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -111,6 +112,7 @@ public class ApplicationView extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblgeral = new javax.swing.JTable();
         btnAdicionar = new javax.swing.JButton();
+        btnRelatorioCadastros = new javax.swing.JButton();
         cmbescolher = new javax.swing.JComboBox<>();
         fundobusca = new javax.swing.JLabel();
 
@@ -138,7 +140,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnhomeActionPerformed(evt);
             }
         });
-        pnlmenulateral.add(btnhome, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 130, 50));
+        pnlmenulateral.add(btnhome, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 240, 130, 50));
 
         btncadastro.setBackground(new java.awt.Color(58, 203, 199));
         btncadastro.setForeground(new java.awt.Color(58, 203, 199));
@@ -150,7 +152,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 btncadastroActionPerformed(evt);
             }
         });
-        pnlmenulateral.add(btncadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, 130, 50));
+        pnlmenulateral.add(btncadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 130, 50));
 
         lblLogado.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         lblLogado.setForeground(new java.awt.Color(255, 255, 255));
@@ -177,15 +179,17 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnAdminActionPerformed(evt);
             }
         });
-        pnlmenulateral.add(btnAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, 130, 50));
+        pnlmenulateral.add(btnAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 440, 130, 50));
 
-        btnAgenda.setText("Agenda");
+        btnAgenda.setBackground(new java.awt.Color(58, 203, 199));
+        btnAgenda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnAgendar.png"))); // NOI18N
+        btnAgenda.setBorder(null);
         btnAgenda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgendaActionPerformed(evt);
             }
         });
-        pnlmenulateral.add(btnAgenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 370, -1, -1));
+        pnlmenulateral.add(btnAgenda, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 375, 130, 50));
 
         barralateral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/barralateral.png"))); // NOI18N
         pnlmenulateral.add(barralateral, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -339,6 +343,16 @@ public class ApplicationView extends javax.swing.JFrame {
             }
         });
         pnlcadastros.add(btnAdicionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1550, 980, 50, 50));
+
+        btnRelatorioCadastros.setBackground(new java.awt.Color(225, 225, 225));
+        btnRelatorioCadastros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnExportar.png"))); // NOI18N
+        btnRelatorioCadastros.setBorder(null);
+        btnRelatorioCadastros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRelatorioCadastrosActionPerformed(evt);
+            }
+        });
+        pnlcadastros.add(btnRelatorioCadastros, new org.netbeans.lib.awtextra.AbsoluteConstraints(1490, 980, 50, 50));
 
         cmbescolher.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         cmbescolher.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Funcionário", "Cliente", "Veterinário" }));
@@ -515,7 +529,7 @@ public class ApplicationView extends javax.swing.JFrame {
             switch (cmbescolher.getSelectedIndex()) {
                 case 0: {
                     List<Funcionario> funcionarios = new FuncionarioDao(sessionFactory).buscarPorNome(busca);
-
+                    btnRelatorioCadastros.setVisible(true);
                     dadosTabela = new Object[funcionarios.size()][2];
                     if (funcionarios.size() > 0) {
                         for (int i = 0; i < funcionarios.size(); i++) {
@@ -528,7 +542,7 @@ public class ApplicationView extends javax.swing.JFrame {
 
                 case 1: {
                     List<Cliente> clientes = new ClienteDao(sessionFactory).buscarPorNome(busca);
-
+                    btnRelatorioCadastros.setVisible(true);
                     dadosTabela = new Object[clientes.size()][2];
                     if (clientes.size() > 0) {
                         for (int i = 0; i < clientes.size(); i++) {
@@ -541,7 +555,7 @@ public class ApplicationView extends javax.swing.JFrame {
 
                 case 2: {
                     List<Funcionario> veterinarios = new FuncionarioDao(sessionFactory).buscarVetPorNome(busca);
-
+                    btnRelatorioCadastros.setVisible(false);
                     dadosTabela = new Object[veterinarios.size()][2];
                     if (veterinarios.size() > 0) {
                         for (int i = 0; i < veterinarios.size(); i++) {
@@ -590,7 +604,7 @@ public class ApplicationView extends javax.swing.JFrame {
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         int i = JOptionPane.showConfirmDialog(null, "Tem certeza de que deseja sair?");
-        
+
         if (i == 0) {
             funcLogado.setLogado(false);
             new FuncionarioDao(HibernateUtil.getSessionFactory()).atualizar(funcLogado);
@@ -655,6 +669,23 @@ public class ApplicationView extends javax.swing.JFrame {
         dlgAgenda.setVisible(true);
     }//GEN-LAST:event_btnAgendaActionPerformed
 
+    private void btnRelatorioCadastrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatorioCadastrosActionPerformed
+//          Map params = new HashMap();
+//        params.put("pCodEmprestimo", emprestimoDAO.returnId);
+//        new ReportsGenerator().gerarRelatorioRobusto("/reports/report_novo_emprestimo.jrxml", params);
+        switch (cmbescolher.getSelectedIndex()) {
+            case 0: {
+                new ReportsGenerator().gerarRelatorioSimples("reports/relatorio_funcionarios.jrxml");
+                break;
+            }
+            case 1: {
+                new ReportsGenerator().gerarRelatorioSimples("reports/relatorio_clientes.jrxml");
+            }
+            default:
+                break;
+        }
+    }//GEN-LAST:event_btnRelatorioCadastrosActionPerformed
+
     public void desativarTelas() {
         pnlHomeAdmin.setVisible(false);
         pnlHomePet.setVisible(false);
@@ -689,6 +720,7 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JButton btnAdmin;
     private javax.swing.JButton btnAgenda;
     private javax.swing.JButton btnPetshop;
+    private javax.swing.JButton btnRelatorioCadastros;
     private javax.swing.JButton btnSair;
     private javax.swing.JButton btnVeterinaria;
     private javax.swing.JButton btncadastro;

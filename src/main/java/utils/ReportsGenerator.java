@@ -42,7 +42,6 @@ public class ReportsGenerator {
             // Mapeia campos de parametros para o relatorio, mesmo que nao existam
             Map parametros = new HashMap();
 
-            // Executa relatoio
             session.doWork(new Work() {
                 @Override
                 public void execute(Connection connection) throws SQLException {

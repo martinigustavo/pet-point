@@ -15,7 +15,9 @@ import entities.Pet;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.swing.JLabel;
@@ -26,6 +28,7 @@ import javax.swing.table.TableColumn;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.SessionFactory;
 import utils.HibernateUtil;
+import utils.ReportsGenerator;
 import utils.VisualsConfig;
 
 @Log4j2
@@ -137,6 +140,7 @@ public class DlgAgenda extends javax.swing.JDialog {
         ftfHoraFimAgenda = new javax.swing.JFormattedTextField();
         btnEditarAgenda = new javax.swing.JButton();
         btnNovoAtend = new javax.swing.JButton();
+        btnGerarRelatorio = new javax.swing.JButton();
         pnlAtendimento = new javax.swing.JPanel();
         pnlCadastroAtend = new javax.swing.JPanel();
         btnCriarAtendimento = new javax.swing.JButton();
@@ -351,6 +355,13 @@ public class DlgAgenda extends javax.swing.JDialog {
             }
         });
 
+        btnGerarRelatorio.setText("Gerar Relatório");
+        btnGerarRelatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGerarRelatorioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlAgendaLayout = new javax.swing.GroupLayout(pnlAgenda);
         pnlAgenda.setLayout(pnlAgendaLayout);
         pnlAgendaLayout.setHorizontalGroup(
@@ -373,6 +384,8 @@ public class DlgAgenda extends javax.swing.JDialog {
                             .addGroup(pnlAgendaLayout.createSequentialGroup()
                                 .addComponent(btnNovoAtend)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnGerarRelatorio)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnEditarAgenda))
                             .addGroup(pnlAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -400,7 +413,8 @@ public class DlgAgenda extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnEditarAgenda)
-                            .addComponent(btnNovoAtend))
+                            .addComponent(btnNovoAtend)
+                            .addComponent(btnGerarRelatorio))
                         .addGap(50, 50, 50))
                     .addGroup(pnlAgendaLayout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -875,6 +889,14 @@ public class DlgAgenda extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnNovoAtendActionPerformed
 
+    private void btnGerarRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarRelatorioActionPerformed
+       String dataAgenda = ftfDataAgendaFiltro.getText();
+       
+        Map params = new HashMap();
+        params.put("dataAgenda", dataAgenda);
+        new ReportsGenerator().gerarRelatorioRobusto("/reports/relatorio_agenda_data.jrxml", params);
+    }//GEN-LAST:event_btnGerarRelatorioActionPerformed
+
     public void atualizarTabelaAgenda(List<Agenda> lista) {
         try {
             if (isAdmin) {
@@ -1056,6 +1078,7 @@ public class DlgAgenda extends javax.swing.JDialog {
     private javax.swing.JButton btnExcluirAtend;
     private javax.swing.JButton btnFiltrarAgenda;
     private javax.swing.JButton btnFiltrarAtendimento;
+    private javax.swing.JButton btnGerarRelatorio;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnLimparAtend;
     private javax.swing.JButton btnNovoAtend;

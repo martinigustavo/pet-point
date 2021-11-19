@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.18.1.final using JasperReports Library version 6.18.1-9d75d1969e774d4f179fb3be8401e98a0e6d1611  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="auditoria-logs-admin-report" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="02361290-fe69-4c1d-b6b8-3e5c0367f980">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="pet-point"/>
+	<parameter name="dataAgenda" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select a.data, a.horario_inicio, f.nome 
+from agenda a, funcionario f
+where a.funcionario_id = f.id]]>
+	</queryString>
+	<field name="nome" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="funcionario"/>
+	</field>
+	<field name="data" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data"/>
+		<property name="com.jaspersoft.studio.field.label" value="data"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="agenda"/>
+	</field>
+	<field name="horario_inicio" class="java.sql.Time">
+		<property name="com.jaspersoft.studio.field.name" value="horario_inicio"/>
+		<property name="com.jaspersoft.studio.field.label" value="horario_inicio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="agenda"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="20" y="0" width="760" height="66" backcolor="#000000" uuid="f2ea8026-d363-4bd6-87d1-61f99b4be968"/>
+				<staticText>
+					<reportElement x="0" y="3" width="210" height="60" forecolor="#FFFFFF" uuid="fa169dd8-3fca-4cf1-a5f5-e6da2626d918"/>
+					<box topPadding="4" leftPadding="4" bottomPadding="4" rightPadding="4"/>
+					<textElement verticalAlignment="Bottom">
+						<font fontName="Times New Roman" size="45" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Pet-Point]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="72" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="21" y="-10" width="760" height="32" forecolor="#000000" backcolor="#17A9A8" uuid="e45c0381-a508-47df-a87a-cf35b3641acf"/>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement x="610" y="10" width="144" height="20" forecolor="#FFFFFF" uuid="48ca609e-6450-46ad-914b-82a3fbb1a5ed"/>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+			<staticText>
+				<reportElement x="281" y="30" width="240" height="30" uuid="8a181b8b-9191-42ea-b1bf-8b67b7e8b76d"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relatório de agenda ]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="15" y="14" width="760" height="32" forecolor="#000000" backcolor="#030303" uuid="76c7f0eb-9881-444a-a0d1-3e10e4b74840"/>
+				<staticText>
+					<reportElement x="544" y="3" width="100" height="30" uuid="43e34e4b-98af-42ec-9264-73645bc21f60">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f0e51494-af6a-424e-a5ae-fba70b404d69"/>
+					</reportElement>
+					<textElement>
+						<font size="20"/>
+					</textElement>
+					<text><![CDATA[funcionario_id]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="50" y="1" width="100" height="30" forecolor="#FFFFFF" uuid="a2b4b5a2-f5c1-4174-b979-a918a7c0b85c">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="87a3df04-2f35-484e-bb27-13d42661178f"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="20" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nome]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="304" y="1" width="100" height="30" forecolor="#FFFFFF" uuid="79969504-b642-42d0-a943-bd6c2dcc9b2e">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="770745e4-5dd2-4f15-89b2-c29eaf66314b"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="20" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Data]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="574" y="1" width="100" height="30" forecolor="#FFFFFF" uuid="649f005b-88b0-417c-958b-d1a15237f4f6">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a60972f2-5a1a-4676-bb98-26478717abab"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="20" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Início]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="50" splitType="Stretch">
+			<rectangle>
+				<reportElement x="23" y="40" width="754" height="1" uuid="586ae47a-10c5-48bf-a86b-f829062dde2b"/>
+			</rectangle>
+			<textField>
+				<reportElement x="50" y="0" width="170" height="30" uuid="57e39ee6-b7e3-4cd8-b6c2-80fea4d64c6b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="87a3df04-2f35-484e-bb27-13d42661178f"/>
+				</reportElement>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="340" y="0" width="80" height="30" uuid="4012925f-a956-4ecc-b835-0967d457dcb5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="770745e4-5dd2-4f15-89b2-c29eaf66314b"/>
+				</reportElement>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="610" y="0" width="110" height="30" uuid="b0bfc2e1-c536-4bc4-994c-158887de8af4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a60972f2-5a1a-4676-bb98-26478717abab"/>
+				</reportElement>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horario_inicio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
