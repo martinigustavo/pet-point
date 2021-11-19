@@ -8,6 +8,7 @@ package view;
 import dao.AgendaDao;
 import dao.AtendimentoDao;
 import dao.FuncionarioDao;
+import dao.PetDao;
 import entities.Agenda;
 import entities.Atendimento;
 import entities.Funcionario;
@@ -146,7 +147,10 @@ public class DlgAgenda extends javax.swing.JDialog {
         ftfDataAtendCriar = new javax.swing.JFormattedTextField();
         jLabel10 = new javax.swing.JLabel();
         btnBuscarPetAtend = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txfPet = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txaObserv = new javax.swing.JTextArea();
         pnlBuscaAtend = new javax.swing.JPanel();
         btnEditarAtend = new javax.swing.JButton();
         btnExcluirAtend = new javax.swing.JButton();
@@ -441,7 +445,13 @@ public class DlgAgenda extends javax.swing.JDialog {
             }
         });
 
-        jTextField1.setEditable(false);
+        txfPet.setEditable(false);
+
+        jLabel12.setText("Observações:");
+
+        txaObserv.setColumns(20);
+        txaObserv.setRows(5);
+        jScrollPane3.setViewportView(txaObserv);
 
         javax.swing.GroupLayout pnlCadastroAtendLayout = new javax.swing.GroupLayout(pnlCadastroAtend);
         pnlCadastroAtend.setLayout(pnlCadastroAtendLayout);
@@ -452,18 +462,22 @@ public class DlgAgenda extends javax.swing.JDialog {
                 .addComponent(btnCriarAtendimento)
                 .addGap(41, 41, 41))
             .addGroup(pnlCadastroAtendLayout.createSequentialGroup()
-                .addGap(82, 82, 82)
-                .addGroup(pnlCadastroAtendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
-                .addGroup(pnlCadastroAtendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(cbxHorario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ftfDataAtendCriar)
-                    .addComponent(btnBuscarPetAtend, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .addComponent(jTextField1))
-                .addContainerGap(118, Short.MAX_VALUE))
+                .addGap(43, 43, 43)
+                .addGroup(pnlCadastroAtendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlCadastroAtendLayout.createSequentialGroup()
+                        .addGroup(pnlCadastroAtendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlCadastroAtendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cbxHorario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(ftfDataAtendCriar)
+                            .addComponent(btnBuscarPetAtend, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(txfPet)))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         pnlCadastroAtendLayout.setVerticalGroup(
             pnlCadastroAtendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -479,9 +493,13 @@ public class DlgAgenda extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(pnlCadastroAtendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txfPet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnBuscarPetAtend)
+                .addGap(19, 19, 19)
+                .addComponent(jLabel12)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnCriarAtendimento)
                 .addGap(18, 18, 18))
@@ -645,7 +663,6 @@ public class DlgAgenda extends javax.swing.JDialog {
         }
 
         this.idAgenda = 0;
-        this.idAtendimento = 0;
         this.idFunc = 0;
         this.agenda = new Agenda();
         LocalDate dataAtual = LocalDate.now();
@@ -659,6 +676,22 @@ public class DlgAgenda extends javax.swing.JDialog {
         this.agendasSemFiltroLista = agendaDao.buscarTodos();
 
         atualizarTabelaAgenda(agendasSemFiltroLista);
+    }
+    
+    private void limparAtendimento() {
+        this.idAtendimento = 0;
+        this.atendimento = new Atendimento();
+        LocalDate dataAtual = LocalDate.now();
+        ftfDataAgendaCriar.setText(dataAtual.getDayOfMonth() + "/"
+                + dataAtual.getMonthValue() + "/"
+                + dataAtual.getYear());
+        ftfHoraIniAgenda.setText("");
+        ftfHoraFimAgenda.setText("");
+        ftfDataAgendaFiltro.setText("");
+
+        this.agendasSemFiltroLista = agendaDao.buscarTodos();
+
+        atualizarTabelaAtendimento(atendimentosSemFiltroLista);
     }
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
@@ -674,7 +707,13 @@ public class DlgAgenda extends javax.swing.JDialog {
     }//GEN-LAST:event_btnDataAtualAtendAtendActionPerformed
 
     private void btnBuscarPetAtendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarPetAtendActionPerformed
-        // TODO add your handling code here:
+        DlgBuscaPet buscaPet = new DlgBuscaPet(null, true, sessionFactory);
+        buscaPet.setVisible(true);
+
+        pet = new PetDao(sessionFactory).buscar(buscaPet.id);
+        if (pet.isPresent()) {
+            txfPet.setText(pet.get().getNome());
+        }
     }//GEN-LAST:event_btnBuscarPetAtendActionPerformed
 
     private void btnCriarAtendimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCriarAtendimentoActionPerformed
@@ -1071,6 +1110,7 @@ public class DlgAgenda extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1082,8 +1122,8 @@ public class DlgAgenda extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JPanel pnlAgenda;
     private javax.swing.JPanel pnlAtendimento;
     private javax.swing.JPanel pnlBuscaAtend;
@@ -1091,8 +1131,10 @@ public class DlgAgenda extends javax.swing.JDialog {
     private javax.swing.JPanel pnlCadastroAtend;
     private javax.swing.JTable tblAgenda;
     private javax.swing.JTabbedPane tbpAgenda;
+    private javax.swing.JTextArea txaObserv;
     private javax.swing.JTextField txfAtividade;
     private javax.swing.JTextField txfID;
     private javax.swing.JTextField txfNome;
+    private javax.swing.JTextField txfPet;
     // End of variables declaration//GEN-END:variables
 }
