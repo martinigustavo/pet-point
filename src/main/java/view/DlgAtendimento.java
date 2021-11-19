@@ -5,6 +5,7 @@
  */
 package view;
 
+import dao.AgendaDao;
 import dao.AtendimentoDao;
 import dao.PetDao;
 import entities.Agenda;
@@ -36,11 +37,13 @@ public class DlgAtendimento extends javax.swing.JDialog {
     private List<Atendimento> atendimentosSemFiltroLista;
     private List<Atendimento> atendimentosComFiltroLista;
     private int idAtendimento;
+    private int agendaID;
+    private int funcID;
 
     /**
      * Creates new form DlgAtendimento
      */
-    public DlgAtendimento(java.awt.Frame parent, boolean modal, Agenda agenda) {
+    public DlgAtendimento(java.awt.Frame parent, boolean modal, int agendaID, int funcID) {
         super(parent, modal);
         initComponents();
 
@@ -49,11 +52,15 @@ public class DlgAtendimento extends javax.swing.JDialog {
         VisualsConfig.setPropsToWindow(this, "Atendimentos", parent);
 
         this.idAtendimento = 0;
+        this.funcID = funcID;
+        this.agendaID = agendaID;
         this.atendimento = new Atendimento();
+        this.atendimentoDao = new AtendimentoDao(sessionFactory);
+        this.atendimentosSemFiltroLista = new ArrayList<>();
         this.atendimentosComFiltroLista = new ArrayList<>();
 
         this.pet = Optional.empty();
-        this.agenda = agenda;
+        this.agenda = new AgendaDao(sessionFactory).buscar(agendaID).get();
 
         String[] dataArray = agenda.getData().toString().split("-");
 
@@ -63,15 +70,17 @@ public class DlgAtendimento extends javax.swing.JDialog {
                 + agenda.getHorario_inicio().toString() + "h e " + agenda.getHorario_final() + "h.");
 
         try {
-            List<Atendimento> todosAtendimentos = atendimentoDao.buscarPorIdDaAgenda(agenda.getId() + "");
+            List<Atendimento> todosAtendimentos = atendimentoDao.buscarTodos();
+
             if (!todosAtendimentos.isEmpty()) {
                 for (Atendimento atd : todosAtendimentos) {
-                    if (atd.getAgenda().equals(agenda)) {
+                    if (atd.getAgenda().getId() == agendaID
+                            && atd.getAgenda().getFuncionario().getId() == funcID) {
                         atendimentosSemFiltroLista.add(atd);
                     }
                 }
-                atualizarTabelaAtendimento(atendimentosSemFiltroLista);
             }
+            atualizarTabelaAtendimento(atendimentosSemFiltroLista);
         } catch (Exception e) {
             log.error("Erro ao buscar todos atendimentos: " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Erro ao buscar todos atendimentos: " + e.getMessage());
@@ -364,17 +373,21 @@ public class DlgAtendimento extends javax.swing.JDialog {
         txfPet.setText("");
         txaObserv.setText("");
         ftfHorarioAtend.setToolTipText("");
+        tblAtend.removeAll();
 
         try {
             List<Atendimento> todosAtendimentos = atendimentoDao.buscarTodos();
+
             if (!todosAtendimentos.isEmpty()) {
                 for (Atendimento atd : todosAtendimentos) {
-                    if (atd.getAgenda().equals(agenda)) {
+                    if (atd.getAgenda().getId() == agendaID
+                            && atd.getAgenda().getFuncionario().getId() == funcID) {
                         atendimentosSemFiltroLista.add(atd);
                     }
                 }
-                atualizarTabelaAtendimento(atendimentosSemFiltroLista);
             }
+            atualizarTabelaAtendimento(atendimentosSemFiltroLista);
+
         } catch (Exception e) {
             log.error("Erro ao buscar todos atendimentos: " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Erro ao buscar todos atendimentos: " + e.getMessage());
@@ -429,24 +442,10 @@ public class DlgAtendimento extends javax.swing.JDialog {
                 return;
             }
 
-            if (ftfDataAtendCriar.getText().equals("  /  /    ")) {
-                JOptionPane.showMessageDialog(null, "Preencha o campo data.");
-                return;
-            }
-
             if (ftfHorarioAtend.getText().equals("  :  ")) {
                 JOptionPane.showMessageDialog(null, "Preencha o horário do atendimento!");
                 return;
             }
-
-            // data novo atend
-            String dataString = agenda.getData().toString();
-            String[] dataArray = dataString.split("/");
-            LocalDate dataParse = LocalDate.of(
-                    Integer.parseInt(dataArray[2]),
-                    Integer.parseInt(dataArray[1]),
-                    Integer.parseInt(dataArray[0])
-            );
 
             // horario atend
             String horarioString = ftfHorarioAtend.getText();
@@ -456,27 +455,28 @@ public class DlgAtendimento extends javax.swing.JDialog {
                     Integer.parseInt(horarioArray[1])
             );
 
-            if (horarioParse.isAfter(agenda.getHorario_final()) || horarioParse.isBefore(agenda.getHorario_inicio())) {
+            if (horarioParse.isAfter(agenda.getHorario_final())
+                    || horarioParse.isBefore(agenda.getHorario_inicio())) {
                 JOptionPane.showMessageDialog(null, "O horário do atendimento deve ser entre "
                         + agenda.getHorario_inicio().toString() + "h e " + agenda.getHorario_final() + "h.");
                 return;
             }
 
-//            boolean atendimentoExiste = false;
-//            if (idAtendimento == 0) {
-//                for (Atendimento atd : atendimentosSemFiltroLista) {
-//                    if (atd.getData().equals(dataParse)
-//                            && atd.getHora().equals(horarioParse)
-//                            && atd.getAgenda().getId() == agenda.getId()) {
-//                        atendimentoExiste = true;
-//                    }
-//                }
-//            }
-//
-//            if (atendimentoExiste) {
-//                JOptionPane.showMessageDialog(null, "Um atendimento já está marcado neste horário!");
-//                return;
-//            }
+            boolean atendimentoExiste = false;
+            if (idAtendimento == 0) {
+                for (Atendimento atd : atendimentosSemFiltroLista) {
+                    if (atd.getHora().equals(horarioParse)
+                            && atd.getAgenda().getId() == agenda.getId()) {
+                        atendimentoExiste = true;
+                    }
+                }
+            }
+
+            if (atendimentoExiste) {
+                JOptionPane.showMessageDialog(null, "Um atendimento já está marcado neste horário!");
+                return;
+            }
+
             idAtendimento = atendimento.getId();
             atendimento.setAgenda(agenda);
             atendimento.setHora(horarioParse);
@@ -578,7 +578,7 @@ public class DlgAtendimento extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DlgAtendimento dialog = new DlgAtendimento(new javax.swing.JFrame(), true, null);
+                DlgAtendimento dialog = new DlgAtendimento(new javax.swing.JFrame(), true, 0, 0);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

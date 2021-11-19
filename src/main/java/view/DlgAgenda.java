@@ -8,6 +8,7 @@ package view;
 import dao.AgendaDao;
 import dao.FuncionarioDao;
 import entities.Agenda;
+import entities.Atendimento;
 import entities.Funcionario;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -605,9 +606,20 @@ public class DlgAgenda extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Selecione uma agenda para ver seus atendimentos.");
             return;
         }
+        
+        if (funcionario.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Selecione um funcionário para ver os atendimentos.");
+            return;
+        }
 
-        DlgAtendimento dlgAtendimento = new DlgAtendimento(null, true, agenda);
-        dlgAtendimento.setVisible(true);
+        if (agenda.getId() > 0) {
+            DlgAtendimento dlgAtendimento = new DlgAtendimento(null, true, agenda.getId(), funcionario.get().getId());
+            dlgAtendimento.setVisible(true);
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione uma agenda para ver seus atendimentos.");
+            return;
+        }
     }//GEN-LAST:event_btnNovoAtendActionPerformed
 
     private void btnGerarRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarRelatorioActionPerformed

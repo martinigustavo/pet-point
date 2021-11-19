@@ -81,14 +81,14 @@ public class ApplicationView extends javax.swing.JFrame {
             }
 
             String atendimentosString = "";
-
+            
             for (Atendimento atd : atendimentos) {
                 atendimentosString += "Horário: " + atd.getHora() + ", Pet: " + atd.getPet().getNome() + "\n";
             }
 
             if (funcLogado.getPermissao().getDescricao().equals("petshop")) {
                 txaAtendPet.setText(atendimentosString);
-            } else if (funcLogado.getPermissao().getDescricao().equals("veterinaria")) {
+            } else {
                 txaAtendVet.setText(atendimentosString);
             }
         }
