@@ -8,6 +8,7 @@ package entities;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,6 +31,8 @@ public class Atendimento {
     private int id;
     private LocalDate data;
     private LocalTime hora;
+    @Column(length = 1024)
+    private String observacoes;
     private String status;
     
     @ManyToOne()

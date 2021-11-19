@@ -67,8 +67,12 @@
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
             <version>6.18.1</version>
+<<<<<<< HEAD
             <type>jar</type>
+=======
+>>>>>>> 2e80fb56bd392b21eeca9a610ce055da8879cab2
         </dependency>
+
         
         <!--Outros-->
         <dependency>
