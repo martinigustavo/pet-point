@@ -5,9 +5,7 @@
  */
 package entities;
 
-
-
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,5 +35,5 @@ public class Produto {
     private String categoria;
     
     @OneToMany(mappedBy = "produto")
-    private Set<VendaProduto> vendaProdutos;
+    private List<VendaProduto> vendaProdutos;
 }

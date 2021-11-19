@@ -5,7 +5,7 @@
  */
 package entities;
 
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,7 +26,7 @@ public class Especie {
     private int id;
     private String nome;
     
-    @OneToMany(mappedBy = "especie")
-    private Set<Raca> racas;
+    @OneToMany()
+    private List<Raca> racas;
     
 }

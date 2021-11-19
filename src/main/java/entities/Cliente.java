@@ -6,7 +6,7 @@
 package entities;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,9 +35,9 @@ public class Cliente {
     private LocalDate data_cadastro;
     private String status;
     
-    @OneToMany(mappedBy = "cliente")
-    private Set<Pet> pets;
+    @OneToMany()
+    private List<Pet> pets;
     
-    @OneToMany(mappedBy = "cliente")
-    private Set<Servico> servicos;
+    @OneToMany()
+    private List<Servico> servicos;
 }

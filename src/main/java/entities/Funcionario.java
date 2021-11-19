@@ -6,7 +6,7 @@
 package entities;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -51,12 +51,12 @@ public class Funcionario {
     private Permissao permissao;
     
     @OneToMany(mappedBy = "funcionario")
-    private Set<Log> logs;
+    private List<Log> logs;
     
     @OneToMany(mappedBy = "funcionario")
-    private Set<Caixa> caixas;
+    private List<Caixa> caixas;
     
     @OneToMany(mappedBy = "funcionario")
-    private Set<Agenda> agendas;
+    private List<Agenda> agendas;
 }
 

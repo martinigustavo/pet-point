@@ -7,7 +7,7 @@ package entities;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,5 +38,5 @@ public class Agenda {
     private Funcionario funcionario;
     
     @OneToMany(mappedBy = "agenda")
-    private Set<Atendimento> atendimentos;
+    private List<Atendimento> atendimentos;
 }

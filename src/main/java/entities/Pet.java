@@ -6,7 +6,7 @@
 package entities;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,18 +34,18 @@ public class Pet {
     private LocalDate data_nascimento;
     private LocalDate data_cadastro;
     
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "raca_id", nullable = false)
     private Raca raca;
     
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
     
     @OneToMany(mappedBy = "pet")
-    private Set<Atendimento> atendimentos;
+    private List<Atendimento> atendimentos;
     
     @OneToMany(mappedBy = "pet")
-    private Set<Peso> pesos;
+    private List<Peso> pesos;
     
 }

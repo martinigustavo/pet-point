@@ -5,7 +5,7 @@
  */
 package entities;
 
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,11 +28,11 @@ public class Raca {
     private int id;
     private String nome;
     
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "especie_id", nullable = false)
     private Especie especie;
     
     @OneToMany(mappedBy = "raca")
-    private Set<Pet> pets;
+    private List<Pet> pets;
     
 }

@@ -6,7 +6,7 @@
 package entities;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,5 +33,5 @@ public class Venda {
     private Caixa caixa;
 
     @OneToMany(mappedBy = "venda")
-    private Set<VendaProduto> vendaProdutos;
+    private List<VendaProduto> vendaProdutos;
 }

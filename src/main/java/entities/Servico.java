@@ -5,8 +5,9 @@
  */
 package entities;
 
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,10 +34,10 @@ public class Servico {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
     
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "atendimento_id")
     private Atendimento atendimento;
 
     @OneToMany(mappedBy = "servico")
-    private Set<Caixa> caixas;
+    private List<Caixa> caixas;
 }

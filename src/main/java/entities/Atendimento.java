@@ -5,7 +5,6 @@
  */
 package entities;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import javax.persistence.Column;
@@ -29,7 +28,6 @@ public class Atendimento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private LocalDate data;
     private LocalTime hora;
     @Column(length = 1024)
     private String observacoes;
