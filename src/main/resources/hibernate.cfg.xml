@@ -5,6 +5,8 @@
 <hibernate-configuration>
     <session-factory>
         <!--org.postgresql.Driver-->
+        <property name="hibernate.current_session_context_class">thread</property>
+
         <property name="connection.driver_class">org.postgresql.Driver</property> 
         <property name="connection.url">jdbc:postgresql://localhost:5432/pet-point</property>
         <property name="connection.username">postgres</property>
@@ -21,7 +23,6 @@
         <mapping class="entities.Atendimento" />
         <mapping class="entities.Caixa" />
         <mapping class="entities.Cliente" />
-        <mapping class="entities.Consulta" />
         <mapping class="entities.Especie" />
         <mapping class="entities.Funcionario" />
         <mapping class="entities.Log" />

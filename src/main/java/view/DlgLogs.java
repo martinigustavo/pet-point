@@ -13,7 +13,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.swing.JLabel;
@@ -23,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.SessionFactory;
+import utils.ReportsGenerator;
 import utils.HibernateUtil;
 import utils.VisualsConfig;
 
@@ -94,6 +97,7 @@ public class DlgLogs extends javax.swing.JDialog {
         cbxComando = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         cbxTabela = new javax.swing.JComboBox<>();
+        btnGerarRelatorioAud = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -310,6 +314,14 @@ public class DlgLogs extends javax.swing.JDialog {
         cbxTabela.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         cbxTabela.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas", "Cliente", "Funcionário", "Produto", "Pet" }));
 
+        btnGerarRelatorioAud.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
+        btnGerarRelatorioAud.setText("Gerar relatório");
+        btnGerarRelatorioAud.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGerarRelatorioAudActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlAuditoriaLayout = new javax.swing.GroupLayout(pnlAuditoria);
         pnlAuditoria.setLayout(pnlAuditoriaLayout);
         pnlAuditoriaLayout.setHorizontalGroup(
@@ -349,12 +361,14 @@ public class DlgLogs extends javax.swing.JDialog {
                                                 .addGap(18, 18, 18)
                                                 .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addComponent(txfID)
-                                                    .addComponent(txfNome)))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAuditoriaLayout.createSequentialGroup()
-                                                .addComponent(btnLimparAud)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(btnFiltrarAud, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                    .addComponent(btnBuscarFunc))))
+                                                    .addComponent(txfNome)))))
+                                    .addComponent(btnBuscarFunc)
+                                    .addGroup(pnlAuditoriaLayout.createSequentialGroup()
+                                        .addComponent(btnLimparAud)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnGerarRelatorioAud)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnFiltrarAud, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(91, 91, 91))
                     .addGroup(pnlAuditoriaLayout.createSequentialGroup()
                         .addContainerGap(96, Short.MAX_VALUE)
@@ -407,7 +421,8 @@ public class DlgLogs extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnFiltrarAud)
-                    .addComponent(btnLimparAud))
+                    .addComponent(btnLimparAud)
+                    .addComponent(btnGerarRelatorioAud))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(92, 92, 92))
@@ -616,7 +631,7 @@ public class DlgLogs extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Problema ao carregar informações do arquivo /log/app.log");
         }
     }
-    
+
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         ftfDataIni.setText("");
         ftfDataFim.setText("");
@@ -699,6 +714,13 @@ public class DlgLogs extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnFiltrarLogActionPerformed
 
+    private void btnGerarRelatorioAudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarRelatorioAudActionPerformed
+//        Map params = new HashMap();
+//        params.put("pCodEmprestimo", emprestimoDAO.returnId);
+//        new ReportsGenerator().gerarRelatorioRobusto("/reports/report_novo_emprestimo.jrxml", params);
+        new ReportsGenerator().gerarRelatorioSimples("reports/auditoria-logs-admin-report.jrxml");
+    }//GEN-LAST:event_btnGerarRelatorioAudActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -756,6 +778,7 @@ public class DlgLogs extends javax.swing.JDialog {
     private javax.swing.JButton btnBuscarFunc;
     private javax.swing.JButton btnFiltrarAud;
     private javax.swing.JButton btnFiltrarLog;
+    private javax.swing.JButton btnGerarRelatorioAud;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnLimparAud;
     private javax.swing.JButton btnSair;

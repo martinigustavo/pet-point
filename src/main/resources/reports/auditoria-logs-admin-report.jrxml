@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="auditoria-logs-admin-report" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="02361290-fe69-4c1d-b6b8-3e5c0367f980">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="pet-pointDB"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<queryString>
+		<![CDATA[select * from log]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="log"/>
+	</field>
+	<field name="comando" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="comando"/>
+		<property name="com.jaspersoft.studio.field.label" value="comando"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="log"/>
+	</field>
+	<field name="data" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="data"/>
+		<property name="com.jaspersoft.studio.field.label" value="data"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="log"/>
+	</field>
+	<field name="tabela" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tabela"/>
+		<property name="com.jaspersoft.studio.field.label" value="tabela"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="log"/>
+	</field>
+	<field name="valores_antigos" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="valores_antigos"/>
+		<property name="com.jaspersoft.studio.field.label" value="valores_antigos"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="log"/>
+	</field>
+	<field name="valores_novos" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="valores_novos"/>
+		<property name="com.jaspersoft.studio.field.label" value="valores_novos"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="log"/>
+	</field>
+	<field name="funcionario_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="funcionario_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="funcionario_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="log"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="26" y="0" width="100" height="30" uuid="7b347c87-0006-4393-8417-6e9071dc30f2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8549333-bdfb-4d81-be0d-5e2d57e020ec"/>
+				</reportElement>
+				<text><![CDATA[id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="139" y="0" width="100" height="30" uuid="1f548495-24f4-4945-baf1-87835f1230a0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="50230931-b12a-4a07-88f8-4c917dbc2ee5"/>
+				</reportElement>
+				<text><![CDATA[comando]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="529" y="0" width="100" height="30" uuid="6feed173-4623-496e-bc11-3e27beedc94d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="00feea19-7b35-4ba0-b6b1-39a42e1be5d1"/>
+				</reportElement>
+				<text><![CDATA[tabela]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="26" y="36" width="100" height="30" uuid="8c2daaa5-7a6a-4c6b-916d-82f74c76e832">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8549333-bdfb-4d81-be0d-5e2d57e020ec"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="139" y="40" width="100" height="30" uuid="2f395c0c-0147-46de-85c5-8a43af023c86">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="50230931-b12a-4a07-88f8-4c917dbc2ee5"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{comando}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="529" y="37" width="100" height="30" uuid="a1f88a1f-d296-4577-92f9-3867a596379a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="00feea19-7b35-4ba0-b6b1-39a42e1be5d1"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{tabela}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
