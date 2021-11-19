@@ -1001,10 +1001,9 @@ public class DlgAgenda extends javax.swing.JDialog {
             ftfDataAtendCriar.setText(dataArray[2] + "/" + dataArray[1] + "/" + dataArray[0]);
 
             ftfHorarioAtend.setToolTipText("O horário do atendimento deve ser entre "
-                        + agenda.getHorario_inicio().toString() + "h e " + agenda.getHorario_final() + "h.");
-            
+                    + agenda.getHorario_inicio().toString() + "h e " + agenda.getHorario_final() + "h.");
+
             tbpAgenda.setSelectedIndex(1);
-            
 
         } catch (Exception e) {
             log.error("Erro ao selecionar na tabela agenda: " + e.getMessage());
@@ -1012,15 +1011,14 @@ public class DlgAgenda extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnNovoAtendActionPerformed
 
-<<<<<<< HEAD
     private void btnGerarRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarRelatorioActionPerformed
-       String dataAgenda = ftfDataAgendaFiltro.getText();
-       
+        String dataAgenda = ftfDataAgendaFiltro.getText();
+
         Map params = new HashMap();
         params.put("dataAgenda", dataAgenda);
         new ReportsGenerator().gerarRelatorioRobusto("/reports/relatorio_agenda_data.jrxml", params);
     }//GEN-LAST:event_btnGerarRelatorioActionPerformed
-=======
+
     private void btnFiltrarAtendimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarAtendimentoActionPerformed
         try {
             atendimentosComFiltroLista = atendimentosSemFiltroLista;
@@ -1046,7 +1044,6 @@ public class DlgAgenda extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Erro ao buscar na tabela de atendimentos: " + e.getMessage());
         }
     }//GEN-LAST:event_btnFiltrarAtendimentoActionPerformed
->>>>>>> 2e80fb56bd392b21eeca9a610ce055da8879cab2
 
     public void atualizarTabelaAgenda(List<Agenda> lista) {
         try {
