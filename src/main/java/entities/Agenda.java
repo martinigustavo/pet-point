@@ -39,7 +39,4 @@ public class Agenda {
     
     @OneToMany(mappedBy = "agenda")
     private Set<Atendimento> atendimentos;
-    
-    @OneToMany(mappedBy = "agenda")
-    private Set<Consulta> consultas;
 }

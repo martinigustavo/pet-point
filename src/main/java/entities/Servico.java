@@ -30,10 +30,6 @@ public class Servico {
     private double valor;
     
     @ManyToOne()
-    @JoinColumn(name = "consulta_id")
-    private Consulta consulta;
-    
-    @ManyToOne()
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
     

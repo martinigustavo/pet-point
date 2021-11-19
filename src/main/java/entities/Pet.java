@@ -46,9 +46,6 @@ public class Pet {
     private Set<Atendimento> atendimentos;
     
     @OneToMany(mappedBy = "pet")
-    private Set<Consulta> consultas;
-    
-    @OneToMany(mappedBy = "pet")
     private Set<Peso> pesos;
     
 }
