@@ -35,9 +35,9 @@ public class Cliente {
     private LocalDate data_cadastro;
     private String status;
     
-    @OneToMany()
+    @OneToMany(mappedBy = "cliente")
     private List<Pet> pets;
     
-    @OneToMany()
+    @OneToMany(mappedBy = "cliente")
     private List<Servico> servicos;
 }

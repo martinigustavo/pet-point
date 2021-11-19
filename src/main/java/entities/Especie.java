@@ -26,7 +26,7 @@ public class Especie {
     private int id;
     private String nome;
     
-    @OneToMany()
+    @OneToMany(mappedBy = "especie")
     private List<Raca> racas;
     
 }
