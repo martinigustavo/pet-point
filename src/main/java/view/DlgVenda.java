@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package view;
+
 import dao.CaixaDao;
 import dao.ProdutoDao;
 import dao.VendaDao;
@@ -15,38 +16,37 @@ import entities.Venda;
 import entities.VendaProduto;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Optional;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
+import lombok.extern.log4j.Log4j2;
 import org.hibernate.SessionFactory;
 import utils.HibernateUtil;
 
-
-/**
- *
- * @author evely
- */
+@Log4j2
 public class DlgVenda extends javax.swing.JDialog {
 
     private final SessionFactory sessionFactory;
     private Produto produto = new Produto();
+    private Map<Produto, Integer> itens = new HashMap<>();
+    DefaultTableModel dtmVendas = new DefaultTableModel();
     String preco;
     Funcionario funcionario;
     Venda venda;
-    
+
     public DlgVenda(java.awt.Frame parent, boolean modal, Funcionario funcionario) {
         super(parent, modal);
         initComponents();
         this.funcionario = funcionario;
-         this.sessionFactory = HibernateUtil.getSessionFactory();
+        this.sessionFactory = HibernateUtil.getSessionFactory();
+        this.venda = new Venda();
     }
-    
+
     String formapagamento = "";
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -92,7 +92,6 @@ public class DlgVenda extends javax.swing.JDialog {
         chkCartao.setText("    Cartão");
         chkCartao.setToolTipText("");
         chkCartao.setFocusPainted(false);
-        chkCartao.setOpaque(false);
         chkCartao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkCartaoActionPerformed(evt);
@@ -194,12 +193,18 @@ public class DlgVenda extends javax.swing.JDialog {
             new String [] {
                 "Código", "Título", "Preço", "Quantidade", "Subtotal"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tabelaVenda.setGridColor(new java.awt.Color(204, 204, 204));
         tabelaVenda.setRowHeight(35);
         tabelaVenda.setSelectionBackground(new java.awt.Color(204, 204, 204));
-        tabelaVenda.setShowHorizontalLines(false);
-        tabelaVenda.setShowVerticalLines(false);
         jScrollPane3.setViewportView(tabelaVenda);
 
         pnlvendas.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 230, 810, 450));
@@ -278,6 +283,20 @@ public class DlgVenda extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void atualizarDTM() {
+
+        dtmVendas = (DefaultTableModel) tabelaVenda.getModel();
+        dtmVendas.setRowCount(0);
+
+        for (var entry : itens.entrySet()) {
+            Produto prodEntry = entry.getKey();
+            Integer qtde = entry.getValue();
+            dtmVendas.addRow(new Object[]{prodEntry.getId(), prodEntry.getNome(),
+                prodEntry.getPreco_venda(), qtde, String.valueOf(prodEntry.getPreco_venda() * qtde)});
+        }
+
+    }
+
     private void chkCartaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCartaoActionPerformed
         chkDinheiro.setSelected(false);
         tfdPagar.setEditable(true);
@@ -294,53 +313,48 @@ public class DlgVenda extends javax.swing.JDialog {
 
     private void btnfinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnfinalizarActionPerformed
         int cont = tabelaVenda.getRowCount();
-        System.out.println("contagem: "+ cont);
+        System.out.println("contagem: " + cont);
 
         if (cont <= 0) {
             JOptionPane.showMessageDialog(rootPane,
-                "Você deve adicionar itens para venda!",
-                "Atencão",
-                JOptionPane.ERROR_MESSAGE);
-            
+                    "Você deve adicionar itens para venda!",
+                    "Atencão",
+                    JOptionPane.ERROR_MESSAGE);
+
         } else if (!chkDinheiro.isSelected() && !chkCartao.isSelected()) {
             JOptionPane.showMessageDialog(rootPane,
-                "Você precisa selecionar uma forma de pagamento!",
-                "Atencão",
-                JOptionPane.ERROR_MESSAGE);
-            
+                    "Você precisa selecionar uma forma de pagamento!",
+                    "Atencão",
+                    JOptionPane.ERROR_MESSAGE);
+
         } else if (tfdPagar.getText().isEmpty()) {
             JOptionPane.showMessageDialog(rootPane,
-                "Você precisa informar o valor a ser pago!",
-                "Atencão",
-                JOptionPane.ERROR_MESSAGE);
-            
-        } else { 
+                    "Você precisa informar o valor a ser pago!",
+                    "Atencão",
+                    JOptionPane.ERROR_MESSAGE);
+
+        } else {
             Double valorPagar = Double.parseDouble(tfdPagar.getText().replaceAll(",", "."));
             Double totalc = Double.parseDouble(tfdTotal.getText().replaceAll(",", "."));
             if (valorPagar < totalc) {
                 JOptionPane.showMessageDialog(rootPane,
-                    "O valor a ser pago está incorreto!",
-                    "Atencão",
-                    JOptionPane.ERROR_MESSAGE);
-                
+                        "O valor a ser pago está incorreto!",
+                        "Atencão",
+                        JOptionPane.ERROR_MESSAGE);
+
             } else {
-                
+
                 VendaDao vendaDao = new VendaDao(sessionFactory);
-                Optional <Venda> p = new VendaDao(sessionFactory).buscar(Integer.parseInt(lblIdVenda.getText()));
-                this.venda = p.get();
 
                 Caixa caixa = new Caixa();
                 CaixaDao caixaDao = new CaixaDao(sessionFactory);
-                
-                Double total = Double.valueOf(tfdTotal.getText().replaceAll(",", ".")).doubleValue();
-                java.util.Date dataUtil = new java.util.Date();
-                java.sql.Date dataSql = new java.sql.Date(dataUtil.getTime());
-                LocalDate data = dataSql.toInstant().atZone( ZoneId.systemDefault() ).toLocalDate();
 
-                      
+                Double total = Double.valueOf(tfdTotal.getText().replaceAll(",", ".")).doubleValue();
+                LocalDate data = LocalDate.now();
+
                 venda.setData_venda(data);
-                venda.setValor_total(total);             
-               
+                venda.setValor_total(total);
+
 //                caixa.setServico(servico);
                 caixa.setFuncionario(funcionario);
                 caixa.setValor_total(total);
@@ -353,14 +367,54 @@ public class DlgVenda extends javax.swing.JDialog {
                 if (valorPagar > total) {
                     Double troco = (valorPagar - total);
                     JOptionPane.showMessageDialog(rootPane,
-                        "Venda concluída com sucesso!\n"
-                        + "Troco: R$"+troco,
-                        "Venda finalizada", JOptionPane.INFORMATION_MESSAGE);
+                            "Venda concluída com sucesso!\n"
+                            + "Troco: R$" + troco,
+                            "Venda finalizada", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(rootPane,
-                        "Venda concluída com sucesso!",
-                        "Venda finalizada", JOptionPane.INFORMATION_MESSAGE);
+                            "Venda concluída com sucesso!",
+                            "Venda finalizada", JOptionPane.INFORMATION_MESSAGE);
                 }
+
+//                -- --ATUALIZA OS DADOS DO PRODUTO NO BANCO DE DADOS ----------
+                ProdutoDao produtoDao = new ProdutoDao(sessionFactory);
+                int qtd;
+                int retirado;
+                int totalProd;
+
+                for (var entry : itens.entrySet()) {
+                    Produto prodEntry = entry.getKey();
+                    Integer quantidade = entry.getValue();
+
+                    retirado = quantidade;
+                    qtd = prodEntry.getEstoque();
+                    totalProd = qtd - retirado;
+
+                    prodEntry.setEstoque(totalProd);
+                    produtoDao.atualizar(prodEntry);
+                }
+
+//                --------------------------------------------------------------
+//                -- --CRIA O VENDAPRODUTO NO BANCO DE DADOS RELATIVO A ESTA VENDA ----------
+                VendaProdutoDao dao = new VendaProdutoDao(sessionFactory);
+
+                for (var entry : itens.entrySet()) {
+                    Produto prodEntry = entry.getKey();
+                    Integer quantidade = entry.getValue();
+
+                    VendaProduto item = new VendaProduto();
+                    int idUltimaVenda = new VendaDao(sessionFactory).buscarTodos().size();
+                    Optional<Venda> p = new VendaDao(sessionFactory).buscar(idUltimaVenda);
+                    this.venda = p.get();
+
+                    item.setProduto(prodEntry);
+                    item.setVenda(venda);
+                    item.setQtde_item(quantidade);
+                    item.setValor_item(prodEntry.getPreco_venda());
+                    dao.salvar(item);
+                }
+
+//                --------------------------------------------------------------
                 DefaultTableModel tabela = (DefaultTableModel) tabelaVenda.getModel();
                 tabela.setRowCount(0);
                 tfdTotal.setText("");
@@ -372,17 +426,22 @@ public class DlgVenda extends javax.swing.JDialog {
         }
 
     }//GEN-LAST:event_btnfinalizarActionPerformed
-    
+
     private void btnbuscacodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscacodigoActionPerformed
-        int id = Integer.parseInt(tfdCodigo.getText());
-        Optional <Produto> p = new ProdutoDao(sessionFactory).buscar(id);
-        Produto produto = p.get();
-        String venda = priceToString(produto.getPreco_venda());
-        tfdValorUnitario.setText(venda);
-        tfdValorTotal.setText(venda);
-        preco = venda;
-        spnQuantidade.setValue(1);
-        tfdProduto.setText(produto.getNome());
+        try {
+            int id = Integer.parseInt(tfdCodigo.getText());
+            Optional<Produto> p = new ProdutoDao(sessionFactory).buscar(id);
+            Produto produto = p.get();
+            String venda = priceToString(produto.getPreco_venda());
+            tfdValorUnitario.setText(venda);
+            tfdValorTotal.setText(venda);
+            preco = venda;
+            spnQuantidade.setValue(1);
+            tfdProduto.setText(produto.getNome());
+        } catch (Exception e) {
+            log.error("Erro ao buscar produto: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao buscar produto: código inválido.");
+        }
     }//GEN-LAST:event_btnbuscacodigoActionPerformed
 
     private void spnQuantidadeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnQuantidadeStateChanged
@@ -403,150 +462,112 @@ public class DlgVenda extends javax.swing.JDialog {
 
         if (tfdCodigo.getText().isEmpty() || tfdCodigo.getText().equals("0")) {
             JOptionPane.showMessageDialog(rootPane,
-                "Você deve inserir o código do produto!",
-                "Atencão",
-                JOptionPane.ERROR_MESSAGE);
+                    "Você deve inserir o código do produto!",
+                    "Atencão",
+                    JOptionPane.ERROR_MESSAGE);
 
         } else if (quantidade == 0) {
             JOptionPane.showMessageDialog(rootPane,
-                "A quantidade de itens não pode ser zero!",
-                "Atencão",
-                JOptionPane.ERROR_MESSAGE);
+                    "A quantidade de itens não pode ser zero!",
+                    "Atencão",
+                    JOptionPane.ERROR_MESSAGE);
 
         } else {
 
             //-----------------------------------------------------------------------------------//
-            int qtd;
-            int retirado;
-            int total;
             int verificar;
-            ProdutoDao produtoDao = new ProdutoDao(sessionFactory);
+
             int codigo = Integer.parseInt(tfdCodigo.getText());
-            Optional <Produto> p = new ProdutoDao(sessionFactory).buscar(codigo);
+            Optional<Produto> p = new ProdutoDao(sessionFactory).buscar(codigo);
             Produto produto = p.get();
             verificar = produto.getEstoque();
 
             if (verificar < quantidade) {
                 JOptionPane.showMessageDialog(rootPane,
-                    "A quantidade não está disponível em estoque!",
-                    "Atencão",
-                    JOptionPane.ERROR_MESSAGE);
+                        "A quantidade não está disponível em estoque!",
+                        "Atencão",
+                        JOptionPane.ERROR_MESSAGE);
 
             } else {
-                VendaProdutoDao dao = new VendaProdutoDao(sessionFactory);
-                VendaProduto item = new VendaProduto();
-                
-                item.setProduto(produto);
-                item.setVenda(venda);
-                item.setQtde_item(quantidade);
-                item.setValor_item(Double.parseDouble(tfdValorUnitario.getText().replaceAll(",", ".")));
-                dao.salvar(item);
-                
-                Object[] cabecalho = {"id", "Nome", "Preço", "Quantidade"};
-                Object[][] dadosTabela = new Object[0][4];
-                
-                 List<VendaProduto> itens = new VendaProdutoDao(sessionFactory).buscarTodos();
-                 
-                    dadosTabela = new Object[itens.size()][4];
-                    if (itens.size() > 0) {
-                        for (int i = 0; i < itens.size(); i++) {
-                            dadosTabela[i][0] = itens.get(i).getId();
-                            dadosTabela[i][1] = itens.get(i).getProduto().getNome();
-                            dadosTabela[i][2] = itens.get(i).getValor_item();
-                            dadosTabela[i][3] = itens.get(i).getQtde_item();
+                boolean produtoExiste = false;
+
+                for (var entry : itens.entrySet()) {
+                    Produto prodEntry = entry.getKey();
+                    Integer qtde = entry.getValue();
+                    if (prodEntry.getId() == produto.getId()) {
+                        produtoExiste = true;
+
+                        if (verificar < qtde + quantidade) {
+                            JOptionPane.showMessageDialog(rootPane,
+                                    "A quantidade não está disponível em estoque!",
+                                    "Atencão",
+                                    JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            entry.setValue(qtde + quantidade);
                         }
                     }
-                    
-                    tabelaVenda.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    return false;
-                }            
-            });
+                }
 
-            tabelaVenda.setSelectionMode(0);
+                if (!produtoExiste) {
+                    itens.put(produto, quantidade);
+                }
 
-            // redimensiona as colunas de uma tabela
-            TableColumn column = null;
-            for (int i = 0; i < tabelaVenda.getColumnCount(); i++) {
-                column = tabelaVenda.getColumnModel().getColumn(i);
-                DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-                centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-                column.setCellRenderer(centerRenderer);
-            }
-
-            column = tabelaVenda.getColumnModel().getColumn(0);
-            column.setPreferredWidth(70);
-            column.setMaxWidth(70);
-            column.setMinWidth(70);
-
-                retirado = quantidade;
-                qtd = produto.getEstoque();
-                total = qtd - retirado;
-                produto.setEstoque(total);
-                produtoDao.atualizar(produto);
+                this.atualizarDTM();
 
                 atualizaSubtotal();
                 limparCampos();
             }
-        }      
+        }
     }//GEN-LAST:event_btnadicionarActionPerformed
-    
-     public void atualizaSubtotal() {
+
+    public void atualizaSubtotal() {
 
         double subtotal = 0f;
         //faz cálculo de subtotal da compra
-        DefaultTableModel tabela = (DefaultTableModel) tabelaVenda.getModel();
-        for (int i = 1; i <= tabela.getRowCount(); i++) {
-            subtotal += (Double) tabelaVenda.getValueAt(i - 1, 4);
+        for (var entry : itens.entrySet()) {
+            Produto prodEntry = entry.getKey();
+            Integer qtde = entry.getValue();
+            subtotal += (double) qtde * prodEntry.getPreco_venda();
         }
         //insere valor subtotal da compra na label
         tfdTotal.setText(String.valueOf(subtotal));
     }
-     
-     public void limparCampos (){
+
+    public void limparCampos() {
         tfdProduto.setText("");
         tfdValorUnitario.setText("0");
         tfdValorTotal.setText("0");
         spnQuantidade.setValue(0);
         tfdCodigo.setText("0");
-     }
-     
+    }
+
     private void btndescartarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndescartarActionPerformed
-        if (tabelaVenda.getSelectedRow() != -1) {
-            
-            ProdutoDao produtoDao = new ProdutoDao(sessionFactory);
-            int codigo = Integer.parseInt(tfdCodigo.getText());
-            Optional <Produto> p = new ProdutoDao(sessionFactory).buscar(codigo);
-            Produto produto = p.get();
+        if (tabelaVenda.getSelectedRowCount() == 1) {
+            String idString = String.valueOf(tabelaVenda.getValueAt(tabelaVenda.getSelectedRow(), 0));
+            int idItem = Integer.parseInt(idString);
+            Produto produtoRemover = new Produto();
 
-            int row = tabelaVenda.getSelectedRow();
-            int column = 0;
-            String value = tabelaVenda.getModel().getValueAt(row, column).toString();
-            String qtdString = tabelaVenda.getModel().getValueAt(row, 3).toString();
-            int retirado = Integer.parseInt(qtdString);
+            for (var entry : itens.entrySet()) {
+                Produto prodEntry = entry.getKey();
 
-            DefaultTableModel dtmProdutos = (DefaultTableModel) tabelaVenda.getModel();
-            dtmProdutos.removeRow(tabelaVenda.getSelectedRow());
-            
-            VendaProdutoDao itemDao = new VendaProdutoDao(sessionFactory);
-            VendaProduto item = new VendaProduto();
-            itemDao.excluir(item);
+                if (prodEntry.getId() == idItem) {
+                    produtoRemover = prodEntry;
+                }
+            }
 
-            int total;
-            int quantidade;  
-            quantidade = produto.getEstoque();
-            total = quantidade + retirado;
-            produto.setEstoque(total);
-            produtoDao.atualizar(produto);
-
-            atualizaSubtotal();
-            double valor = Double.parseDouble(preco);
-            total -= valor;
+            itens.remove(produtoRemover);
+            this.atualizarDTM();
+            this.atualizaSubtotal();
+        } else {
+            if (tabelaVenda.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "Tabela está vazia.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Nenhum item selecionado.");
+            }
         }
     }//GEN-LAST:event_btndescartarActionPerformed
-        
-      public static String priceWithDecimal(Double price) {
+
+    public static String priceWithDecimal(Double price) {
         DecimalFormat formatter = new DecimalFormat("###,###,###.00");
         return formatter.format(price);
     }

@@ -14,8 +14,20 @@ INSERT INTO public.cliente (cidade,cpf,data_cadastro,data_nascimento,email,ender
 INSERT INTO public.cliente (cidade,cpf,data_cadastro,data_nascimento,email,endereco,estado,nome,sexo,status,telefone) VALUES ('Lajeado','159.753.286-45','2019-06-03','1990-10-11','cliente3@email.com','RS, 2131, RS','RS','Cliente 3','Feminino','Ativo','(23) 21321-3131');
 
 -- Insert Especie
-INSERT INTO public.especie (nome) VALUES('cão');
+INSERT INTO public.especie (nome) VALUES('cachorro');
 INSERT INTO public.especie (nome) VALUES('gato');
+
+-- Insert Produto
+INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Alimentação',0.0,'asdasdehwoheqowiehoqwheoqe213123123123',10,'Produto1',5.0,15.0,'Ativo');
+INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Roupas',0.0,'asdasdehwoheqowiehoqwheoqe213123123123',10,'Produto2',10.0,20.0,'Ativo');
+INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Higiene',0.0,'asdasdehwoheqowiehoqwheoqe213123123123',10,'Produto3',13.0,33.0,'Ativo');
+INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Alimentação',0.0,'asdasdehwoheqowiehoqwheoqe213123123123',10,'Produto4',2.0,8.0,'Ativo');
+INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Alimentação',0.0,'asdasdehwoheqowiehoqwheoqe213123123123',10,'Produto5',50,85,'Ativo');
+INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Higiene',0.0,'asdasdehwoheqowiehoqwheoqe213123123123',10,'Produto6',31.0,53.0,'Ativo');
+INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Alimentação',0.0,'asdasdehwoheqowiehoqwheoqe213123123123',10,'Produto7',5.3,14.5,'Ativo');
+INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Brinquedos',0.0,'asdasdehwoheqowiehoqwheoqe213123123123',10,'Produto8',112,149.0,'Ativo');
+INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Brinquedos',0.0,'asdasdehwoheqowiehoqwheoqe213123123123',10,'Produto9',24.0,57.0,'Ativo');
+INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Roupas',0.0,'asdasdehwoheqowiehoqwheoqe213123123123',10,'Produto10',0.85,3.3,'Ativo');
 
 -- Insert Raça
 INSERT INTO public.raca (id, nome, especie_id) VALUES(default, 'poodle', 1);
