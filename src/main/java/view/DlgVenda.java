@@ -17,7 +17,6 @@ import entities.VendaProduto;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import javax.swing.JOptionPane;
@@ -422,6 +421,7 @@ public class DlgVenda extends javax.swing.JDialog {
                 tfdPagar.setText("0");
                 chkDinheiro.setSelected(false);
                 chkCartao.setSelected(false);
+                itens.clear();
             }
         }
 
