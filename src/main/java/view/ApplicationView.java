@@ -8,11 +8,13 @@ package view;
 import dao.AgendaDao;
 import dao.ClienteDao;
 import dao.FuncionarioDao;
+import dao.PetDao;
 import entities.Agenda;
 import entities.Atendimento;
 import entities.Cliente;
 import entities.Funcionario;
 import entities.Permissao;
+import entities.Pet;
 import java.awt.Color;
 import java.awt.Font;
 import java.time.LocalDate;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -59,6 +62,7 @@ public class ApplicationView extends javax.swing.JFrame {
         this.busca = "";
         this.id = 0;
         configurarTblCadastros();
+        configurarBotoes();
         permissao = funcLogado.getPermissao();
         this.carregarHomeByPermissao();
         configurarPermissoes(permissao);
@@ -116,6 +120,7 @@ public class ApplicationView extends javax.swing.JFrame {
         userimg = new javax.swing.JLabel();
         btnhome = new javax.swing.JButton();
         btncadastro = new javax.swing.JButton();
+        btnrelatorio = new javax.swing.JButton();
         lblLogado = new javax.swing.JLabel();
         btnSair = new javax.swing.JButton();
         btnAdmin = new javax.swing.JButton();
@@ -129,17 +134,16 @@ public class ApplicationView extends javax.swing.JFrame {
         backgroundadm = new javax.swing.JLabel();
         pnlHomePet = new javax.swing.JPanel();
         btnvendas = new javax.swing.JButton();
-        btncadastros = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        fundoPet = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txaAtendPet = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
+        btncadastros = new javax.swing.JButton();
+        fundoPet = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         pnlHomeVet = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         txaAtendVet = new javax.swing.JTextArea();
-        jLabel3 = new javax.swing.JLabel();
         fundoVet = new javax.swing.JLabel();
         pnlcadastros = new javax.swing.JPanel();
         tfdbusca = new javax.swing.JTextField();
@@ -149,6 +153,12 @@ public class ApplicationView extends javax.swing.JFrame {
         btnRelatorioCadastros = new javax.swing.JButton();
         cmbescolher = new javax.swing.JComboBox<>();
         fundobusca = new javax.swing.JLabel();
+        pnlRelatorios = new javax.swing.JPanel();
+        btnAtendimentosFuncionario = new javax.swing.JButton();
+        btnProdutosSemEstoque = new javax.swing.JButton();
+        btnAtendimentosPet = new javax.swing.JButton();
+        btnListagemAtendimentos = new javax.swing.JButton();
+        fndrelatorios = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -187,6 +197,16 @@ public class ApplicationView extends javax.swing.JFrame {
             }
         });
         pnlmenulateral.add(btncadastro, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 130, 50));
+
+        btnrelatorio.setBackground(new java.awt.Color(58, 203, 199));
+        btnrelatorio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnrelatorio.png"))); // NOI18N
+        btnrelatorio.setBorder(null);
+        btnrelatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnrelatorioActionPerformed(evt);
+            }
+        });
+        pnlmenulateral.add(btnrelatorio, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 130, 50));
 
         lblLogado.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         lblLogado.setForeground(new java.awt.Color(255, 255, 255));
@@ -290,6 +310,19 @@ public class ApplicationView extends javax.swing.JFrame {
         });
         pnlHomePet.add(btnvendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 30, 140, 50));
 
+        txaAtendPet.setEditable(false);
+        txaAtendPet.setColumns(20);
+        txaAtendPet.setRows(5);
+        jScrollPane2.setViewportView(txaAtendPet);
+
+        pnlHomePet.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, 270, 220));
+
+        jLabel1.setBackground(new java.awt.Color(64, 43, 52));
+        jLabel1.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(106, 212, 209));
+        jLabel1.setText("ATENDIMENTOS DO DIA");
+        pnlHomePet.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 280, 220, -1));
+
         btncadastros.setBackground(new java.awt.Color(236, 236, 236));
         btncadastros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btncadastros.png"))); // NOI18N
         btncadastros.setBorder(null);
@@ -300,48 +333,20 @@ public class ApplicationView extends javax.swing.JFrame {
         });
         pnlHomePet.add(btncadastros, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 150, 50));
 
-        jPanel1.setBackground(new java.awt.Color(236, 236, 236));
-
-        jLabel1.setBackground(new java.awt.Color(64, 43, 52));
-        jLabel1.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(106, 212, 209));
-        jLabel1.setText("ATENDIMENTOS DO DIA");
-
         fundoPet.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/telapetshop.png"))); // NOI18N
+        pnlHomePet.add(fundoPet, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        txaAtendPet.setEditable(false);
-        txaAtendPet.setColumns(20);
-        txaAtendPet.setRows(5);
-        jScrollPane2.setViewportView(txaAtendPet);
+        jPanel1.setBackground(new java.awt.Color(236, 236, 236));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(46, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(1, 1, 1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(69, 69, 69)))
-                .addComponent(fundoPet, javax.swing.GroupLayout.PREFERRED_SIZE, 1450, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGap(0, 1850, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(fundoPet, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(280, 280, 280)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(478, Short.MAX_VALUE))
+            .addGap(0, 1200, Short.MAX_VALUE)
         );
 
         pnlHomePet.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-40, -70, 1850, 1200));
@@ -350,43 +355,18 @@ public class ApplicationView extends javax.swing.JFrame {
 
         pnlHomeVet.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(239, 243, 246));
+        jLabel3.setBackground(new java.awt.Color(64, 43, 52));
+        jLabel3.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(106, 212, 209));
+        jLabel3.setText("ATENDIMENTOS DO DIA");
+        pnlHomeVet.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 260, -1, -1));
 
         txaAtendVet.setEditable(false);
         txaAtendVet.setColumns(20);
         txaAtendVet.setRows(5);
         jScrollPane3.setViewportView(txaAtendVet);
 
-        jLabel3.setBackground(new java.awt.Color(64, 43, 52));
-        jLabel3.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(106, 212, 209));
-        jLabel3.setText("ATENDIMENTOS DO DIA");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(143, 143, 143)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(207, 207, 207)
-                        .addComponent(jLabel3)))
-                .addContainerGap(209, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(265, Short.MAX_VALUE))
-        );
-
-        pnlHomeVet.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 700, 550));
+        pnlHomeVet.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 290, 240, 180));
 
         fundoVet.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/telaveterinaria.png"))); // NOI18N
         fundoVet.setToolTipText("");
@@ -487,6 +467,45 @@ public class ApplicationView extends javax.swing.JFrame {
         pnlcadastros.add(fundobusca, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1770, -1));
 
         background.add(pnlcadastros, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1760, 1080));
+
+        pnlRelatorios.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnAtendimentosFuncionario.setBorder(null);
+        btnAtendimentosFuncionario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtendimentosFuncionarioActionPerformed(evt);
+            }
+        });
+        pnlRelatorios.add(btnAtendimentosFuncionario, new org.netbeans.lib.awtextra.AbsoluteConstraints(1320, 360, 300, 290));
+
+        btnProdutosSemEstoque.setBorder(null);
+        btnProdutosSemEstoque.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProdutosSemEstoqueActionPerformed(evt);
+            }
+        });
+        pnlRelatorios.add(btnProdutosSemEstoque, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 360, 300, 290));
+
+        btnAtendimentosPet.setBorder(null);
+        btnAtendimentosPet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtendimentosPetActionPerformed(evt);
+            }
+        });
+        pnlRelatorios.add(btnAtendimentosPet, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 360, 300, 290));
+
+        btnListagemAtendimentos.setBorder(null);
+        btnListagemAtendimentos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnListagemAtendimentosActionPerformed(evt);
+            }
+        });
+        pnlRelatorios.add(btnListagemAtendimentos, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 360, 300, 290));
+
+        fndrelatorios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fundorelatorios.png"))); // NOI18N
+        pnlRelatorios.add(fndrelatorios, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        background.add(pnlRelatorios, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1760, 1080));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -787,12 +806,14 @@ public class ApplicationView extends javax.swing.JFrame {
     private void btnPetshopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPetshopActionPerformed
         pnlHomeAdmin.setVisible(false);
         pnlHomeVet.setVisible(false);
+        pnlRelatorios.setVisible(false);
         pnlHomePet.setVisible(true);
     }//GEN-LAST:event_btnPetshopActionPerformed
 
     private void btnVeterinariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVeterinariaActionPerformed
         pnlHomeAdmin.setVisible(false);
         pnlHomePet.setVisible(false);
+        pnlRelatorios.setVisible(false);
         pnlHomeVet.setVisible(true);
     }//GEN-LAST:event_btnVeterinariaActionPerformed
 
@@ -824,11 +845,38 @@ public class ApplicationView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnRelatorioCadastrosActionPerformed
 
+    private void btnrelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrelatorioActionPerformed
+        pnlRelatorios.setVisible(true);
+        pnlHomeAdmin.setVisible(false);
+        pnlHomePet.setVisible(false);
+        pnlHomeVet.setVisible(false);
+        pnlcadastros.setVisible(false);
+    }//GEN-LAST:event_btnrelatorioActionPerformed
+
+    private void btnListagemAtendimentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListagemAtendimentosActionPerformed
+       new ReportsGenerator().gerarRelatorioSimples("reports/relatorio_agenda_hoje.jrxml");
+    }//GEN-LAST:event_btnListagemAtendimentosActionPerformed
+
+    private void btnAtendimentosPetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtendimentosPetActionPerformed
+        DlgBuscaPet buscaPet = new DlgBuscaPet(null, true, sessionFactory, true);
+        buscaPet.setVisible(true);
+    }//GEN-LAST:event_btnAtendimentosPetActionPerformed
+
+    private void btnProdutosSemEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosSemEstoqueActionPerformed
+        new ReportsGenerator().gerarRelatorioSimples("reports/relatorio_produto_sem_estoque.jrxml");
+    }//GEN-LAST:event_btnProdutosSemEstoqueActionPerformed
+
+    private void btnAtendimentosFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtendimentosFuncionarioActionPerformed
+        DlgBuscaFuncionario buscaFuncionario = new DlgBuscaFuncionario(null, true, sessionFactory, true);
+        buscaFuncionario.setVisible(true);
+    }//GEN-LAST:event_btnAtendimentosFuncionarioActionPerformed
+
     public void desativarTelas() {
         pnlHomeAdmin.setVisible(false);
         pnlHomePet.setVisible(false);
         pnlHomeVet.setVisible(false);
         pnlcadastros.setVisible(false);
+        pnlRelatorios.setVisible(false);
     }
 
     public LocalDate convertToLocalDate(Date dateToConvert) {
@@ -849,6 +897,22 @@ public class ApplicationView extends javax.swing.JFrame {
         tblgeral.getTableHeader().setOpaque(false);
         tblgeral.getTableHeader().setBackground(new Color(2, 166, 166));
     }
+    
+    public void configurarBotoes() 
+    {
+        btnListagemAtendimentos.setOpaque(false);
+        btnListagemAtendimentos.setContentAreaFilled(false);
+        btnListagemAtendimentos.setBorderPainted(false);
+        btnAtendimentosPet.setOpaque(false);
+        btnAtendimentosPet.setContentAreaFilled(false);
+        btnAtendimentosPet.setBorderPainted(false);
+        btnProdutosSemEstoque.setOpaque(false);
+        btnProdutosSemEstoque.setContentAreaFilled(false);
+        btnProdutosSemEstoque.setBorderPainted(false);
+        btnAtendimentosFuncionario.setOpaque(false);
+        btnAtendimentosFuncionario.setContentAreaFilled(false);
+        btnAtendimentosFuncionario.setBorderPainted(false);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
@@ -857,22 +921,27 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JButton btnAdicionar;
     private javax.swing.JButton btnAdmin;
     private javax.swing.JButton btnAgenda;
+    private javax.swing.JButton btnAtendimentosFuncionario;
+    private javax.swing.JButton btnAtendimentosPet;
+    private javax.swing.JButton btnListagemAtendimentos;
     private javax.swing.JButton btnPetshop;
+    private javax.swing.JButton btnProdutosSemEstoque;
     private javax.swing.JButton btnRelatorioCadastros;
     private javax.swing.JButton btnSair;
     private javax.swing.JButton btnVeterinaria;
     private javax.swing.JButton btncadastro;
     private javax.swing.JButton btncadastros;
     private javax.swing.JButton btnhome;
+    private javax.swing.JButton btnrelatorio;
     private javax.swing.JButton btnvendas;
     private javax.swing.JComboBox<String> cmbescolher;
+    private javax.swing.JLabel fndrelatorios;
     private javax.swing.JLabel fundoPet;
     private javax.swing.JLabel fundoVet;
     private javax.swing.JLabel fundobusca;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -882,6 +951,7 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JPanel pnlHomeAdmin;
     private javax.swing.JPanel pnlHomePet;
     private javax.swing.JPanel pnlHomeVet;
+    private javax.swing.JPanel pnlRelatorios;
     private javax.swing.JPanel pnlcadastros;
     private javax.swing.JPanel pnlmenulateral;
     private javax.swing.JTable tblgeral;

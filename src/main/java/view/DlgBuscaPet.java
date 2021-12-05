@@ -7,7 +7,9 @@ package view;
 
 import dao.PetDao;
 import entities.Pet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -16,6 +18,7 @@ import javax.swing.table.TableColumn;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.SessionFactory;
 import utils.HibernateUtil;
+import utils.ReportsGenerator;
 import utils.VisualsConfig;
 
 @Log4j2
@@ -25,6 +28,7 @@ public class DlgBuscaPet extends javax.swing.JDialog {
     private PetDao petDAO;
     private List<Pet> pets;
     int id = 0;
+    boolean relatorio = false;
 
     /**
      * Creates new form DlgBuscaAutor
@@ -32,10 +36,21 @@ public class DlgBuscaPet extends javax.swing.JDialog {
     public DlgBuscaPet(java.awt.Frame parent, boolean modal, SessionFactory sf) {
         super(parent, modal);
         initComponents();
-
+        btnSelecionar.setText("Selecionar");
         VisualsConfig.setPropsToWindow(this, "Selecionar Pet", parent);
         this.sessionFactory = HibernateUtil.getSessionFactory();
         petDAO = new PetDao(sessionFactory);
+    }
+
+    public DlgBuscaPet(java.awt.Frame parent, boolean modal, SessionFactory sf, boolean relatorio) {
+        super(parent, modal);
+        initComponents();
+        this.relatorio = relatorio;
+        btnSelecionar.setText("Gerar");
+        VisualsConfig.setPropsToWindow(this, "Selecionar Pet", parent);
+        this.sessionFactory = HibernateUtil.getSessionFactory();
+        petDAO = new PetDao(sessionFactory);
+
     }
 
     /**
@@ -208,7 +223,6 @@ public class DlgBuscaPet extends javax.swing.JDialog {
 //                    }
 //                    break;
 //                }
-
                 default:
                     break;
             }
@@ -246,15 +260,25 @@ public class DlgBuscaPet extends javax.swing.JDialog {
     }
 
     private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
-        try {
+        if (relatorio) {
             String idString = String.valueOf(tblPet.getValueAt(tblPet.getSelectedRow(), 0));
-
             id = Integer.parseInt(idString);
-
+            
+            Map params = new HashMap();
+            params.put("pet_id", id);
+            new ReportsGenerator().gerarRelatorioRobusto("/reports/relatorio_atendimentos_pet.jrxml", params);
             this.dispose();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Nenhum pet selecionado.");
-            System.out.println("Erro: " + e.toString());
+        } else {
+            try {
+                String idString = String.valueOf(tblPet.getValueAt(tblPet.getSelectedRow(), 0));
+
+                id = Integer.parseInt(idString);
+
+                this.dispose();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Nenhum pet selecionado.");
+                System.out.println("Erro: " + e.toString());
+            }
         }
     }//GEN-LAST:event_btnSelecionarActionPerformed
 

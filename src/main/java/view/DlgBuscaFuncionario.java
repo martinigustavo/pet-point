@@ -7,7 +7,9 @@ package view;
 
 import dao.FuncionarioDao;
 import entities.Funcionario;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -16,6 +18,7 @@ import javax.swing.table.TableColumn;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.SessionFactory;
 import utils.HibernateUtil;
+import utils.ReportsGenerator;
 import utils.VisualsConfig;
 
 @Log4j2
@@ -25,14 +28,24 @@ public class DlgBuscaFuncionario extends javax.swing.JDialog {
     private FuncionarioDao funcDAO;
     private List<Funcionario> funcionarios;
     int id = 0;
-
+    boolean relatorio = false;
     /**
      * Creates new form DlgBuscaAutor
      */
     public DlgBuscaFuncionario(java.awt.Frame parent, boolean modal, SessionFactory sf) {
         super(parent, modal);
         initComponents();
-
+        btnSelecionar.setText("Selecionar");
+        VisualsConfig.setPropsToWindow(this, "Selecionar Funcionário", parent);
+        this.sessionFactory = HibernateUtil.getSessionFactory();
+        funcDAO = new FuncionarioDao(sessionFactory);
+    }
+    
+    public DlgBuscaFuncionario(java.awt.Frame parent, boolean modal, SessionFactory sf, boolean relatorio) {
+        super(parent, modal);
+        initComponents();
+        this.relatorio = relatorio;
+        btnSelecionar.setText("Gerar");
         VisualsConfig.setPropsToWindow(this, "Selecionar Funcionário", parent);
         this.sessionFactory = HibernateUtil.getSessionFactory();
         funcDAO = new FuncionarioDao(sessionFactory);
@@ -259,6 +272,15 @@ public class DlgBuscaFuncionario extends javax.swing.JDialog {
     }
 
     private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
+        if (relatorio) {
+            String idString = String.valueOf(tblFuncionario.getValueAt(tblFuncionario.getSelectedRow(), 0));
+            id = Integer.parseInt(idString);
+            
+            Map params = new HashMap();
+            params.put("funcionario_id", id);
+            new ReportsGenerator().gerarRelatorioRobusto("/reports/relatorio_atendimento_funcionario.jrxml", params);
+            this.dispose();
+        }
         try {
             String idString = String.valueOf(tblFuncionario.getValueAt(tblFuncionario.getSelectedRow(), 0));
 

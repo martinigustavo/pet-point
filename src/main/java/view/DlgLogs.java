@@ -97,7 +97,6 @@ public class DlgLogs extends javax.swing.JDialog {
         cbxComando = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         cbxTabela = new javax.swing.JComboBox<>();
-        btnGerarRelatorioAud = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -314,14 +313,6 @@ public class DlgLogs extends javax.swing.JDialog {
         cbxTabela.setFont(new java.awt.Font("Poppins", 0, 16)); // NOI18N
         cbxTabela.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas", "Cliente", "Funcionário", "Produto", "Pet" }));
 
-        btnGerarRelatorioAud.setFont(new java.awt.Font("Poppins Medium", 0, 16)); // NOI18N
-        btnGerarRelatorioAud.setText("Gerar relatório");
-        btnGerarRelatorioAud.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGerarRelatorioAudActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout pnlAuditoriaLayout = new javax.swing.GroupLayout(pnlAuditoria);
         pnlAuditoria.setLayout(pnlAuditoriaLayout);
         pnlAuditoriaLayout.setHorizontalGroup(
@@ -365,9 +356,7 @@ public class DlgLogs extends javax.swing.JDialog {
                                     .addComponent(btnBuscarFunc)
                                     .addGroup(pnlAuditoriaLayout.createSequentialGroup()
                                         .addComponent(btnLimparAud)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnGerarRelatorioAud)
-                                        .addGap(18, 18, 18)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(btnFiltrarAud, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(91, 91, 91))
                     .addGroup(pnlAuditoriaLayout.createSequentialGroup()
@@ -418,11 +407,10 @@ public class DlgLogs extends javax.swing.JDialog {
                             .addComponent(cbxTabela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBuscarFunc)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addGroup(pnlAuditoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnFiltrarAud)
-                    .addComponent(btnLimparAud)
-                    .addComponent(btnGerarRelatorioAud))
+                    .addComponent(btnLimparAud))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(92, 92, 92))
@@ -454,7 +442,7 @@ public class DlgLogs extends javax.swing.JDialog {
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 720, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSair)
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -714,13 +702,6 @@ public class DlgLogs extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnFiltrarLogActionPerformed
 
-    private void btnGerarRelatorioAudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarRelatorioAudActionPerformed
-//        Map params = new HashMap();
-//        params.put("pCodEmprestimo", emprestimoDAO.returnId);
-//        new ReportsGenerator().gerarRelatorioRobusto("/reports/report_novo_emprestimo.jrxml", params);
-        new ReportsGenerator().gerarRelatorioSimples("reports/auditoria-logs-admin-report.jrxml");
-    }//GEN-LAST:event_btnGerarRelatorioAudActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -778,7 +759,6 @@ public class DlgLogs extends javax.swing.JDialog {
     private javax.swing.JButton btnBuscarFunc;
     private javax.swing.JButton btnFiltrarAud;
     private javax.swing.JButton btnFiltrarLog;
-    private javax.swing.JButton btnGerarRelatorioAud;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnLimparAud;
     private javax.swing.JButton btnSair;
