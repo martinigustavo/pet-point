@@ -15,6 +15,8 @@ import entities.Cliente;
 import entities.Funcionario;
 import entities.Permissao;
 import entities.Pet;
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.time.LocalDate;
@@ -31,6 +33,18 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.SessionFactory;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.CategoryItemRenderer;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 import utils.HibernateUtil;
 import utils.ReportsGenerator;
 import utils.VisualsConfig;
@@ -75,27 +89,7 @@ public class ApplicationView extends javax.swing.JFrame {
 
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
-        if (!isAdmin) {
-            List<Atendimento> atendimentos = new ArrayList<>();
-            List<Agenda> agendas = new AgendaDao(sessionFactory).buscarTodos();
-            for (Agenda agd : agendas) {
-                if (agd.getData().equals(LocalDate.now()) && agd.getFuncionario().getId() == funcLogado.getId()) {
-                    atendimentos.addAll(agd.getAtendimentos());
-                }
-            }
-
-            String atendimentosString = "";
-            
-            for (Atendimento atd : atendimentos) {
-                atendimentosString += "Horário: " + atd.getHora() + ", Pet: " + atd.getPet().getNome() + "\n";
-            }
-
-            if (funcLogado.getPermissao().getDescricao().equals("petshop")) {
-                txaAtendPet.setText(atendimentosString);
-            } else {
-                txaAtendVet.setText(atendimentosString);
-            }
-        }
+        this.atualizarDashboard();
 
         try {
             funcLogado.setLogado(true);
@@ -131,6 +125,21 @@ public class ApplicationView extends javax.swing.JFrame {
         lblPetshop = new javax.swing.JLabel();
         btnVeterinaria = new javax.swing.JButton();
         btnPetshop = new javax.swing.JButton();
+        pnlContadores = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        lblTotalClientes = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        lblTotalProdutos = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        lblTotalLucroMes = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        pnlVendasChart = new javax.swing.JPanel();
         backgroundadm = new javax.swing.JLabel();
         pnlHomePet = new javax.swing.JPanel();
         btnvendas = new javax.swing.JButton();
@@ -206,7 +215,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnrelatorioActionPerformed(evt);
             }
         });
-        pnlmenulateral.add(btnrelatorio, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 130, 50));
+        pnlmenulateral.add(btnrelatorio, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 130, 50));
 
         lblLogado.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         lblLogado.setForeground(new java.awt.Color(255, 255, 255));
@@ -233,7 +242,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnAdminActionPerformed(evt);
             }
         });
-        pnlmenulateral.add(btnAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 440, 130, 50));
+        pnlmenulateral.add(btnAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 500, 130, 50));
 
         btnAgenda.setBackground(new java.awt.Color(58, 203, 199));
         btnAgenda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnAgendar.png"))); // NOI18N
@@ -292,6 +301,168 @@ public class ApplicationView extends javax.swing.JFrame {
             }
         });
         pnlHomeAdmin.add(btnPetshop, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 0, 600, 1080));
+
+        pnlContadores.setBackground(new java.awt.Color(236, 236, 236));
+        pnlContadores.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 203, 199)));
+        pnlContadores.setForeground(new java.awt.Color(58, 203, 199));
+
+        jPanel2.setBackground(new java.awt.Color(236, 236, 236));
+        jPanel2.setBorder(javax.swing.BorderFactory.createMatteBorder(10, 0, 2, 0, new java.awt.Color(58, 203, 199)));
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/group.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblTotalClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblTotalClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+
+        jPanel3.setBackground(new java.awt.Color(236, 236, 236));
+        jPanel3.setBorder(javax.swing.BorderFactory.createMatteBorder(10, 0, 2, 0, new java.awt.Color(58, 203, 199)));
+
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/boxes.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblTotalProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTotalProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+
+        jPanel5.setBackground(new java.awt.Color(236, 236, 236));
+        jPanel5.setBorder(javax.swing.BorderFactory.createMatteBorder(10, 0, 2, 0, new java.awt.Color(58, 203, 199)));
+
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/brazilian-real.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblTotalLucroMes, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTotalLucroMes, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(58, 203, 199));
+        jLabel2.setText("Clientes");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(58, 203, 199));
+        jLabel4.setText("TOTAL");
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(58, 203, 199));
+        jLabel5.setText("Produtos");
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(58, 203, 199));
+        jLabel6.setText("Lucro do mês");
+
+        pnlVendasChart.setBackground(new java.awt.Color(236, 236, 236));
+        pnlVendasChart.setMaximumSize(new java.awt.Dimension(580, 320));
+
+        javax.swing.GroupLayout pnlVendasChartLayout = new javax.swing.GroupLayout(pnlVendasChart);
+        pnlVendasChart.setLayout(pnlVendasChartLayout);
+        pnlVendasChartLayout.setHorizontalGroup(
+            pnlVendasChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        pnlVendasChartLayout.setVerticalGroup(
+            pnlVendasChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 350, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout pnlContadoresLayout = new javax.swing.GroupLayout(pnlContadores);
+        pnlContadores.setLayout(pnlContadoresLayout);
+        pnlContadoresLayout.setHorizontalGroup(
+            pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlContadoresLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlContadoresLayout.createSequentialGroup()
+                        .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(43, 43, 43)
+                        .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                        .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(32, 32, 32))
+                    .addGroup(pnlContadoresLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(pnlContadoresLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(pnlVendasChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        pnlContadoresLayout.setVerticalGroup(
+            pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlContadoresLayout.createSequentialGroup()
+                .addGap(9, 9, 9)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
+                .addGap(12, 12, 12)
+                .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(52, 52, 52)
+                .addComponent(pnlVendasChart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(122, Short.MAX_VALUE))
+        );
+
+        pnlHomeAdmin.add(pnlContadores, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 580, 730));
 
         backgroundadm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/telainicialadm.png"))); // NOI18N
         pnlHomeAdmin.add(backgroundadm, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -531,12 +702,12 @@ public class ApplicationView extends javax.swing.JFrame {
 
     private void atualizarDashboard() {
         List<Atendimento> atendimentos = new ArrayList<>();
-            List<Agenda> agendas = new AgendaDao(sessionFactory).buscarTodos();
-            for (Agenda agd : agendas) {
-                if (agd.getData().equals(LocalDate.now()) && agd.getFuncionario().getId() == funcLogado.getId()) {
-                    atendimentos.addAll(agd.getAtendimentos());
-                }
+        List<Agenda> agendas = new AgendaDao(sessionFactory).buscarTodos();
+        for (Agenda agd : agendas) {
+            if (agd.getData().equals(LocalDate.now()) && agd.getFuncionario().getId() == funcLogado.getId()) {
+                atendimentos.addAll(agd.getAtendimentos());
             }
+        }
 
         String atendimentosString = "";
 
@@ -549,6 +720,97 @@ public class ApplicationView extends javax.swing.JFrame {
         } else if (funcLogado.getPermissao().getDescricao().equals("veterinaria")) {
             txaAtendVet.setText(atendimentosString);
         }
+
+        this.showPieChart();
+        this.showLineChart();
+        this.showBarChart();
+    }
+
+    public void showPieChart() {
+        //create dataset
+        DefaultPieDataset pieDataset = new DefaultPieDataset();
+        pieDataset.setValue("IPhone 5s", 20.0);
+        pieDataset.setValue("SamSung Grand", 20.0);
+        pieDataset.setValue("MotoG", 40.0);
+        pieDataset.setValue("Nokia Lumia", 10.0);
+
+        //create chart
+        JFreeChart piechart = ChartFactory.createPieChart("mobile sales", pieDataset, false, true, false);//explain
+
+        PiePlot piePlot = (PiePlot) piechart.getPlot();
+
+        //changing pie chart blocks colors
+        piePlot.setSectionPaint("IPhone 5s", new Color(255, 255, 102));
+        piePlot.setSectionPaint("SamSung Grand", new Color(102, 255, 102));
+        piePlot.setSectionPaint("MotoG", new Color(255, 102, 153));
+        piePlot.setSectionPaint("Nokia Lumia", new Color(0, 204, 204));
+
+        piePlot.setBackgroundPaint(Color.white);
+
+        //create chartPanel to display chart(graph)
+        ChartPanel barChartPanel = new ChartPanel(piechart);
+        pnlVendasChart.setLayout(new BorderLayout());
+        pnlVendasChart.removeAll();
+        pnlVendasChart.add(barChartPanel, BorderLayout.CENTER);
+        pnlVendasChart.validate();
+    }
+
+    public void showLineChart() {
+        //create dataset for the graph
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        dataset.setValue(200, "Amount", "january");
+        dataset.setValue(150, "Amount", "february");
+        dataset.setValue(18, "Amount", "march");
+        dataset.setValue(100, "Amount", "april");
+        dataset.setValue(80, "Amount", "may");
+        dataset.setValue(250, "Amount", "june");
+
+        //create chart
+        JFreeChart linechart = ChartFactory.createLineChart("contribution", "monthly", "amount",
+                dataset, PlotOrientation.VERTICAL, false, true, false);
+
+        //create plot object
+        CategoryPlot lineCategoryPlot = linechart.getCategoryPlot();
+        // lineCategoryPlot.setRangeGridlinePaint(Color.BLUE);
+        lineCategoryPlot.setBackgroundPaint(Color.white);
+
+        //create render object to change the moficy the line properties like color
+        LineAndShapeRenderer lineRenderer = (LineAndShapeRenderer) lineCategoryPlot.getRenderer();
+        Color lineChartColor = new Color(204, 0, 51);
+        lineRenderer.setSeriesPaint(0, lineChartColor);
+
+        //create chartPanel to display chart(graph)
+        ChartPanel lineChartPanel = new ChartPanel(linechart);
+//        pnlLineChart.setLayout(new BorderLayout());
+//        pnlLineChart.removeAll();
+//        pnlLineChart.add(lineChartPanel, BorderLayout.CENTER);
+//        pnlLineChart.validate();
+    }
+
+    public void showBarChart() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        dataset.setValue(200, "Amount", "january");
+        dataset.setValue(150, "Amount", "february");
+        dataset.setValue(18, "Amount", "march");
+        dataset.setValue(100, "Amount", "april");
+        dataset.setValue(80, "Amount", "may");
+        dataset.setValue(250, "Amount", "june");
+
+        JFreeChart chart = ChartFactory.createBarChart("contribution", "monthly", "amount",
+                dataset, PlotOrientation.VERTICAL, false, true, false);
+
+        CategoryPlot categoryPlot = chart.getCategoryPlot();
+        //categoryPlot.setRangeGridlinePaint(Color.BLUE);
+        categoryPlot.setBackgroundPaint(Color.WHITE);
+        BarRenderer renderer = (BarRenderer) categoryPlot.getRenderer();
+        Color clr3 = new Color(204, 0, 51);
+        renderer.setSeriesPaint(0, clr3);
+
+        ChartPanel barpChartPanel = new ChartPanel(chart);
+//        pnlBarChart.setLayout(new BorderLayout());
+//        pnlBarChart.removeAll();
+//        pnlBarChart.add(barpChartPanel, BorderLayout.CENTER);
+//        pnlBarChart.validate();
     }
 
     private void configurarPermissoesCadastros(Permissao permissao) {
@@ -854,7 +1116,7 @@ public class ApplicationView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnrelatorioActionPerformed
 
     private void btnListagemAtendimentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListagemAtendimentosActionPerformed
-       new ReportsGenerator().gerarRelatorioSimples("reports/relatorio_agenda_hoje.jrxml");
+        new ReportsGenerator().gerarRelatorioSimples("reports/relatorio_agenda_hoje.jrxml");
     }//GEN-LAST:event_btnListagemAtendimentosActionPerformed
 
     private void btnAtendimentosPetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtendimentosPetActionPerformed
@@ -897,9 +1159,8 @@ public class ApplicationView extends javax.swing.JFrame {
         tblgeral.getTableHeader().setOpaque(false);
         tblgeral.getTableHeader().setBackground(new Color(2, 166, 166));
     }
-    
-    public void configurarBotoes() 
-    {
+
+    public void configurarBotoes() {
         btnListagemAtendimentos.setOpaque(false);
         btnListagemAtendimentos.setContentAreaFilled(false);
         btnListagemAtendimentos.setBorderPainted(false);
@@ -940,18 +1201,34 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JLabel fundoVet;
     private javax.swing.JLabel fundobusca;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblLogado;
     private javax.swing.JLabel lblPetshop;
+    private javax.swing.JLabel lblTotalClientes;
+    private javax.swing.JLabel lblTotalLucroMes;
+    private javax.swing.JLabel lblTotalProdutos;
     private javax.swing.JLabel lblVeterinaria;
+    private javax.swing.JPanel pnlContadores;
     private javax.swing.JPanel pnlHomeAdmin;
     private javax.swing.JPanel pnlHomePet;
     private javax.swing.JPanel pnlHomeVet;
     private javax.swing.JPanel pnlRelatorios;
+    private javax.swing.JPanel pnlVendasChart;
     private javax.swing.JPanel pnlcadastros;
     private javax.swing.JPanel pnlmenulateral;
     private javax.swing.JTable tblgeral;
