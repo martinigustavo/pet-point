@@ -9,12 +9,18 @@ import dao.AgendaDao;
 import dao.ClienteDao;
 import dao.FuncionarioDao;
 import dao.PetDao;
+import dao.ProdutoDao;
+import dao.VendaDao;
+import dao.VendaProdutoDao;
 import entities.Agenda;
 import entities.Atendimento;
 import entities.Cliente;
 import entities.Funcionario;
 import entities.Permissao;
 import entities.Pet;
+import entities.Produto;
+import entities.Venda;
+import entities.VendaProduto;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -309,6 +315,8 @@ public class ApplicationView extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(236, 236, 236));
         jPanel2.setBorder(javax.swing.BorderFactory.createMatteBorder(10, 0, 2, 0, new java.awt.Color(58, 203, 199)));
 
+        lblTotalClientes.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/group.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -318,8 +326,8 @@ public class ApplicationView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblTotalClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblTotalClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(15, 15, 15))
         );
         jPanel2Layout.setVerticalGroup(
@@ -335,6 +343,8 @@ public class ApplicationView extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(236, 236, 236));
         jPanel3.setBorder(javax.swing.BorderFactory.createMatteBorder(10, 0, 2, 0, new java.awt.Color(58, 203, 199)));
 
+        lblTotalProdutos.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/boxes.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -344,8 +354,8 @@ public class ApplicationView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblTotalProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblTotalProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21))
         );
         jPanel3Layout.setVerticalGroup(
@@ -361,6 +371,8 @@ public class ApplicationView extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(236, 236, 236));
         jPanel5.setBorder(javax.swing.BorderFactory.createMatteBorder(10, 0, 2, 0, new java.awt.Color(58, 203, 199)));
 
+        lblTotalLucroMes.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/brazilian-real.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -370,8 +382,8 @@ public class ApplicationView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblTotalLucroMes, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblTotalLucroMes, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21))
         );
         jPanel5Layout.setVerticalGroup(
@@ -411,7 +423,7 @@ public class ApplicationView extends javax.swing.JFrame {
         );
         pnlVendasChartLayout.setVerticalGroup(
             pnlVendasChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 350, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout pnlContadoresLayout = new javax.swing.GroupLayout(pnlContadores);
@@ -423,7 +435,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContadoresLayout.createSequentialGroup()
                         .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(43, 43, 43)
                         .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -437,10 +449,7 @@ public class ApplicationView extends javax.swing.JFrame {
                     .addGroup(pnlContadoresLayout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(0, 0, Short.MAX_VALUE))))
-            .addGroup(pnlContadoresLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlVendasChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(pnlVendasChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnlContadoresLayout.setVerticalGroup(
             pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -459,7 +468,7 @@ public class ApplicationView extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(52, 52, 52)
                 .addComponent(pnlVendasChart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addContainerGap(172, Short.MAX_VALUE))
         );
 
         pnlHomeAdmin.add(pnlContadores, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 580, 730));
@@ -701,6 +710,7 @@ public class ApplicationView extends javax.swing.JFrame {
     }
 
     private void atualizarDashboard() {
+        // dashboard petshop & veterinaria -------------------------------------
         List<Atendimento> atendimentos = new ArrayList<>();
         List<Agenda> agendas = new AgendaDao(sessionFactory).buscarTodos();
         for (Agenda agd : agendas) {
@@ -720,10 +730,37 @@ public class ApplicationView extends javax.swing.JFrame {
         } else if (funcLogado.getPermissao().getDescricao().equals("veterinaria")) {
             txaAtendVet.setText(atendimentosString);
         }
+        // ---------------------------------------------------------------------
+
+        // dashboard admin -----------------------------------------------------
+        List<Cliente> clientes = new ClienteDao(sessionFactory).buscarTodos();
+        List<Produto> produtos = new ProdutoDao(sessionFactory).buscarTodos();
+        List<Venda> vendas = new VendaDao(sessionFactory).buscarTodos();
+        List<VendaProduto> vendaProdutos = new VendaProdutoDao(sessionFactory).buscarTodos();
+
+        lblTotalClientes.setText(String.valueOf(clientes.size()));
+        lblTotalProdutos.setText(String.valueOf(produtos.size()));
+
+        LocalDate dataAtual = LocalDate.now();
+        int mesAtual = dataAtual.getMonthValue();
+        int anoAtual = dataAtual.getYear();
+
+        double lucroBrutoTotalMes = 0;
+        
+        for (VendaProduto vp : vendaProdutos) {
+            if (vp.getVenda().getData_venda().getMonthValue() == mesAtual
+                    && vp.getVenda().getData_venda().getYear() == anoAtual) {
+                lucroBrutoTotalMes += vp.getQtde_item() * vp.getValor_item();
+                lucroBrutoTotalMes -= vp.getProduto().getPreco_custo() * vp.getQtde_item();
+            }
+        }
+        
+        lblTotalLucroMes.setText(String.valueOf(lucroBrutoTotalMes));
 
         this.showPieChart();
         this.showLineChart();
         this.showBarChart();
+        // ---------------------------------------------------------------------
     }
 
     public void showPieChart() {
@@ -836,6 +873,7 @@ public class ApplicationView extends javax.swing.JFrame {
     }
 
     private void btnhomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhomeActionPerformed
+        this.atualizarDashboard();
         this.carregarHomeByPermissao();
     }//GEN-LAST:event_btnhomeActionPerformed
 
@@ -856,6 +894,7 @@ public class ApplicationView extends javax.swing.JFrame {
         desativarTelas();
         pnlcadastros.setVisible(true);
         this.atualizarTabela();
+        this.atualizarDashboard();
     }//GEN-LAST:event_btncadastroActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
