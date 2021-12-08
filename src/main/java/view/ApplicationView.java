@@ -786,28 +786,36 @@ public class ApplicationView extends javax.swing.JFrame {
     }
 
     public void showPieChart() {
+        List<VendaProduto> vendaProdutos = new VendaProdutoDao(sessionFactory).buscarTodos();
+        Map<String, Integer> produtosVendidosAgrupados = new HashMap<>();
+
         //create dataset
         DefaultPieDataset pieDataset = new DefaultPieDataset();
-        pieDataset.setValue("IPhone 5s", 20.0);
-        pieDataset.setValue("SamSung Grand", 20.0);
-        pieDataset.setValue("MotoG", 40.0);
-        pieDataset.setValue("Nokia Lumia", 10.0);
+
+        for (VendaProduto vp : vendaProdutos) {
+            if (!produtosVendidosAgrupados.containsKey(vp.getProduto().getNome())) {
+                produtosVendidosAgrupados.put(vp.getProduto().getNome(), (int) vp.getQtde_item());
+            } else {
+                produtosVendidosAgrupados.put(vp.getProduto().getNome(),
+                        produtosVendidosAgrupados.get(vp.getProduto().getNome()) + (int) vp.getQtde_item());
+            }
+        }
+        
+        for (var entry : produtosVendidosAgrupados.entrySet()) {
+            String prodNome = entry.getKey();
+            Integer qtde = entry.getValue();
+            
+            pieDataset.setValue(prodNome + ": " + qtde, qtde);
+        }
 
         //create chart
-        JFreeChart piechart = ChartFactory.createPieChart("mobile sales", pieDataset, false, true, false);//explain
-
-        PiePlot piePlot = (PiePlot) piechart.getPlot();
-
-        //changing pie chart blocks colors
-        piePlot.setSectionPaint("IPhone 5s", new Color(255, 255, 102));
-        piePlot.setSectionPaint("SamSung Grand", new Color(102, 255, 102));
-        piePlot.setSectionPaint("MotoG", new Color(255, 102, 153));
-        piePlot.setSectionPaint("Nokia Lumia", new Color(0, 204, 204));
-
+        JFreeChart piechart = ChartFactory.createPieChart("Produtos mais vendidos", pieDataset, false, true, false);//explain
         piechart.setBackgroundPaint(new Color(236, 236, 236));
-        piePlot.setBackgroundPaint(new Color(236, 236, 236));
-        piePlot.setLabelBackgroundPaint(new Color(58,203,199));
         
+        PiePlot piePlot = (PiePlot) piechart.getPlot();
+        piePlot.setBackgroundPaint(new Color(236, 236, 236));
+        piePlot.setLabelBackgroundPaint(new Color(58, 203, 199));
+
         //create chartPanel to display chart(graph)
         ChartPanel barChartPanel = new ChartPanel(piechart);
         pnlTopProdutosChart.setLayout(new BorderLayout());
@@ -826,18 +834,18 @@ public class ApplicationView extends javax.swing.JFrame {
         for (int i = vendasAgrupadasPorMes.size() - 1; i >= 0; i--) {
             dataset.setValue(vendasAgrupadasPorMes.get(i).getQtde_vendas(),
                     "Num de Vendas", vendasAgrupadasPorMes.get(i).getData().getMonthValue()
-                            + "/" + vendasAgrupadasPorMes.get(i).getData().getYear());
+                    + "/" + vendasAgrupadasPorMes.get(i).getData().getYear());
         }
 
         //create chart
         JFreeChart linechart = ChartFactory.createLineChart("Vendas/mês", "Mês", "Vendas",
                 dataset, PlotOrientation.VERTICAL, false, true, false);
+        linechart.setBackgroundPaint(new Color(236, 236, 236));
 
         //create plot object
         CategoryPlot lineCategoryPlot = linechart.getCategoryPlot();
-        // lineCategoryPlot.setRangeGridlinePaint(Color.BLUE);
+        lineCategoryPlot.setRangeGridlinePaint(new Color(58, 203, 199));
         lineCategoryPlot.setBackgroundPaint(new Color(236, 236, 236));
-        linechart.setBackgroundPaint(new Color(236, 236, 236));
 
         //create render object to change the moficy the line properties like color
         LineAndShapeRenderer lineRenderer = (LineAndShapeRenderer) lineCategoryPlot.getRenderer();
