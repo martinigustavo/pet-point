@@ -6,6 +6,7 @@
 package view;
 
 import dao.AgendaDao;
+import dao.CaixaDao;
 import dao.ClienteDao;
 import dao.FuncionarioDao;
 import dao.PetDao;
@@ -15,6 +16,7 @@ import dao.VendaProdutoDao;
 import dao.VendasPorMesViewDao;
 import entities.Agenda;
 import entities.Atendimento;
+import entities.Caixa;
 import entities.Cliente;
 import entities.Funcionario;
 import entities.Permissao;
@@ -27,6 +29,7 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -70,6 +73,12 @@ public class ApplicationView extends javax.swing.JFrame {
     private String busca;
     private Permissao permissao;
     private int id;
+    private Produto produto = new Produto();
+    private Map<Produto, Integer> itens = new HashMap<>();
+    DefaultTableModel dtmVendas = new DefaultTableModel();
+    String preco;
+    Funcionario funcionario;
+    Venda venda;
 
     /**
      * Creates new form ApplicationView
@@ -95,6 +104,8 @@ public class ApplicationView extends javax.swing.JFrame {
         lblLogado.setText(funcLogado.getNome());
         lblPetshop.setVisible(false);
         lblVeterinaria.setVisible(false);
+        this.funcionario = funcLogado;
+        this.venda = new Venda();
 
         this.isAdmin = this.funcLogado.getPermissao().getDescricao().equals("admin");
 
@@ -110,7 +121,8 @@ public class ApplicationView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Erro ao alterar status de login do funcionário.");
         }
     }
-
+    
+     String formapagamento = "";
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -153,6 +165,26 @@ public class ApplicationView extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         pnlHomePet = new javax.swing.JPanel();
+        pnlVendas = new javax.swing.JPanel();
+        btnfinalizar = new javax.swing.JButton();
+        tfdTotal = new javax.swing.JLabel();
+        tfdPagar = new javax.swing.JTextField();
+        lblPagar = new javax.swing.JLabel();
+        chkDinheiro = new javax.swing.JCheckBox();
+        chkCartao = new javax.swing.JCheckBox();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tabelaVenda = new javax.swing.JTable();
+        btnadicionar = new javax.swing.JButton();
+        btndescartar = new javax.swing.JButton();
+        tfdValorTotal = new javax.swing.JTextField();
+        cifrao2 = new javax.swing.JLabel();
+        cifrao1 = new javax.swing.JLabel();
+        tfdValorUnitario = new javax.swing.JTextField();
+        spnQuantidade = new javax.swing.JSpinner();
+        tfdProduto = new javax.swing.JTextField();
+        tfdCodigo = new javax.swing.JTextField();
+        btnbuscacodigo = new javax.swing.JButton();
+        fndVendas = new javax.swing.JLabel();
         btnvendas = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         txaAtendPet = new javax.swing.JTextArea();
@@ -439,19 +471,21 @@ public class ApplicationView extends javax.swing.JFrame {
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(58, 203, 199));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Clientes");
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Poppins", 1, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(58, 203, 199));
         jLabel4.setText("TOTAL");
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(58, 203, 199));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Produtos");
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(58, 203, 199));
         jLabel6.setText("Lucro do mês");
 
@@ -467,13 +501,13 @@ public class ApplicationView extends javax.swing.JFrame {
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(43, 43, 43)
-                        .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                        .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(32, 32, 32))
                     .addGroup(pnlContadoresLayout.createSequentialGroup()
                         .addComponent(jLabel4)
@@ -494,7 +528,7 @@ public class ApplicationView extends javax.swing.JFrame {
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
 
         pnlHomeAdmin.add(pnlContadores, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 580, 320));
@@ -502,6 +536,157 @@ public class ApplicationView extends javax.swing.JFrame {
         background.add(pnlHomeAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1760, 1080));
 
         pnlHomePet.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        pnlVendas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnfinalizar.setBackground(new java.awt.Color(2, 166, 166));
+        btnfinalizar.setFont(new java.awt.Font("Poppins", 0, 24)); // NOI18N
+        btnfinalizar.setForeground(new java.awt.Color(255, 255, 255));
+        btnfinalizar.setText("Finalizar venda");
+        btnfinalizar.setBorder(null);
+        btnfinalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnfinalizarActionPerformed(evt);
+            }
+        });
+        pnlVendas.add(btnfinalizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 870, 410, 60));
+
+        tfdTotal.setFont(new java.awt.Font("Poppins", 0, 20)); // NOI18N
+        tfdTotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        pnlVendas.add(tfdTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(1400, 810, 310, 40));
+
+        tfdPagar.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        tfdPagar.setToolTipText("");
+        tfdPagar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        pnlVendas.add(tfdPagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1440, 440, 190, 40));
+
+        lblPagar.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        lblPagar.setText("Pagar:");
+        pnlVendas.add(lblPagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1367, 448, 60, 30));
+
+        chkDinheiro.setBackground(new java.awt.Color(255, 255, 255));
+        chkDinheiro.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
+        chkDinheiro.setText("    Dinheiro");
+        chkDinheiro.setToolTipText("");
+        chkDinheiro.setFocusPainted(false);
+        chkDinheiro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkDinheiroActionPerformed(evt);
+            }
+        });
+        pnlVendas.add(chkDinheiro, new org.netbeans.lib.awtextra.AbsoluteConstraints(1340, 240, -1, -1));
+
+        chkCartao.setBackground(new java.awt.Color(255, 255, 255));
+        chkCartao.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
+        chkCartao.setText("    Cartão");
+        chkCartao.setToolTipText("");
+        chkCartao.setFocusPainted(false);
+        chkCartao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkCartaoActionPerformed(evt);
+            }
+        });
+        pnlVendas.add(chkCartao, new org.netbeans.lib.awtextra.AbsoluteConstraints(1530, 240, -1, -1));
+
+        tabelaVenda.setFont(new java.awt.Font("Poppins", 0, 13)); // NOI18N
+        tabelaVenda.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Código", "Título", "Preço", "Quantidade", "Subtotal"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabelaVenda.setGridColor(new java.awt.Color(204, 204, 204));
+        tabelaVenda.setRowHeight(35);
+        tabelaVenda.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        jScrollPane4.setViewportView(tabelaVenda);
+
+        pnlVendas.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 340, 1160, 630));
+
+        btnadicionar.setBackground(new java.awt.Color(255, 255, 255));
+        btnadicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/adicionar.png"))); // NOI18N
+        btnadicionar.setBorder(null);
+        btnadicionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnadicionarActionPerformed(evt);
+            }
+        });
+        pnlVendas.add(btnadicionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 235, 80, 40));
+
+        btndescartar.setBackground(new java.awt.Color(255, 255, 255));
+        btndescartar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/descartar.png"))); // NOI18N
+        btndescartar.setBorder(null);
+        btndescartar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btndescartarActionPerformed(evt);
+            }
+        });
+        pnlVendas.add(btndescartar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 235, 80, 40));
+
+        tfdValorTotal.setBackground(new java.awt.Color(229, 233, 233));
+        tfdValorTotal.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        tfdValorTotal.setToolTipText("");
+        tfdValorTotal.setBorder(null);
+        pnlVendas.add(tfdValorTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 220, 160, 50));
+
+        cifrao2.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        cifrao2.setText("R$");
+        pnlVendas.add(cifrao2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 230, -1, -1));
+
+        cifrao1.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        cifrao1.setText("R$");
+        pnlVendas.add(cifrao1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 230, -1, -1));
+
+        tfdValorUnitario.setBackground(new java.awt.Color(229, 233, 233));
+        tfdValorUnitario.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        tfdValorUnitario.setToolTipText("");
+        tfdValorUnitario.setBorder(null);
+        pnlVendas.add(tfdValorUnitario, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 220, 160, 50));
+
+        spnQuantidade.setFont(new java.awt.Font("Poppins", 0, 18)); // NOI18N
+        spnQuantidade.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        spnQuantidade.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        spnQuantidade.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spnQuantidadeStateChanged(evt);
+            }
+        });
+        pnlVendas.add(spnQuantidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 140, 180, 40));
+
+        tfdProduto.setEditable(false);
+        tfdProduto.setBackground(new java.awt.Color(229, 233, 233));
+        tfdProduto.setFont(new java.awt.Font("Poppins", 0, 15)); // NOI18N
+        tfdProduto.setBorder(null);
+        pnlVendas.add(tfdProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 130, 530, 40));
+
+        tfdCodigo.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
+        tfdCodigo.setToolTipText("");
+        tfdCodigo.setBorder(null);
+        pnlVendas.add(tfdCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 126, 100, 40));
+
+        btnbuscacodigo.setBackground(new java.awt.Color(2, 166, 166));
+        btnbuscacodigo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pesquisa.png"))); // NOI18N
+        btnbuscacodigo.setBorder(null);
+        btnbuscacodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnbuscacodigoActionPerformed(evt);
+            }
+        });
+        pnlVendas.add(btnbuscacodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(262, 126, 40, 40));
+
+        fndVendas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/telavendas.png"))); // NOI18N
+        pnlVendas.add(fndVendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 1810, 1040));
+
+        pnlHomePet.add(pnlVendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 1810, 1040));
 
         btnvendas.setBackground(new java.awt.Color(236, 236, 236));
         btnvendas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnvendas.png"))); // NOI18N
@@ -597,14 +782,14 @@ public class ApplicationView extends javax.swing.JFrame {
 
             },
             new String [] {
-                "id", "Nome"
+                "id", "Nome", "Cidade", "CPF"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true
+                false, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -679,7 +864,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnAtendimentosFuncionarioActionPerformed(evt);
             }
         });
-        pnlRelatorios.add(btnAtendimentosFuncionario, new org.netbeans.lib.awtextra.AbsoluteConstraints(1320, 360, 300, 290));
+        pnlRelatorios.add(btnAtendimentosFuncionario, new org.netbeans.lib.awtextra.AbsoluteConstraints(1390, 480, 300, 290));
 
         btnProdutosSemEstoque.setBorder(null);
         btnProdutosSemEstoque.addActionListener(new java.awt.event.ActionListener() {
@@ -687,7 +872,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnProdutosSemEstoqueActionPerformed(evt);
             }
         });
-        pnlRelatorios.add(btnProdutosSemEstoque, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 360, 300, 290));
+        pnlRelatorios.add(btnProdutosSemEstoque, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 470, 300, 290));
 
         btnAtendimentosPet.setBorder(null);
         btnAtendimentosPet.addActionListener(new java.awt.event.ActionListener() {
@@ -695,7 +880,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnAtendimentosPetActionPerformed(evt);
             }
         });
-        pnlRelatorios.add(btnAtendimentosPet, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 360, 300, 290));
+        pnlRelatorios.add(btnAtendimentosPet, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 470, 300, 290));
 
         btnListagemAtendimentos.setBorder(null);
         btnListagemAtendimentos.addActionListener(new java.awt.event.ActionListener() {
@@ -703,9 +888,9 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnListagemAtendimentosActionPerformed(evt);
             }
         });
-        pnlRelatorios.add(btnListagemAtendimentos, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 360, 300, 290));
+        pnlRelatorios.add(btnListagemAtendimentos, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 480, 300, 290));
 
-        fndrelatorios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fundorelatorios.png"))); // NOI18N
+        fndrelatorios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/telarelatorios.png"))); // NOI18N
         pnlRelatorios.add(fndrelatorios, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         background.add(pnlRelatorios, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1760, 1080));
@@ -1016,18 +1201,20 @@ public class ApplicationView extends javax.swing.JFrame {
         try {
             busca = tfdbusca.getText();
 
-            Object[] cabecalho = {"id", "Nome"};
-            Object[][] dadosTabela = new Object[0][2];
+            Object[] cabecalho = {"id", "Nome", "Cidade", "CPF"};
+            Object[][] dadosTabela = new Object[0][4];
 
             switch (cmbescolher.getSelectedIndex()) {
                 case 0: {
                     List<Funcionario> funcionarios = new FuncionarioDao(sessionFactory).buscarPorNome(busca);
                     btnRelatorioCadastros.setVisible(true);
-                    dadosTabela = new Object[funcionarios.size()][2];
+                    dadosTabela = new Object[funcionarios.size()][4];
                     if (funcionarios.size() > 0) {
                         for (int i = 0; i < funcionarios.size(); i++) {
                             dadosTabela[i][0] = funcionarios.get(i).getId();
                             dadosTabela[i][1] = funcionarios.get(i).getNome();
+                            dadosTabela[i][2] = funcionarios.get(i).getCidade();
+                            dadosTabela[i][3] = funcionarios.get(i).getCpf();
                         }
                     }
                     break;
@@ -1036,11 +1223,13 @@ public class ApplicationView extends javax.swing.JFrame {
                 case 1: {
                     List<Cliente> clientes = new ClienteDao(sessionFactory).buscarPorNome(busca);
                     btnRelatorioCadastros.setVisible(true);
-                    dadosTabela = new Object[clientes.size()][2];
+                    dadosTabela = new Object[clientes.size()][4];
                     if (clientes.size() > 0) {
                         for (int i = 0; i < clientes.size(); i++) {
                             dadosTabela[i][0] = clientes.get(i).getId();
                             dadosTabela[i][1] = clientes.get(i).getNome();
+                            dadosTabela[i][2] = clientes.get(i).getCidade();
+                            dadosTabela[i][3] = clientes.get(i).getCpf();
                         }
                     }
                     break;
@@ -1049,11 +1238,13 @@ public class ApplicationView extends javax.swing.JFrame {
                 case 2: {
                     List<Funcionario> veterinarios = new FuncionarioDao(sessionFactory).buscarVetPorNome(busca);
                     btnRelatorioCadastros.setVisible(false);
-                    dadosTabela = new Object[veterinarios.size()][2];
+                    dadosTabela = new Object[veterinarios.size()][4];
                     if (veterinarios.size() > 0) {
                         for (int i = 0; i < veterinarios.size(); i++) {
                             dadosTabela[i][0] = veterinarios.get(i).getId();
                             dadosTabela[i][1] = veterinarios.get(i).getNome();
+                            dadosTabela[i][2] = veterinarios.get(i).getCidade();
+                            dadosTabela[i][3] = veterinarios.get(i).getCpf();
                         }
                     }
                     break;
@@ -1144,6 +1335,7 @@ public class ApplicationView extends javax.swing.JFrame {
         pnlHomeAdmin.setVisible(false);
         pnlHomeVet.setVisible(false);
         pnlRelatorios.setVisible(false);
+        pnlVendas.setVisible(false);
         pnlHomePet.setVisible(true);
     }//GEN-LAST:event_btnPetshopActionPerformed
 
@@ -1151,12 +1343,18 @@ public class ApplicationView extends javax.swing.JFrame {
         pnlHomeAdmin.setVisible(false);
         pnlHomePet.setVisible(false);
         pnlRelatorios.setVisible(false);
+        pnlVendas.setVisible(false);
         pnlHomeVet.setVisible(true);
     }//GEN-LAST:event_btnVeterinariaActionPerformed
 
     private void btnvendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnvendasActionPerformed
-        DlgVenda dlgVenda = new DlgVenda(null, true, funcLogado);
-        dlgVenda.setVisible(true);
+//        DlgVenda dlgVenda = new DlgVenda(null, true, funcLogado);
+//        dlgVenda.setVisible(true);
+        pnlHomeAdmin.setVisible(false);
+        pnlHomePet.setVisible(true);
+        pnlRelatorios.setVisible(false);
+        pnlVendas.setVisible(true);
+        pnlHomeVet.setVisible(false);
     }//GEN-LAST:event_btnvendasActionPerformed
 
     private void btnAgendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgendaActionPerformed
@@ -1164,11 +1362,8 @@ public class ApplicationView extends javax.swing.JFrame {
         dlgAgenda.setVisible(true);
         this.atualizarDashboard();
     }//GEN-LAST:event_btnAgendaActionPerformed
-
+   //------------------------------------[TELA DE RELATÓRIOS]-----------------------------------//
     private void btnRelatorioCadastrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatorioCadastrosActionPerformed
-//          Map params = new HashMap();
-//        params.put("pCodEmprestimo", emprestimoDAO.returnId);
-//        new ReportsGenerator().gerarRelatorioRobusto("/reports/report_novo_emprestimo.jrxml", params);
         switch (cmbescolher.getSelectedIndex()) {
             case 0: {
                 new ReportsGenerator().gerarRelatorioSimples("reports/relatorio_funcionarios.jrxml");
@@ -1207,7 +1402,306 @@ public class ApplicationView extends javax.swing.JFrame {
         DlgBuscaFuncionario buscaFuncionario = new DlgBuscaFuncionario(null, true, sessionFactory, true);
         buscaFuncionario.setVisible(true);
     }//GEN-LAST:event_btnAtendimentosFuncionarioActionPerformed
+   
+    //---------------------------------------[TELA DE VENDAS]-------------------------------------------------------//
+    private void btnbuscacodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscacodigoActionPerformed
+        try {
+            int id = Integer.parseInt(tfdCodigo.getText());
+            Optional<Produto> p = new ProdutoDao(sessionFactory).buscar(id);
+            Produto produto = p.get();
+            String venda = priceToString(produto.getPreco_venda());
+            tfdValorUnitario.setText(venda);
+            tfdValorTotal.setText(venda);
+            preco = venda;
+            spnQuantidade.setValue(1);
+            tfdProduto.setText(produto.getNome());
+        } catch (Exception e) {
+            log.error("Erro ao buscar produto: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao buscar produto: código inválido.");
+        }
+    }//GEN-LAST:event_btnbuscacodigoActionPerformed
 
+    private void spnQuantidadeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnQuantidadeStateChanged
+        int qtd = (Integer) spnQuantidade.getValue();
+        double venda = Double.parseDouble(preco.replaceAll(",", "."));
+        double total = (qtd * venda);
+        String total2 = priceToString(total);
+        tfdValorTotal.setText(total2);
+    }//GEN-LAST:event_spnQuantidadeStateChanged
+
+    private void btndescartarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndescartarActionPerformed
+        if (tabelaVenda.getSelectedRowCount() == 1) {
+            String idString = String.valueOf(tabelaVenda.getValueAt(tabelaVenda.getSelectedRow(), 0));
+            int idItem = Integer.parseInt(idString);
+            Produto produtoRemover = new Produto();
+
+            for (var entry : itens.entrySet()) {
+                Produto prodEntry = entry.getKey();
+
+                if (prodEntry.getId() == idItem) {
+                    produtoRemover = prodEntry;
+                }
+            }
+
+            itens.remove(produtoRemover);
+            this.atualizarDTM();
+            this.atualizaSubtotal();
+        } else {
+            if (tabelaVenda.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "Tabela está vazia.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Nenhum item selecionado.");
+            }
+        }
+    }//GEN-LAST:event_btndescartarActionPerformed
+
+    private void btnadicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnadicionarActionPerformed
+
+        int quantidade = (Integer) spnQuantidade.getValue();
+
+        if (tfdCodigo.getText().isEmpty() || tfdCodigo.getText().equals("0")) {
+            JOptionPane.showMessageDialog(rootPane,
+                "Você deve inserir o código do produto!",
+                "Atencão",
+                JOptionPane.ERROR_MESSAGE);
+
+        } else if (quantidade == 0) {
+            JOptionPane.showMessageDialog(rootPane,
+                "A quantidade de itens não pode ser zero!",
+                "Atencão",
+                JOptionPane.ERROR_MESSAGE);
+
+        } else {
+
+            //-----------------------------------------------------------------------------------//
+            int verificar;
+
+            int codigo = Integer.parseInt(tfdCodigo.getText());
+            Optional<Produto> p = new ProdutoDao(sessionFactory).buscar(codigo);
+            Produto produto = p.get();
+            verificar = produto.getEstoque();
+
+            if (verificar < quantidade) {
+                JOptionPane.showMessageDialog(rootPane,
+                    "A quantidade não está disponível em estoque!",
+                    "Atencão",
+                    JOptionPane.ERROR_MESSAGE);
+
+            } else {
+                boolean produtoExiste = false;
+
+                for (var entry : itens.entrySet()) {
+                    Produto prodEntry = entry.getKey();
+                    Integer qtde = entry.getValue();
+                    if (prodEntry.getId() == produto.getId()) {
+                        produtoExiste = true;
+
+                        if (verificar < qtde + quantidade) {
+                            JOptionPane.showMessageDialog(rootPane,
+                                "A quantidade não está disponível em estoque!",
+                                "Atencão",
+                                JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            entry.setValue(qtde + quantidade);
+                        }
+                    }
+                }
+
+                if (!produtoExiste) {
+                    itens.put(produto, quantidade);
+                }
+
+                this.atualizarDTM();
+
+                atualizaSubtotal();
+                limparCampos();
+            }
+        }
+    }//GEN-LAST:event_btnadicionarActionPerformed
+
+    private void chkDinheiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkDinheiroActionPerformed
+        if (chkDinheiro.isSelected()) {
+            chkCartao.setSelected(false);
+            tfdPagar.setEditable(true);
+            formapagamento = "Dinheiro";
+        }
+    }//GEN-LAST:event_chkDinheiroActionPerformed
+
+    private void chkCartaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCartaoActionPerformed
+        chkDinheiro.setSelected(false);
+        tfdPagar.setEditable(true);
+        formapagamento = "Cartão";
+    }//GEN-LAST:event_chkCartaoActionPerformed
+
+    private void btnfinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnfinalizarActionPerformed
+        int cont = tabelaVenda.getRowCount();
+        System.out.println("contagem: " + cont);
+
+        if (cont <= 0) {
+            JOptionPane.showMessageDialog(rootPane,
+                "Você deve adicionar itens para venda!",
+                "Atencão",
+                JOptionPane.ERROR_MESSAGE);
+
+        } else if (!chkDinheiro.isSelected() && !chkCartao.isSelected()) {
+            JOptionPane.showMessageDialog(rootPane,
+                "Você precisa selecionar uma forma de pagamento!",
+                "Atencão",
+                JOptionPane.ERROR_MESSAGE);
+
+        } else if (tfdPagar.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane,
+                "Você precisa informar o valor a ser pago!",
+                "Atencão",
+                JOptionPane.ERROR_MESSAGE);
+
+        } else {
+            Double valorPagar = Double.parseDouble(tfdPagar.getText().replaceAll(",", "."));
+            Double totalc = Double.parseDouble(tfdTotal.getText().replaceAll(",", "."));
+            if (valorPagar < totalc) {
+                JOptionPane.showMessageDialog(rootPane,
+                    "O valor a ser pago está incorreto!",
+                    "Atencão",
+                    JOptionPane.ERROR_MESSAGE);
+
+            } else {
+
+                VendaDao vendaDao = new VendaDao(sessionFactory);
+
+                Caixa caixa = new Caixa();
+                CaixaDao caixaDao = new CaixaDao(sessionFactory);
+
+                Double total = Double.valueOf(tfdTotal.getText().replaceAll(",", ".")).doubleValue();
+                LocalDate data = LocalDate.now();
+
+                venda.setData_venda(data);
+                venda.setValor_total(total);
+
+                //                caixa.setServico(servico);
+                caixa.setFuncionario(funcionario);
+                caixa.setValor_total(total);
+                caixa.setVenda(venda);
+                venda.setCaixa(caixa);
+
+                vendaDao.salvar(venda);
+                caixaDao.salvar(caixa);
+
+                if (valorPagar > total) {
+                    Double troco = (valorPagar - total);
+                    JOptionPane.showMessageDialog(rootPane,
+                        "Venda concluída com sucesso!\n"
+                        + "Troco: R$" + troco,
+                        "Venda finalizada", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(rootPane,
+                        "Venda concluída com sucesso!",
+                        "Venda finalizada", JOptionPane.INFORMATION_MESSAGE);
+                }
+
+                //                -- --ATUALIZA OS DADOS DO PRODUTO NO BANCO DE DADOS ----------
+                ProdutoDao produtoDao = new ProdutoDao(sessionFactory);
+                int qtd;
+                int retirado;
+                int totalProd;
+
+                for (var entry : itens.entrySet()) {
+                    Produto prodEntry = entry.getKey();
+                    Integer quantidade = entry.getValue();
+
+                    retirado = quantidade;
+                    qtd = prodEntry.getEstoque();
+                    totalProd = qtd - retirado;
+
+                    prodEntry.setEstoque(totalProd);
+                    produtoDao.atualizar(prodEntry);
+                }
+
+                //                --------------------------------------------------------------
+                //                -- --CRIA O VENDAPRODUTO NO BANCO DE DADOS RELATIVO A ESTA VENDA ----------
+                VendaProdutoDao dao = new VendaProdutoDao(sessionFactory);
+
+                for (var entry : itens.entrySet()) {
+                    Produto prodEntry = entry.getKey();
+                    Integer quantidade = entry.getValue();
+
+                    VendaProduto item = new VendaProduto();
+                    int idUltimaVenda = new VendaDao(sessionFactory).buscarTodos().size();
+                    Optional<Venda> p = new VendaDao(sessionFactory).buscar(idUltimaVenda);
+                    this.venda = p.get();
+
+                    item.setProduto(prodEntry);
+                    item.setVenda(venda);
+                    item.setQtde_item(quantidade);
+                    item.setValor_item(prodEntry.getPreco_venda());
+                    dao.salvar(item);
+                }
+
+                //                --------------------------------------------------------------
+                DefaultTableModel tabela = (DefaultTableModel) tabelaVenda.getModel();
+                tabela.setRowCount(0);
+                tfdTotal.setText("");
+
+                tfdPagar.setText("0");
+                chkDinheiro.setSelected(false);
+                chkCartao.setSelected(false);
+                itens.clear();
+            }
+        }
+    }//GEN-LAST:event_btnfinalizarActionPerformed
+     
+    private void atualizarDTM() {
+
+        dtmVendas = (DefaultTableModel) tabelaVenda.getModel();
+        dtmVendas.setRowCount(0);
+
+        for (var entry : itens.entrySet()) {
+            Produto prodEntry = entry.getKey();
+            Integer qtde = entry.getValue();
+            dtmVendas.addRow(new Object[]{prodEntry.getId(), prodEntry.getNome(),
+                prodEntry.getPreco_venda(), qtde, String.valueOf(prodEntry.getPreco_venda() * qtde)});
+        }
+    }
+    
+    public void atualizaSubtotal() {
+
+        double subtotal = 0f;
+        //faz cálculo de subtotal da compra
+        for (var entry : itens.entrySet()) {
+            Produto prodEntry = entry.getKey();
+            Integer qtde = entry.getValue();
+            subtotal += (double) qtde * prodEntry.getPreco_venda();
+        }
+        //insere valor subtotal da compra na label
+        tfdTotal.setText(String.valueOf(subtotal));
+    }
+
+    public void limparCampos() {
+        tfdProduto.setText("");
+        tfdValorUnitario.setText("0");
+        tfdValorTotal.setText("0");
+        spnQuantidade.setValue(0);
+        tfdCodigo.setText("0");
+    }
+    
+     public static String priceWithDecimal(Double price) {
+        DecimalFormat formatter = new DecimalFormat("###,###,###.00");
+        return formatter.format(price);
+    }
+
+    public static String priceWithoutDecimal(Double price) {
+        DecimalFormat formatter = new DecimalFormat("###,###,###.##");
+        return formatter.format(price);
+    }
+
+    public static String priceToString(Double price) {
+        String toShow = priceWithoutDecimal(price);
+        if (toShow.indexOf(".") > 0) {
+            return priceWithDecimal(price);
+        } else {
+            return priceWithoutDecimal(price);
+        }
+    }
+    
     public void desativarTelas() {
         pnlHomeAdmin.setVisible(false);
         pnlHomePet.setVisible(false);
@@ -1264,12 +1758,21 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JButton btnRelatorioCadastros;
     private javax.swing.JButton btnSair;
     private javax.swing.JButton btnVeterinaria;
+    private javax.swing.JButton btnadicionar;
+    private javax.swing.JButton btnbuscacodigo;
     private javax.swing.JButton btncadastro;
     private javax.swing.JButton btncadastros;
+    private javax.swing.JButton btndescartar;
+    private javax.swing.JButton btnfinalizar;
     private javax.swing.JButton btnhome;
     private javax.swing.JButton btnrelatorio;
     private javax.swing.JButton btnvendas;
+    private javax.swing.JCheckBox chkCartao;
+    private javax.swing.JCheckBox chkDinheiro;
+    private javax.swing.JLabel cifrao1;
+    private javax.swing.JLabel cifrao2;
     private javax.swing.JComboBox<String> cmbescolher;
+    private javax.swing.JLabel fndVendas;
     private javax.swing.JLabel fndrelatorios;
     private javax.swing.JLabel fundoPet;
     private javax.swing.JLabel fundoVet;
@@ -1286,12 +1789,13 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lblLogado;
+    private javax.swing.JLabel lblPagar;
     private javax.swing.JLabel lblPetshop;
     private javax.swing.JLabel lblTotalClientes;
     private javax.swing.JLabel lblTotalLucroMes;
@@ -1303,10 +1807,19 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JPanel pnlHomeVet;
     private javax.swing.JPanel pnlRelatorios;
     private javax.swing.JPanel pnlTopProdutosChart;
+    private javax.swing.JPanel pnlVendas;
     private javax.swing.JPanel pnlVendasMesChart;
     private javax.swing.JPanel pnlcadastros;
     private javax.swing.JPanel pnlmenulateral;
+    private javax.swing.JSpinner spnQuantidade;
+    private javax.swing.JTable tabelaVenda;
     private javax.swing.JTable tblgeral;
+    private javax.swing.JTextField tfdCodigo;
+    private javax.swing.JTextField tfdPagar;
+    private javax.swing.JTextField tfdProduto;
+    private javax.swing.JLabel tfdTotal;
+    private javax.swing.JTextField tfdValorTotal;
+    private javax.swing.JTextField tfdValorUnitario;
     private javax.swing.JTextField tfdbusca;
     private javax.swing.JTextArea txaAtendPet;
     private javax.swing.JTextArea txaAtendVet;

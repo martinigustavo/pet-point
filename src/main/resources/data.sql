@@ -19,15 +19,15 @@ INSERT INTO public.especie (nome) VALUES('gato');
 
 -- Insert Produto
 INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Alimentos',0.0,'Ossinho sabor picanha',10,'Osso',5.0,15.0,'Ativo');
-INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Roupas',0.0,'asdasdehwoheqowiehoqwheoqe213123123123',10,'Produto2',10.0,20.0,'Ativo');
+INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Roupas',0.0,'Roupa para gato',10,'Roupa gato',10.0,20.0,'Ativo');
 INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Higiene',0.0,'Sabonete para cachorro',10,'Sabonete',13.0,33.0,'Ativo');
 INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Alimentos',0.0,'Petiscos para gatos',0,'Petiscos',2.0,8.0,'Ativo');
-INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Alimentos',0.0,'asdasdehwoheqowiehoqwheoqe213123123123',10,'Produto5',50,85,'Ativo');
-INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Higiene',0.0,'asdasdehwoheqowiehoqwheoqe213123123123',10,'Produto6',31.0,53.0,'Ativo');
-INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Alimentos',0.0,'asdasdehwoheqowiehoqwheoqe213123123123',10,'Produto7',5.3,14.5,'Ativo');
-INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Brinquedos',0.0,'asdasdehwoheqowiehoqwheoqe213123123123',10,'Produto8',112,149.0,'Ativo');
-INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Brinquedos',0.0,'asdasdehwoheqowiehoqwheoqe213123123123',10,'Produto9',24.0,57.0,'Ativo');
-INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Roupas',0.0,'asdasdehwoheqowiehoqwheoqe213123123123',10,'Produto10',0.85,3.3,'Ativo');
+INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Alimentos',0.0,'Ração filhote',10,'Ração',50,85,'Ativo');
+INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Higiene',0.0,'Shampoo antipulgas',10,'Shampoo',31.0,53.0,'Ativo');
+INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Alimentos',0.0,'Ração adulto',10,'Ração',5.3,14.5,'Ativo');
+INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Brinquedos',0.0,'Bolinha',10,'Bolinha',112,149.0,'Ativo');
+INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Brinquedos',0.0,'Urso de pelúcia',10,'Pelúcia',24.0,57.0,'Ativo');
+INSERT INTO public.produto (sku,categoria,desconto,descricao,estoque,nome,preco_custo,preco_venda,status) VALUES ('AAA123','Roupas',0.0,'Coleira cachorro',10,'Coleira',0.85,3.3,'Ativo');
 
 -- Insert Raça
 INSERT INTO public.raca (id, nome, especie_id) VALUES(default, 'poodle', 1);
@@ -63,16 +63,16 @@ INSERT INTO public.agenda ("data", horario_final, horario_inicio, status, funcio
 INSERT INTO public.agenda ("data", horario_final, horario_inicio, status, funcionario_id) VALUES('2021-11-19', '18:30:00', '07:30:00', 'ativo', 3);
 
 -- Insert Atendimento
-INSERT INTO public.atendimento (hora, observacoes, status, agenda_id, pet_id) VALUES('08:30:00', 'Consulta de rotina', 'ativo', 1, 4);
+INSERT INTO public.atendimento (hora, observacoes, status, agenda_id, pet_id) VALUES('08:30:00', 'Consulta', 'ativo', 1, 4);
 INSERT INTO public.atendimento (hora, observacoes, status, agenda_id, pet_id) VALUES('09:30:00', 'Receitado medicamentos', 'ativo', 1, 3);
 INSERT INTO public.atendimento (hora, observacoes, status, agenda_id, pet_id) VALUES('10:30:00', 'Banho e tosa', 'ativo', 1, 1);
-INSERT INTO public.atendimento (hora, observacoes, status, agenda_id, pet_id) VALUES('11:00:00', 'Consulta de rotina', 'ativo', 1, 5);
-INSERT INTO public.atendimento (hora, observacoes, status, agenda_id, pet_id) VALUES('08:30:00', 'Machucou a patinha', 'ativo', 7, 1);
+INSERT INTO public.atendimento (hora, observacoes, status, agenda_id, pet_id) VALUES('11:00:00', 'Consulta', 'ativo', 1, 5);
+INSERT INTO public.atendimento (hora, observacoes, status, agenda_id, pet_id) VALUES('08:30:00', 'Machucado', 'ativo', 7, 1);
 INSERT INTO public.atendimento (hora, observacoes, status, agenda_id, pet_id) VALUES('13:30:00', 'Banho', 'ativo', 7, 2);
 INSERT INTO public.atendimento (hora, observacoes, status, agenda_id, pet_id) VALUES('14:30:00', 'Tosa', 'ativo', 7, 3);
 INSERT INTO public.atendimento (hora, observacoes, status, agenda_id, pet_id) VALUES('09:30:00', 'Banho e escova', 'ativo', 7, 4);
-INSERT INTO public.atendimento (hora, observacoes, status, agenda_id, pet_id) VALUES('08:30:00', 'Consulta de rotina', 'ativo', 5, 5);
-INSERT INTO public.atendimento (hora, observacoes, status, agenda_id, pet_id) VALUES('08:30:00', 'Machucou a patinha', 'ativo', 5, 6);
+INSERT INTO public.atendimento (hora, observacoes, status, agenda_id, pet_id) VALUES('08:30:00', 'Consulta', 'ativo', 5, 5);
+INSERT INTO public.atendimento (hora, observacoes, status, agenda_id, pet_id) VALUES('08:30:00', 'Machucado', 'ativo', 5, 6);
 
 -- Insert Venda
 INSERT INTO public.venda (data_venda,valor_total) VALUES ('2021-11-07',130.0), ('2021-11-08',562.1), ('2021-11-08',562.1), ('2021-11-08',562.1), ('2021-11-08',562.1), ('2021-11-08',562.1), ('2021-11-08',562.1), ('2021-11-08',562.1), ('2021-11-08',562.1), ('2021-11-08',562.1), ('2021-11-08',562.1);
