@@ -12,6 +12,7 @@ import dao.PetDao;
 import dao.ProdutoDao;
 import dao.VendaDao;
 import dao.VendaProdutoDao;
+import dao.VendasPorMesViewDao;
 import entities.Agenda;
 import entities.Atendimento;
 import entities.Cliente;
@@ -21,6 +22,7 @@ import entities.Pet;
 import entities.Produto;
 import entities.Venda;
 import entities.VendaProduto;
+import entities.VendasPorMesView;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -29,8 +31,11 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -131,6 +136,8 @@ public class ApplicationView extends javax.swing.JFrame {
         lblPetshop = new javax.swing.JLabel();
         btnVeterinaria = new javax.swing.JButton();
         btnPetshop = new javax.swing.JButton();
+        pnlVendasMesChart = new javax.swing.JPanel();
+        pnlTopProdutosChart = new javax.swing.JPanel();
         pnlContadores = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         lblTotalClientes = new javax.swing.JLabel();
@@ -145,8 +152,6 @@ public class ApplicationView extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        pnlVendasChart = new javax.swing.JPanel();
-        backgroundadm = new javax.swing.JLabel();
         pnlHomePet = new javax.swing.JPanel();
         btnvendas = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -215,6 +220,7 @@ public class ApplicationView extends javax.swing.JFrame {
 
         btnrelatorio.setBackground(new java.awt.Color(58, 203, 199));
         btnrelatorio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnrelatorio.png"))); // NOI18N
+        btnrelatorio.setToolTipText("Relatórios");
         btnrelatorio.setBorder(null);
         btnrelatorio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -241,7 +247,7 @@ public class ApplicationView extends javax.swing.JFrame {
 
         btnAdmin.setBackground(new java.awt.Color(58, 203, 199));
         btnAdmin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/iconlogs.png"))); // NOI18N
-        btnAdmin.setToolTipText("");
+        btnAdmin.setToolTipText("Logs e Auditoria");
         btnAdmin.setBorder(null);
         btnAdmin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -252,6 +258,7 @@ public class ApplicationView extends javax.swing.JFrame {
 
         btnAgenda.setBackground(new java.awt.Color(58, 203, 199));
         btnAgenda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnAgendar.png"))); // NOI18N
+        btnAgenda.setToolTipText("Agendas");
         btnAgenda.setBorder(null);
         btnAgenda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -265,6 +272,7 @@ public class ApplicationView extends javax.swing.JFrame {
 
         background.add(pnlmenulateral, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, 1080));
 
+        pnlHomeAdmin.setBackground(new java.awt.Color(236, 236, 236));
         pnlHomeAdmin.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblVeterinaria.setFont(new java.awt.Font("Grand Aventure Text", 0, 100)); // NOI18N
@@ -274,7 +282,7 @@ public class ApplicationView extends javax.swing.JFrame {
         lblPetshop.setFont(new java.awt.Font("Grand Aventure Text", 0, 100)); // NOI18N
         lblPetshop.setForeground(new java.awt.Color(255, 255, 255));
         lblPetshop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/letreiro-petshop.png"))); // NOI18N
-        pnlHomeAdmin.add(lblPetshop, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 940, -1, -1));
+        pnlHomeAdmin.add(lblPetshop, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 420, -1, -1));
 
         btnVeterinaria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnvet.png"))); // NOI18N
         btnVeterinaria.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -290,7 +298,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnVeterinariaActionPerformed(evt);
             }
         });
-        pnlHomeAdmin.add(btnVeterinaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 0, 560, 1080));
+        pnlHomeAdmin.add(btnVeterinaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 390, 560, 690));
 
         btnPetshop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnpetshop.png"))); // NOI18N
         btnPetshop.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -306,7 +314,42 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnPetshopActionPerformed(evt);
             }
         });
-        pnlHomeAdmin.add(btnPetshop, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 0, 600, 1080));
+        pnlHomeAdmin.add(btnPetshop, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 390, 600, 690));
+
+        pnlVendasMesChart.setBackground(new java.awt.Color(236, 236, 236));
+        pnlVendasMesChart.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(58, 203, 199), 1, true));
+        pnlVendasMesChart.setMaximumSize(new java.awt.Dimension(1150, 320));
+        pnlVendasMesChart.setPreferredSize(new java.awt.Dimension(1150, 320));
+
+        javax.swing.GroupLayout pnlVendasMesChartLayout = new javax.swing.GroupLayout(pnlVendasMesChart);
+        pnlVendasMesChart.setLayout(pnlVendasMesChartLayout);
+        pnlVendasMesChartLayout.setHorizontalGroup(
+            pnlVendasMesChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        pnlVendasMesChartLayout.setVerticalGroup(
+            pnlVendasMesChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 318, Short.MAX_VALUE)
+        );
+
+        pnlHomeAdmin.add(pnlVendasMesChart, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 40, 1150, 320));
+
+        pnlTopProdutosChart.setBackground(new java.awt.Color(236, 236, 236));
+        pnlTopProdutosChart.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 203, 199)));
+        pnlTopProdutosChart.setMaximumSize(new java.awt.Dimension(580, 320));
+
+        javax.swing.GroupLayout pnlTopProdutosChartLayout = new javax.swing.GroupLayout(pnlTopProdutosChart);
+        pnlTopProdutosChart.setLayout(pnlTopProdutosChartLayout);
+        pnlTopProdutosChartLayout.setHorizontalGroup(
+            pnlTopProdutosChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 576, Short.MAX_VALUE)
+        );
+        pnlTopProdutosChartLayout.setVerticalGroup(
+            pnlTopProdutosChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 318, Short.MAX_VALUE)
+        );
+
+        pnlHomeAdmin.add(pnlTopProdutosChart, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, 578, 320));
 
         pnlContadores.setBackground(new java.awt.Color(236, 236, 236));
         pnlContadores.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 203, 199)));
@@ -328,7 +371,7 @@ public class ApplicationView extends javax.swing.JFrame {
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
                 .addComponent(lblTotalClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(15, 15, 15))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -355,8 +398,8 @@ public class ApplicationView extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel8)
                 .addGap(18, 18, 18)
-                .addComponent(lblTotalProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
+                .addComponent(lblTotalProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -383,16 +426,16 @@ public class ApplicationView extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblTotalLucroMes, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
+                .addComponent(lblTotalLucroMes, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTotalLucroMes, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblTotalLucroMes, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -411,20 +454,6 @@ public class ApplicationView extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(58, 203, 199));
         jLabel6.setText("Lucro do mês");
-
-        pnlVendasChart.setBackground(new java.awt.Color(236, 236, 236));
-        pnlVendasChart.setMaximumSize(new java.awt.Dimension(580, 320));
-
-        javax.swing.GroupLayout pnlVendasChartLayout = new javax.swing.GroupLayout(pnlVendasChart);
-        pnlVendasChart.setLayout(pnlVendasChartLayout);
-        pnlVendasChartLayout.setHorizontalGroup(
-            pnlVendasChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        pnlVendasChartLayout.setVerticalGroup(
-            pnlVendasChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
 
         javax.swing.GroupLayout pnlContadoresLayout = new javax.swing.GroupLayout(pnlContadores);
         pnlContadores.setLayout(pnlContadoresLayout);
@@ -449,14 +478,13 @@ public class ApplicationView extends javax.swing.JFrame {
                     .addGroup(pnlContadoresLayout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(0, 0, Short.MAX_VALUE))))
-            .addComponent(pnlVendasChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnlContadoresLayout.setVerticalGroup(
             pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlContadoresLayout.createSequentialGroup()
                 .addGap(9, 9, 9)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(40, 40, 40)
                 .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel5)
@@ -466,15 +494,10 @@ public class ApplicationView extends javax.swing.JFrame {
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(52, 52, 52)
-                .addComponent(pnlVendasChart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(172, Short.MAX_VALUE))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
 
-        pnlHomeAdmin.add(pnlContadores, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 580, 730));
-
-        backgroundadm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/telainicialadm.png"))); // NOI18N
-        pnlHomeAdmin.add(backgroundadm, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        pnlHomeAdmin.add(pnlContadores, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 580, 320));
 
         background.add(pnlHomeAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1760, 1080));
 
@@ -735,7 +758,6 @@ public class ApplicationView extends javax.swing.JFrame {
         // dashboard admin -----------------------------------------------------
         List<Cliente> clientes = new ClienteDao(sessionFactory).buscarTodos();
         List<Produto> produtos = new ProdutoDao(sessionFactory).buscarTodos();
-        List<Venda> vendas = new VendaDao(sessionFactory).buscarTodos();
         List<VendaProduto> vendaProdutos = new VendaProdutoDao(sessionFactory).buscarTodos();
 
         lblTotalClientes.setText(String.valueOf(clientes.size()));
@@ -746,7 +768,7 @@ public class ApplicationView extends javax.swing.JFrame {
         int anoAtual = dataAtual.getYear();
 
         double lucroBrutoTotalMes = 0;
-        
+
         for (VendaProduto vp : vendaProdutos) {
             if (vp.getVenda().getData_venda().getMonthValue() == mesAtual
                     && vp.getVenda().getData_venda().getYear() == anoAtual) {
@@ -754,8 +776,8 @@ public class ApplicationView extends javax.swing.JFrame {
                 lucroBrutoTotalMes -= vp.getProduto().getPreco_custo() * vp.getQtde_item();
             }
         }
-        
-        lblTotalLucroMes.setText(String.valueOf(lucroBrutoTotalMes));
+
+        lblTotalLucroMes.setText(String.format("%.2f", lucroBrutoTotalMes));
 
         this.showPieChart();
         this.showLineChart();
@@ -782,34 +804,40 @@ public class ApplicationView extends javax.swing.JFrame {
         piePlot.setSectionPaint("MotoG", new Color(255, 102, 153));
         piePlot.setSectionPaint("Nokia Lumia", new Color(0, 204, 204));
 
-        piePlot.setBackgroundPaint(Color.white);
-
+        piechart.setBackgroundPaint(new Color(236, 236, 236));
+        piePlot.setBackgroundPaint(new Color(236, 236, 236));
+        piePlot.setLabelBackgroundPaint(new Color(58,203,199));
+        
         //create chartPanel to display chart(graph)
         ChartPanel barChartPanel = new ChartPanel(piechart);
-        pnlVendasChart.setLayout(new BorderLayout());
-        pnlVendasChart.removeAll();
-        pnlVendasChart.add(barChartPanel, BorderLayout.CENTER);
-        pnlVendasChart.validate();
+        pnlTopProdutosChart.setLayout(new BorderLayout());
+        pnlTopProdutosChart.removeAll();
+        pnlTopProdutosChart.add(barChartPanel, BorderLayout.CENTER);
+        pnlTopProdutosChart.validate();
     }
 
     public void showLineChart() {
+
+        List<VendasPorMesView> vendasAgrupadasPorMes = new VendasPorMesViewDao(sessionFactory).buscarTodos();
+
         //create dataset for the graph
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.setValue(200, "Amount", "january");
-        dataset.setValue(150, "Amount", "february");
-        dataset.setValue(18, "Amount", "march");
-        dataset.setValue(100, "Amount", "april");
-        dataset.setValue(80, "Amount", "may");
-        dataset.setValue(250, "Amount", "june");
+
+        for (int i = vendasAgrupadasPorMes.size() - 1; i >= 0; i--) {
+            dataset.setValue(vendasAgrupadasPorMes.get(i).getQtde_vendas(),
+                    "Num de Vendas", vendasAgrupadasPorMes.get(i).getData().getMonthValue()
+                            + "/" + vendasAgrupadasPorMes.get(i).getData().getYear());
+        }
 
         //create chart
-        JFreeChart linechart = ChartFactory.createLineChart("contribution", "monthly", "amount",
+        JFreeChart linechart = ChartFactory.createLineChart("Vendas/mês", "Mês", "Vendas",
                 dataset, PlotOrientation.VERTICAL, false, true, false);
 
         //create plot object
         CategoryPlot lineCategoryPlot = linechart.getCategoryPlot();
         // lineCategoryPlot.setRangeGridlinePaint(Color.BLUE);
-        lineCategoryPlot.setBackgroundPaint(Color.white);
+        lineCategoryPlot.setBackgroundPaint(new Color(236, 236, 236));
+        linechart.setBackgroundPaint(new Color(236, 236, 236));
 
         //create render object to change the moficy the line properties like color
         LineAndShapeRenderer lineRenderer = (LineAndShapeRenderer) lineCategoryPlot.getRenderer();
@@ -818,32 +846,32 @@ public class ApplicationView extends javax.swing.JFrame {
 
         //create chartPanel to display chart(graph)
         ChartPanel lineChartPanel = new ChartPanel(linechart);
-//        pnlLineChart.setLayout(new BorderLayout());
-//        pnlLineChart.removeAll();
-//        pnlLineChart.add(lineChartPanel, BorderLayout.CENTER);
-//        pnlLineChart.validate();
+        pnlVendasMesChart.setLayout(new BorderLayout());
+        pnlVendasMesChart.removeAll();
+        pnlVendasMesChart.add(lineChartPanel, BorderLayout.CENTER);
+        pnlVendasMesChart.validate();
     }
 
     public void showBarChart() {
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.setValue(200, "Amount", "january");
-        dataset.setValue(150, "Amount", "february");
-        dataset.setValue(18, "Amount", "march");
-        dataset.setValue(100, "Amount", "april");
-        dataset.setValue(80, "Amount", "may");
-        dataset.setValue(250, "Amount", "june");
-
-        JFreeChart chart = ChartFactory.createBarChart("contribution", "monthly", "amount",
-                dataset, PlotOrientation.VERTICAL, false, true, false);
-
-        CategoryPlot categoryPlot = chart.getCategoryPlot();
-        //categoryPlot.setRangeGridlinePaint(Color.BLUE);
-        categoryPlot.setBackgroundPaint(Color.WHITE);
-        BarRenderer renderer = (BarRenderer) categoryPlot.getRenderer();
-        Color clr3 = new Color(204, 0, 51);
-        renderer.setSeriesPaint(0, clr3);
-
-        ChartPanel barpChartPanel = new ChartPanel(chart);
+//        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+//        dataset.setValue(200, "Amount", "january");
+//        dataset.setValue(150, "Amount", "february");
+//        dataset.setValue(18, "Amount", "march");
+//        dataset.setValue(100, "Amount", "april");
+//        dataset.setValue(80, "Amount", "may");
+//        dataset.setValue(250, "Amount", "june");
+//
+//        JFreeChart chart = ChartFactory.createBarChart("contribution", "monthly", "amount",
+//                dataset, PlotOrientation.VERTICAL, false, true, false);
+//
+//        CategoryPlot categoryPlot = chart.getCategoryPlot();
+//        //categoryPlot.setRangeGridlinePaint(Color.BLUE);
+//        categoryPlot.setBackgroundPaint(new Color(236, 236, 236));
+//        BarRenderer renderer = (BarRenderer) categoryPlot.getRenderer();
+//        Color clr3 = new Color(204, 0, 51);
+//        renderer.setSeriesPaint(0, clr3);
+//
+//        ChartPanel barpChartPanel = new ChartPanel(chart);
 //        pnlBarChart.setLayout(new BorderLayout());
 //        pnlBarChart.removeAll();
 //        pnlBarChart.add(barpChartPanel, BorderLayout.CENTER);
@@ -1216,7 +1244,6 @@ public class ApplicationView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
-    private javax.swing.JLabel backgroundadm;
     private javax.swing.JLabel barralateral;
     private javax.swing.JButton btnAdicionar;
     private javax.swing.JButton btnAdmin;
@@ -1267,7 +1294,8 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JPanel pnlHomePet;
     private javax.swing.JPanel pnlHomeVet;
     private javax.swing.JPanel pnlRelatorios;
-    private javax.swing.JPanel pnlVendasChart;
+    private javax.swing.JPanel pnlTopProdutosChart;
+    private javax.swing.JPanel pnlVendasMesChart;
     private javax.swing.JPanel pnlcadastros;
     private javax.swing.JPanel pnlmenulateral;
     private javax.swing.JTable tblgeral;
