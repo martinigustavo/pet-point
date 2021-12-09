@@ -150,20 +150,19 @@ public class ApplicationView extends javax.swing.JFrame {
         btnPetshop = new javax.swing.JButton();
         pnlVendasMesChart = new javax.swing.JPanel();
         pnlTopProdutosChart = new javax.swing.JPanel();
-        pnlContadores = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         lblTotalClientes = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         lblTotalProdutos = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         lblTotalLucroMes = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        fndDashboard = new javax.swing.JLabel();
         pnlHomePet = new javax.swing.JPanel();
         pnlVendas = new javax.swing.JPanel();
         btnfinalizar = new javax.swing.JButton();
@@ -309,14 +308,14 @@ public class ApplicationView extends javax.swing.JFrame {
 
         lblVeterinaria.setFont(new java.awt.Font("Grand Aventure Text", 0, 100)); // NOI18N
         lblVeterinaria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/letreiro-veterinaria.png"))); // NOI18N
-        pnlHomeAdmin.add(lblVeterinaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(1360, 930, -1, -1));
+        pnlHomeAdmin.add(lblVeterinaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 870, 380, 110));
 
         lblPetshop.setFont(new java.awt.Font("Grand Aventure Text", 0, 100)); // NOI18N
         lblPetshop.setForeground(new java.awt.Color(255, 255, 255));
         lblPetshop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/letreiro-petshop.png"))); // NOI18N
-        pnlHomeAdmin.add(lblPetshop, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 420, -1, -1));
+        pnlHomeAdmin.add(lblPetshop, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 870, -1, -1));
 
-        btnVeterinaria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnvet.png"))); // NOI18N
+        btnVeterinaria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnvet_1.png"))); // NOI18N
         btnVeterinaria.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnVeterinariaMouseEntered(evt);
@@ -330,9 +329,9 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnVeterinariaActionPerformed(evt);
             }
         });
-        pnlHomeAdmin.add(btnVeterinaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 390, 560, 690));
+        pnlHomeAdmin.add(btnVeterinaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 730, 720, 260));
 
-        btnPetshop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnpetshop.png"))); // NOI18N
+        btnPetshop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnpetshop_1.png"))); // NOI18N
         btnPetshop.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnPetshopMouseEntered(evt);
@@ -346,10 +345,10 @@ public class ApplicationView extends javax.swing.JFrame {
                 btnPetshopActionPerformed(evt);
             }
         });
-        pnlHomeAdmin.add(btnPetshop, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 390, 600, 690));
+        pnlHomeAdmin.add(btnPetshop, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 730, 730, 260));
 
-        pnlVendasMesChart.setBackground(new java.awt.Color(236, 236, 236));
-        pnlVendasMesChart.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(58, 203, 199), 1, true));
+        pnlVendasMesChart.setBackground(new java.awt.Color(245, 245, 245));
+        pnlVendasMesChart.setToolTipText("");
         pnlVendasMesChart.setMaximumSize(new java.awt.Dimension(1150, 320));
         pnlVendasMesChart.setPreferredSize(new java.awt.Dimension(1150, 320));
 
@@ -361,38 +360,48 @@ public class ApplicationView extends javax.swing.JFrame {
         );
         pnlVendasMesChartLayout.setVerticalGroup(
             pnlVendasMesChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 318, Short.MAX_VALUE)
+            .addGap(0, 320, Short.MAX_VALUE)
         );
 
-        pnlHomeAdmin.add(pnlVendasMesChart, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 40, 1150, 320));
+        pnlHomeAdmin.add(pnlVendasMesChart, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 310, 940, 320));
 
-        pnlTopProdutosChart.setBackground(new java.awt.Color(236, 236, 236));
-        pnlTopProdutosChart.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 203, 199)));
+        pnlTopProdutosChart.setBackground(new java.awt.Color(245, 245, 245));
         pnlTopProdutosChart.setMaximumSize(new java.awt.Dimension(580, 320));
 
         javax.swing.GroupLayout pnlTopProdutosChartLayout = new javax.swing.GroupLayout(pnlTopProdutosChart);
         pnlTopProdutosChart.setLayout(pnlTopProdutosChartLayout);
         pnlTopProdutosChartLayout.setHorizontalGroup(
             pnlTopProdutosChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 576, Short.MAX_VALUE)
+            .addGap(0, 490, Short.MAX_VALUE)
         );
         pnlTopProdutosChartLayout.setVerticalGroup(
             pnlTopProdutosChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 318, Short.MAX_VALUE)
+            .addGap(0, 320, Short.MAX_VALUE)
         );
 
-        pnlHomeAdmin.add(pnlTopProdutosChart, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, 578, 320));
+        pnlHomeAdmin.add(pnlTopProdutosChart, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 310, 490, 320));
 
-        pnlContadores.setBackground(new java.awt.Color(236, 236, 236));
-        pnlContadores.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 203, 199)));
-        pnlContadores.setForeground(new java.awt.Color(58, 203, 199));
+        jLabel5.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(58, 203, 199));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Produtos");
+        pnlHomeAdmin.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 80, 148, -1));
 
-        jPanel2.setBackground(new java.awt.Color(236, 236, 236));
+        jLabel2.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(58, 203, 199));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Clientes");
+        pnlHomeAdmin.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 80, 144, -1));
+
+        jPanel2.setBackground(new java.awt.Color(245, 245, 245));
         jPanel2.setBorder(javax.swing.BorderFactory.createMatteBorder(10, 0, 2, 0, new java.awt.Color(58, 203, 199)));
+        jPanel2.setToolTipText("");
 
-        lblTotalClientes.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        lblTotalClientes.setBackground(new java.awt.Color(245, 245, 245));
+        lblTotalClientes.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
+        lblTotalClientes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/group.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnfuncionarios.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -401,137 +410,96 @@ public class ApplicationView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel7)
-                .addGap(18, 18, 18)
-                .addComponent(lblTotalClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblTotalClientes, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblTotalClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTotalClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
-        jPanel3.setBackground(new java.awt.Color(236, 236, 236));
+        pnlHomeAdmin.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 110, 450, 120));
+
+        jPanel3.setBackground(new java.awt.Color(245, 245, 245));
         jPanel3.setBorder(javax.swing.BorderFactory.createMatteBorder(10, 0, 2, 0, new java.awt.Color(58, 203, 199)));
+        jPanel3.setToolTipText("");
 
-        lblTotalProdutos.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        lblTotalProdutos.setBackground(new java.awt.Color(245, 245, 245));
+        lblTotalProdutos.setFont(new java.awt.Font("Poppins", 1, 24)); // NOI18N
+        lblTotalProdutos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/boxes.png"))); // NOI18N
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnprodutos.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel8)
-                .addGap(18, 18, 18)
-                .addComponent(lblTotalProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblTotalProdutos, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
                 .addGap(15, 15, 15))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTotalProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                    .addComponent(lblTotalProdutos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
-        jPanel5.setBackground(new java.awt.Color(236, 236, 236));
+        pnlHomeAdmin.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(662, 110, 440, 120));
+
+        jLabel6.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(58, 203, 199));
+        jLabel6.setText("Lucro do mês");
+        pnlHomeAdmin.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1340, 80, 146, -1));
+
+        jPanel5.setBackground(new java.awt.Color(245, 245, 245));
         jPanel5.setBorder(javax.swing.BorderFactory.createMatteBorder(10, 0, 2, 0, new java.awt.Color(58, 203, 199)));
+        jPanel5.setToolTipText("");
 
-        lblTotalLucroMes.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        lblTotalLucroMes.setBackground(new java.awt.Color(245, 245, 245));
+        lblTotalLucroMes.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
+        lblTotalLucroMes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/brazilian-real.png"))); // NOI18N
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/btnlucros.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblTotalLucroMes, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblTotalLucroMes, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
                 .addGap(14, 14, 14))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTotalLucroMes, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGap(13, 13, 13)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTotalLucroMes, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
-        jLabel2.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(58, 203, 199));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Clientes");
+        pnlHomeAdmin.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 110, 440, 120));
 
-        jLabel4.setFont(new java.awt.Font("Poppins", 1, 24)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(58, 203, 199));
-        jLabel4.setText("TOTAL");
-
-        jLabel5.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(58, 203, 199));
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Produtos");
-
-        jLabel6.setFont(new java.awt.Font("Poppins", 1, 20)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(58, 203, 199));
-        jLabel6.setText("Lucro do mês");
-
-        javax.swing.GroupLayout pnlContadoresLayout = new javax.swing.GroupLayout(pnlContadores);
-        pnlContadores.setLayout(pnlContadoresLayout);
-        pnlContadoresLayout.setHorizontalGroup(
-            pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContadoresLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlContadoresLayout.createSequentialGroup()
-                        .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(43, 43, 43)
-                        .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                        .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(32, 32, 32))
-                    .addGroup(pnlContadoresLayout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(0, 0, Short.MAX_VALUE))))
-        );
-        pnlContadoresLayout.setVerticalGroup(
-            pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContadoresLayout.createSequentialGroup()
-                .addGap(9, 9, 9)
-                .addComponent(jLabel4)
-                .addGap(40, 40, 40)
-                .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6))
-                .addGap(12, 12, 12)
-                .addGroup(pnlContadoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(78, Short.MAX_VALUE))
-        );
-
-        pnlHomeAdmin.add(pnlContadores, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 580, 320));
+        fndDashboard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fndDashboard.png"))); // NOI18N
+        pnlHomeAdmin.add(fndDashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         background.add(pnlHomeAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, 1760, 1080));
 
@@ -1775,6 +1743,7 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JLabel cifrao1;
     private javax.swing.JLabel cifrao2;
     private javax.swing.JComboBox<String> cmbescolher;
+    private javax.swing.JLabel fndDashboard;
     private javax.swing.JLabel fndVendas;
     private javax.swing.JLabel fndrelatorios;
     private javax.swing.JLabel fundoPet;
@@ -1783,7 +1752,6 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1804,7 +1772,6 @@ public class ApplicationView extends javax.swing.JFrame {
     private javax.swing.JLabel lblTotalLucroMes;
     private javax.swing.JLabel lblTotalProdutos;
     private javax.swing.JLabel lblVeterinaria;
-    private javax.swing.JPanel pnlContadores;
     private javax.swing.JPanel pnlHomeAdmin;
     private javax.swing.JPanel pnlHomePet;
     private javax.swing.JPanel pnlHomeVet;
