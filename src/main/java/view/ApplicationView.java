@@ -1114,6 +1114,7 @@ public class ApplicationView extends javax.swing.JFrame {
     private void btncadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastroActionPerformed
         desativarTelas();
         pnlcadastros.setVisible(true);
+        pnlVendas.setVisible(false);
         this.atualizarTabela();
         this.atualizarDashboard();
     }//GEN-LAST:event_btncadastroActionPerformed
@@ -1382,6 +1383,7 @@ public class ApplicationView extends javax.swing.JFrame {
         pnlHomeAdmin.setVisible(false);
         pnlHomePet.setVisible(false);
         pnlHomeVet.setVisible(false);
+        pnlVendas.setVisible(false);
         pnlcadastros.setVisible(false);
     }//GEN-LAST:event_btnrelatorioActionPerformed
 
@@ -1707,6 +1709,7 @@ public class ApplicationView extends javax.swing.JFrame {
         pnlHomePet.setVisible(false);
         pnlHomeVet.setVisible(false);
         pnlcadastros.setVisible(false);
+        pnlVendas.setVisible(false);
         pnlRelatorios.setVisible(false);
     }
 
